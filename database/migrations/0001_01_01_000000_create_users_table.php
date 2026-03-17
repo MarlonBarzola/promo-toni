@@ -13,11 +13,14 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('nombre'); // [cite: 12]
+            $table->string('apellido'); // [cite: 13]
+            $table->string('cedula')->unique(); // [cite: 14]
+            $table->string('ciudad'); // [cite: 15]
+            $table->date('fecha_nacimiento'); // [cite: 16]
+            $table->string('email')->unique(); // [cite: 17]
             $table->string('password');
-            $table->rememberToken();
+            $table->enum('rol', ['cliente', 'admin'])->default('cliente');
             $table->timestamps();
         });
 
@@ -37,9 +40,6 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('users');

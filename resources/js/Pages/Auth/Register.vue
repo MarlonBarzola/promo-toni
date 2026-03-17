@@ -7,7 +7,11 @@ import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
 const form = useForm({
-    name: '',
+    nombre: '',
+    apellido: '',
+    cedula: '',
+    ciudad: '',
+    fecha_nacimiento: '',
     email: '',
     password: '',
     password_confirmation: '',
@@ -22,28 +26,75 @@ const submit = () => {
 
 <template>
     <GuestLayout>
-        <Head title="Register" />
+        <Head title="Registro de Hincha" />
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="name" value="Name" />
-
+                <InputLabel for="nombre" value="Nombre" />
                 <TextInput
-                    id="name"
+                    id="nombre"
                     type="text"
                     class="mt-1 block w-full"
-                    v-model="form.name"
+                    v-model="form.nombre"
                     required
                     autofocus
-                    autocomplete="name"
+                    autocomplete="given-name"
                 />
-
-                <InputError class="mt-2" :message="form.errors.name" />
+                <InputError class="mt-2" :message="form.errors.nombre" />
             </div>
 
             <div class="mt-4">
-                <InputLabel for="email" value="Email" />
+                <InputLabel for="apellido" value="Apellido" />
+                <TextInput
+                    id="apellido"
+                    type="text"
+                    class="mt-1 block w-full"
+                    v-model="form.apellido"
+                    required
+                    autocomplete="family-name"
+                />
+                <InputError class="mt-2" :message="form.errors.apellido" />
+            </div>
 
+            <div class="mt-4">
+                <InputLabel for="cedula" value="Cédula" />
+                <TextInput
+                    id="cedula"
+                    type="text"
+                    class="mt-1 block w-full"
+                    v-model="form.cedula"
+                    required
+                    placeholder="Ej: 0912345678"
+                />
+                <InputError class="mt-2" :message="form.errors.cedula" />
+            </div>
+
+            <div class="mt-4">
+                <InputLabel for="ciudad" value="Ciudad" />
+                <TextInput
+                    id="ciudad"
+                    type="text"
+                    class="mt-1 block w-full"
+                    v-model="form.ciudad"
+                    required
+                />
+                <InputError class="mt-2" :message="form.errors.ciudad" />
+            </div>
+
+            <div class="mt-4">
+                <InputLabel for="fecha_nacimiento" value="Fecha de Nacimiento" />
+                <TextInput
+                    id="fecha_nacimiento"
+                    type="date"
+                    class="mt-1 block w-full"
+                    v-model="form.fecha_nacimiento"
+                    required
+                />
+                <InputError class="mt-2" :message="form.errors.fecha_nacimiento" />
+            </div>
+
+            <div class="mt-4">
+                <InputLabel for="email" value="Correo Electrónico" />
                 <TextInput
                     id="email"
                     type="email"
@@ -52,13 +103,11 @@ const submit = () => {
                     required
                     autocomplete="username"
                 />
-
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password" value="Password" />
-
+                <InputLabel for="password" value="Contraseña" />
                 <TextInput
                     id="password"
                     type="password"
@@ -67,16 +116,11 @@ const submit = () => {
                     required
                     autocomplete="new-password"
                 />
-
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>
 
             <div class="mt-4">
-                <InputLabel
-                    for="password_confirmation"
-                    value="Confirm Password"
-                />
-
+                <InputLabel for="password_confirmation" value="Confirmar Contraseña" />
                 <TextInput
                     id="password_confirmation"
                     type="password"
@@ -85,11 +129,7 @@ const submit = () => {
                     required
                     autocomplete="new-password"
                 />
-
-                <InputError
-                    class="mt-2"
-                    :message="form.errors.password_confirmation"
-                />
+                <InputError class="mt-2" :message="form.errors.password_confirmation" />
             </div>
 
             <div class="mt-4 flex items-center justify-end">
@@ -97,7 +137,7 @@ const submit = () => {
                     :href="route('login')"
                     class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 >
-                    Already registered?
+                    ¿Ya estás registrado?
                 </Link>
 
                 <PrimaryButton
@@ -105,7 +145,7 @@ const submit = () => {
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >
-                    Register
+                    Registrarme
                 </PrimaryButton>
             </div>
         </form>

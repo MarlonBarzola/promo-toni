@@ -19,9 +19,14 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'nombre',
+        'apellido',
+        'cedula',
+        'ciudad',
+        'fecha_nacimiento',
         'email',
         'password',
+        'rol', // Añadimos el rol aquí también
     ];
 
     /**
@@ -45,5 +50,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function codigos()
+    {
+        return $this->hasMany(Codigo::class);
     }
 }

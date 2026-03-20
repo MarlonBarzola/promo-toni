@@ -1,11 +1,21 @@
 <script setup>
-import { useForm } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { useForm, Link } from '@inertiajs/vue3';
+import { ref, onMounted } from 'vue';
 
 const props = defineProps({
-    codigos: Array,
+    codigos: Object,
     mensaje: String
 });
+
+const urlParams = new URLSearchParams(window.location.search);
+const tabActiva = ref(urlParams.get('tab') || 'ingresar');
+
+const cambiarTab = (tab) => {
+    tabActiva.value = tab;
+    const url = new URL(window.location);
+    url.searchParams.set('tab', tab);
+    window.history.pushState({}, '', url);
+};
 
 const form = useForm({
     codigo_unico: '',
@@ -16,6 +26,7 @@ const form = useForm({
 
 const previewCodigo = ref(null);
 const previewEmpaque = ref(null);
+const mostrarModal = ref(false);
 
 const handleFileChange = (e, tipo) => {
     const file = e.target.files[0];
@@ -30,112 +41,414 @@ const handleFileChange = (e, tipo) => {
 
 const enviarFormulario = () => {
     form.post(route('codigo.store'), {
-        forceFormData: true, // Importante para envío de archivos
+        forceFormData: true,
         onSuccess: () => {
             form.reset();
             previewCodigo.value = null;
             previewEmpaque.value = null;
+            // Opcional: mover al usuario a la pestaña de "Mis códigos" después de éxito
+            // tabActiva.value = 'mis-codigos';
         },
     });
+};
+
+const limpiarFormulario = () => {
+    form.reset();
+    previewCodigo.value = null;
+    previewEmpaque.value = null;
+};
+
+const abrirModalReferencia = () => {
+    mostrarModal.value = true;
+};
+
+const cerrarModal = () => {
+    mostrarModal.value = false;
 };
 </script>
 
 <template>
     <div class="container py-5">
-        <div class="row">
-            <div class="col-md-5">
-                <div class="card shadow-lg border-0" style="background-color: #0033a0; color: white; border-radius: 15px;">
-                    <div class="card-body p-4">
-                        <h3 class="text-center mb-4" style="font-family: 'Bebas Neue', sans-serif;">REGISTRA TU EMPAQUE</h3>
-                        
-                        <div v-if="$page.props.flash && $page.props.flash.mensaje" class="alert alert-success">
-                            {{ $page.props.flash.mensaje }}
-                        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+
+                <div class="d-flex mb-0">
+                    <button @click="cambiarTab('ingresar')" class="btn-tab left"
+                        :class="{ 'active': tabActiva === 'ingresar' }">
+                        INGRESAR CÓDIGOS
+                    </button>
+                    <button @click="cambiarTab('mis-codigos')" class="btn-tab right"
+                        :class="{ 'active': tabActiva === 'mis-codigos' }">
+                        MIS CÓDIGOS
+                    </button>
+                </div>
+
+                <div class="tab-content-container shadow-lg">
+
+                    <div v-if="tabActiva === 'ingresar'" class="p-4">
+                        <h4 class="text-center text-white mb-4 fw-bold">INGRESA TUS CÓDIGOS</h4>
 
                         <form @submit.prevent="enviarFormulario">
-                            <div class="mb-3">
-                                <label class="form-label">Código Único del Lote</label>
-                                <input 
-                                    v-model="form.codigo_unico" 
-                                    type="text" 
-                                    class="form-control" 
-                                    :class="{'is-invalid': form.errors.codigo_unico}" 
-                                    placeholder="Ej: 37032840..."
-                                >
-                                <div v-if="form.errors.codigo_unico" class="invalid-feedback fw-bold">
+                            <div class="mb-2">
+                                <input v-model="form.codigo_unico" type="text" class="form-control custom-input"
+                                    placeholder="Código único" required>
+                                <div v-if="form.errors.codigo_unico"
+                                    class="text-danger small fw-bold mt-1 bg-white rounded px-2">
                                     {{ form.errors.codigo_unico }}
                                 </div>
                             </div>
 
-                            <div class="mb-3">
-                                <label class="form-label">Producto</label>
-                                <select v-model="form.producto" class="form-select" required>
-                                    <option value="" disabled>Selecciona un producto</option>
+                            <div class="mb-2">
+                                <select v-model="form.producto" class="form-select custom-input" required>
+                                    <option value="" disabled selected>Producto participante</option>
                                     <option value="Yogurt Clásico">Yogurt Clásico</option>
                                     <option value="Gelatoni">Gelatoni</option>
                                     <option value="Avena Toni">Avena Toni</option>
-                                    <option value="Choco Taza">Choco Taza</option>
                                 </select>
-                                <div v-if="form.errors.producto" class="text-warning small mt-1">{{ form.errors.producto }}</div>
                             </div>
 
-                            <div class="mb-3">
-                                <label class="form-label">Foto clara del código</label>
-                                <input type="file" class="form-control" @change="handleFileChange($event, 'codigo')" accept="image/*" required>
-                                <div v-if="form.errors.foto_codigo" class="text-warning small mt-1">
-                                    {{ form.errors.foto_codigo.replace('foto codigo', 'foto del código') }}
+                            <div class="mb-2 d-flex align-items-center bg-white rounded p-1 shadow-sm">
+                                <span class="flex-grow-1 ps-2 text-primary small fw-bold">Foto del código</span>
+                                <label class="btn btn-amarillo-toni btn-sm m-0 px-2 fw-bold text-uppercase"
+                                    style="font-size: 0.7rem;">
+                                    CARGAR UNA IMAGEN
+                                    <input type="file" hidden @change="handleFileChange($event, 'codigo')"
+                                        accept="image/*" required>
+                                </label>
+                            </div>
+
+                            <div class="mb-3 d-flex align-items-center bg-white rounded p-1 shadow-sm">
+                                <span class="flex-grow-1 ps-2 text-primary small fw-bold">Foto empaque abierto</span>
+                                <label class="btn btn-amarillo-toni btn-sm m-0 px-2 fw-bold text-uppercase"
+                                    style="font-size: 0.7rem;">
+                                    CARGAR UNA IMAGEN
+                                    <input type="file" hidden @change="handleFileChange($event, 'empaque')"
+                                        accept="image/*" required>
+                                </label>
+                            </div>
+
+                            <div class="d-flex gap-2 mb-3 justify-content-center"
+                                v-if="previewCodigo || previewEmpaque">
+                                <img v-if="previewCodigo" :src="previewCodigo" class="img-thumbnail" width="60">
+                                <img v-if="previewEmpaque" :src="previewEmpaque" class="img-thumbnail" width="60">
+                            </div>
+
+                            <div class="row g-2 mb-4">
+                                <div class="col-6">
+                                    <button type="button" @click="limpiarFormulario"
+                                        class="btn btn-dark-blue w-100 fw-bold text-uppercase py-2">
+                                        ELIMINAR
+                                    </button>
                                 </div>
-                                <img v-if="previewCodigo" :src="previewCodigo" class="img-thumbnail mt-2" width="100">
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="form-label">Foto del empaque abierto</label>
-                                <input type="file" class="form-control" @change="handleFileChange($event, 'empaque')" accept="image/*" required>
-                                <div v-if="form.errors.foto_empaque" class="text-warning small mt-1">
-                                    {{ form.errors.foto_empaque.replace('foto empaque', 'foto del empaque') }}
+                                <div class="col-6">
+                                    <button type="button" @click="abrirModalReferencia"
+                                        class="btn btn-amarillo-toni w-100 fw-bold text-uppercase py-2"
+                                        style="font-size: 0.85rem;">
+                                        IMAGEN DE REFERENCIA
+                                    </button>
                                 </div>
-                                <img v-if="previewEmpaque" :src="previewEmpaque" class="img-thumbnail mt-2" width="100">
                             </div>
 
-                            <button type="submit" class="btn btn-warning w-100 fw-bold py-2" :disabled="form.processing">
-                                {{ form.processing ? 'ENVIANDO...' : 'REGISTRAR CÓDIGO' }}
-                            </button>
+                            <div class="important-box mb-4">
+                                <p class="mb-0 fw-bold">IMPORTANTE:</p>
+                                <p class="mb-0">Carga una foto clara del código en el envase.</p>
+                                <p class="mb-0">Necesitamos una foto para verificar la veracidad del código</p>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-dark-blue px-5 py-2 fw-bold text-uppercase shadow"
+                                    :disabled="form.processing">
+                                    {{ form.processing ? 'ENVIANDO...' : 'INGRESAR' }}
+                                </button>
+                            </div>
                         </form>
                     </div>
-                </div>
-            </div>
 
-            <div class="col-md-7">
-                <h3 class="mb-4" style="color: #0033a0; font-family: 'Bebas Neue', sans-serif;">MIS CÓDIGOS INGRESADOS</h3>
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>Código</th>
-                                <th>Producto</th>
-                                <th>Fecha</th>
-                                <th>Estado</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="item in codigos" :key="item.id">
-                                <td>{{ item.codigo_unico }}</td>
-                                <td>{{ item.producto }}</td>
-                                <td>{{ new Date(item.created_at).toLocaleDateString() }}</td>
-                                <td>
-                                    <span :class="{
-                                        'badge bg-warning text-dark': item.estado === 'pendiente',
-                                        'badge bg-success': item.estado === 'aprobado',
-                                        'badge bg-danger': item.estado === 'rechazado'
-                                    }">
-                                        {{ item.estado.toUpperCase() }}
-                                    </span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div v-if="tabActiva === 'mis-codigos'" class="p-4">
+                        <h4 class="text-center text-white mb-4 fw-bold">MIS CÓDIGOS REGISTRADOS</h4>
+
+                        <div class="historial-container">
+                            <div v-for="item in codigos.data" :key="item.id"
+                                class="codigo-row d-flex justify-content-between align-items-center mb-2 px-3 py-2">
+                                <span class="text-white fw-bold small">{{ item.codigo_unico }}</span>
+                                <span class="text-white small">
+                                    {{ new Date(item.created_at).toLocaleDateString('es-EC', {
+                                        day: '2-digit', month:
+                                            'short', year: 'numeric'
+                                    }).toUpperCase() }}
+                                </span>
+                                <span class="badge-status" :class="item.estado">
+                                    {{ item.estado === 'aprobado' ? 'VERIFICADO' : (item.estado === 'rechazado' ?
+                                        'DESCARTADO' : 'PENDIENTE') }}
+                                </span>
+                            </div>
+
+                            <div v-if="codigos.data.length === 0" class="text-center text-white py-4">
+                                <p class="small">Aún no has registrado ningún código.</p>
+                            </div>
+                        </div>
+
+                        <div v-if="codigos.links.length > 3"
+                            class="d-flex justify-content-center align-items-center mt-4 gap-2">
+                            <template v-for="(link, k) in codigos.links" :key="k">
+                                <Link v-if="link.url" :href="link.url + '&tab=mis-codigos'" class="page-link-custom"
+                                    :class="{ 'active': link.active }" v-html="link.label" preserve-scroll />
+                                <span v-else class="page-link-disabled" v-html="link.label"></span>
+                            </template>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
+
+    <Transition name="fade">
+        <div v-if="mostrarModal" class="modal-overlay" @click.self="cerrarModal">
+            <div class="modal-content-custom">
+                <button class="btn-close-custom" @click="cerrarModal">X</button>
+                <div class="row align-items-center g-0">
+                    <div class="col-md-6 text-center bg-white p-4 rounded-start">
+                        <img src="/img/ejemplo-codigo.png" alt="Ejemplo Código" class="img-fluid">
+                    </div>
+                    <div class="col-md-6 p-4">
+                        <h3 class="fw-bold text-white text-uppercase mb-3">Carga una foto clara del código en el envase
+                        </h3>
+                        <p class="text-white mb-0">Necesitamos una foto para verificar la veracidad del código</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </Transition>
 </template>
+
+<style scoped>
+.tab-content-container {
+    background-color: var(--toni-celeste);
+    border-radius: 0 0 20px 20px;
+    min-height: 450px;
+}
+
+.btn-tab {
+    flex: 1;
+    border: none;
+    padding: 12px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    background-color: var(--toni-celeste);
+    color: white;
+    transition: 0.3s;
+}
+
+.btn-tab.left {
+    border-radius: 20px 20px 0 0;
+    margin-right: 2px;
+}
+
+.btn-tab.right {
+    border-radius: 20px 20px 0 0;
+}
+
+.btn-tab.active {
+    background-color: white;
+    color: var(--toni-celeste);
+}
+
+.custom-input {
+    border-radius: 10px;
+    border: none;
+    padding: 10px;
+}
+
+.btn-amarillo-toni {
+    background-color: var(--toni-amarillo);
+    border-color: var(--toni-amarillo);
+    color: var(--toni-azul-marino);
+}
+
+.btn-dark-blue {
+    background-color: var(--toni-azul-marino);
+    color: white;
+    border-radius: 10px;
+}
+
+.bg-info-light {
+    background-color: var(--toni-blanco-transp);
+}
+
+.codigo-row {
+    background-color: var(--toni-blanco-transp);
+    border-radius: 10px;
+    font-size: 0.85rem;
+}
+
+.badge-status {
+    font-weight: bold;
+    font-size: 0.75rem;
+    min-width: 90px;
+    text-align: right;
+}
+
+.badge-status.pendiente {
+    color: var(--estado-pendiente);
+}
+
+.badge-status.aprobado {
+    color: var(--estado-verificado);
+}
+
+.badge-status.rechazado {
+    color: var(--estado-descartado);
+}
+
+.page-num {
+    color: white;
+    font-weight: bold;
+}
+
+.page-num.active {
+    background-color: var(--toni-azul-marino);
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.text-yellow {
+    color: var(--toni-amarillo) !important;
+}
+
+.btn-pag {
+    background: none;
+    border: none;
+}
+
+/* Estilos para los links de paginación */
+.page-link-custom {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 2px 8px;
+    transition: 0.3s;
+    font-size: 0.9rem;
+}
+
+.page-link-custom.active {
+    background-color: var(--toni-azul-marino);
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.page-link-disabled {
+    color: rgba(255, 255, 255, 0.4);
+    cursor: not-allowed;
+    padding: 2px 8px;
+    font-size: 0.9rem;
+}
+
+/* Para que las flechas de Laravel (&laquo; y &raquo;) se vean amarillas */
+:deep(.page-link-custom) {
+    color: white;
+}
+
+/* Seleccionamos las entidades de flechas de Laravel para darles color amarillo */
+.page-link-custom:first-child,
+.page-link-custom:last-child {
+    color: var(--toni-amarillo);
+    font-size: 1.2rem;
+}
+
+.important-box {
+    background-color: rgba(0, 0, 0, 0.1);
+    /* Sombreado sutil */
+    border-radius: 12px;
+    padding: 15px;
+    color: white;
+    text-align: center;
+    font-size: 0.75rem;
+    line-height: 1.2;
+}
+
+.custom-input::placeholder {
+    color: var(--toni-celeste);
+    font-weight: 500;
+}
+
+/* El botón de Ingresar al final suele ser un poco más grande y redondeado */
+.btn-dark-blue {
+    background-color: var(--toni-azul-marino);
+    color: white;
+    border-radius: 12px;
+    border: none;
+}
+
+.btn-amarillo-toni {
+    background-color: var(--toni-amarillo);
+    color: var(--toni-azul-marino);
+    border-radius: 12px;
+    border: none;
+}
+
+/* Overlay del Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 51, 160, 0.8);
+    /* Azul Toni con transparencia */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* Contenedor del Modal */
+.modal-content-custom {
+    background-color: var(--toni-celeste);
+    width: 90%;
+    max-width: 800px;
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+    border: 3px solid white;
+}
+
+/* Botón de cerrar */
+.btn-close-custom {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 1.5rem;
+    z-index: 10;
+}
+
+/* Animación de entrada/salida */
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+
+/* Ajustes adicionales para el texto del modal */
+.modal-content-custom h3 {
+    font-family: var(--fuente-principal);
+    font-size: 1.8rem;
+    line-height: 1.1;
+}
+</style>

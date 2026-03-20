@@ -1,3 +1,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+    /* Colores Principales del Manual Toni */
+    --toni-azul-marino: #0033a0; /* Azul oscuro de cabeceras */
+    --toni-celeste: #00c2f3; /* Celeste brillante del fondo */
+    --toni-amarillo: #ffc107; /* Amarillo de botones "Ingresar" */
+    --toni-blanco-transp: rgba(
+        255,
+        255,
+        255,
+        0.2
+    );
+
+    /* Estados de validación */
+    --estado-pendiente: #ffffff; /* Blanco */
+    --estado-verificado: #0033a0; /* Azul oscuro */
+    --estado-descartado: #ff0000; /* Rojo */
+
+    /* Tipografía */
+    --fuente-principal: "Bebas Neue", sans-serif;
+}
+
+/* Estilo base opcional para probar las variables */
+body {
+    font-family: var(--fuente-principal);
+    background-color: var(--toni-azul-marino);
+    color: white;
+}

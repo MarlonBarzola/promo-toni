@@ -12,10 +12,9 @@ class CodigoController extends Controller
 {
     public function index()
     {
-        // Obtenemos solo los códigos del usuario autenticado
         $codigos = Codigo::where('user_id', auth()->id())
-                         ->orderBy('created_at', 'desc')
-                         ->get();
+            ->orderBy('created_at', 'desc')
+            ->paginate(1);
 
         return Inertia::render('Cliente/Dashboard', [
             'codigos' => $codigos
@@ -25,7 +24,6 @@ class CodigoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            // 'unique:codigos,codigo_unico' hace la magia
             'codigo_unico' => 'required|string|max:20|unique:codigos,codigo_unico',
             'producto' => 'required|string',
             'foto_codigo' => 'required|image|max:2048',

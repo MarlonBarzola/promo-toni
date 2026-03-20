@@ -1,13 +1,12 @@
 <?php
 use App\Http\Controllers\Cliente\CodigoController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 // --- RUTA PÚBLICA (LANDING) ---
-Route::get('/', function () {
-    return Inertia::render('Welcome'); // Aquí irá tu landing con Bootstrap
-});
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // --- RUTAS PROTEGIDAS (DEBEN ESTAR LOGUEADOS) ---
 Route::middleware(['auth', 'verified'])->group(function () {

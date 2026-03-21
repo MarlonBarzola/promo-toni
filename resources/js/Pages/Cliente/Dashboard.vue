@@ -1,7 +1,6 @@
 <script setup>
 import { useForm, Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
-// IMPORTAMOS EL LAYOUT
 import LandingLayout from '@/Layouts/LandingLayout.vue';
 
 const props = defineProps({
@@ -171,24 +170,29 @@ const cerrarModal = () => {
                             <h4 class="text-center text-white mb-4 fw-bold">MIS CÓDIGOS REGISTRADOS</h4>
 
                             <div class="historial-container">
-                                <div v-for="item in codigos.data" :key="item.id"
-                                    class="codigo-row d-flex justify-content-between align-items-center mb-2 px-3 py-2">
-                                    <span class="text-white fw-bold small">{{ item.codigo_unico }}</span>
-                                    <span class="text-white small">
-                                        {{ new Date(item.created_at).toLocaleDateString('es-EC', {
-                                            day: '2-digit', month:
-                                                'short', year: 'numeric'
-                                        }).toUpperCase() }}
-                                    </span>
-                                    <span class="badge-status" :class="item.estado">
-                                        {{ item.estado === 'aprobado' ? 'VERIFICADO' : (item.estado === 'rechazado' ?
-                                            'DESCARTADO' : 'PENDIENTE') }}
-                                    </span>
+                                <div v-if="$page.props.loading" class="skeletons">
+                                    <div v-for="i in 5" :key="i" class="skeleton-item"></div>
                                 </div>
 
-                                <div v-if="codigos.data.length === 0" class="text-center text-white py-4">
-                                    <p class="small">Aún no has registrado ningún código.</p>
-                                </div>
+                                <template v-else>
+                                    <div v-for="item in codigos.data" :key="item.id"
+                                        class="codigo-row d-flex justify-content-between align-items-center mb-2 px-3 py-2">
+                                        <span class="text-white fw-bold small">{{ item.codigo_unico }}</span>
+                                        <span class="text-white small">
+                                            {{ new Date(item.created_at).toLocaleDateString('es-EC', {
+                                                day: '2-digit', month: 'short', year: 'numeric'
+                                            }).toUpperCase() }}
+                                        </span>
+                                        <span class="badge-status" :class="item.estado">
+                                            {{ item.estado === 'aprobado' ? 'VERIFICADO' : (item.estado === 'rechazado'
+                                            ? 'DESCARTADO' : 'PENDIENTE') }}
+                                        </span>
+                                    </div>
+
+                                    <div v-if="codigos.data.length === 0" class="text-center text-white py-4">
+                                        <p class="small">Aún no has registrado ningún código.</p>
+                                    </div>
+                                </template>
                             </div>
 
                             <div v-if="codigos.links.length > 3"

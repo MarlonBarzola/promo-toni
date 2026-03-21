@@ -106,7 +106,7 @@ const isRouteActive = (routeName) => route().current(routeName);
 
 /* Hover general */
 .nav-links a:hover {
-    color: var(--toni-celeste);
+    color: var(--toni-amarillo);
 }
 
 .img-logo {

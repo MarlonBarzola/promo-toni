@@ -22,6 +22,8 @@ createInertiaApp({
             .mount(el);
     },
     progress: {
-        color: '#4B5563',
+        color: '#FFD700', // Amarillo vibrante para que resalte
+        showSpinner: true, // Muestra el circulito de carga a la derecha
+        includeCSS: true,  // Asegura que se incluya el CSS base
     },
 });

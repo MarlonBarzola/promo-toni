@@ -1,15 +1,27 @@
+<script setup>
+import Footer from '@/Components/Footer.vue';
+import SectionDivider from '@/Components/SectionDivider.vue';
+import Navbar from '@/Components/Navbar.vue';
+
+defineProps({
+    dividerBgTop: {
+        type: String,
+        default: 'var(--toni-azul-marino)'
+    }
+});
+</script>
+
 <template>
     <div class="landing-background">
         <Navbar />
 
         <slot />
+
+        <SectionDivider :bgTop="dividerBgTop" bgBottom="var(--toni-azul-cobalto)" />
+
+        <Footer />
     </div>
 </template>
-
-<script setup>
-import Navbar from '@/Components/Navbar.vue';
-</script>
-
 <style>
 .landing-background {
     background-color: var(--toni-azul-marino);

@@ -8,11 +8,19 @@ use Inertia\Inertia;
 // --- RUTA PÚBLICA (LANDING) ---
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+Route::get('/terminos-y-condiciones', function () {
+    return Inertia::render('Terminos');
+})->name('terminos');
+
+Route::get('/preguntas-frecuentes', function () {
+    return Inertia::render('Faq');
+})->name('faq');
+
 // --- RUTAS PROTEGIDAS (DEBEN ESTAR LOGUEADOS) ---
 Route::middleware(['auth', 'verified'])->group(function () {
     
     // Rutas para el CLIENTE (HINCHA)
-    Route::prefix('dashboard')->group(function () {
+    Route::prefix('ingresar-codigo')->group(function () {
         Route::get('/', [CodigoController::class, 'index'])->name('dashboard');
         Route::post('/enviar-codigo', [CodigoController::class, 'store'])->name('codigo.store');
     });

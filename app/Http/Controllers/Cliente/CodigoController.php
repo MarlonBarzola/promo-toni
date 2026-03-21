@@ -14,7 +14,7 @@ class CodigoController extends Controller
     {
         $codigos = Codigo::where('user_id', auth()->id())
             ->orderBy('created_at', 'desc')
-            ->paginate(1);
+            ->paginate(6);
 
         return Inertia::render('Cliente/Dashboard', [
             'codigos' => $codigos

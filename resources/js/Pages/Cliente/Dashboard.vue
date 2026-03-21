@@ -2,6 +2,7 @@
 import { useForm, Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import LandingLayout from '@/Layouts/LandingLayout.vue';
+import HeroPromotion from '@/Components/HeroPromotion.vue';
 
 const props = defineProps({
     codigos: Object,
@@ -68,11 +69,8 @@ const cerrarModal = () => {
 
 <template>
     <LandingLayout>
-        <div class="container py-5">
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-
-                    <div class="d-flex mb-0">
+        <HeroPromotion>
+           <div class="d-flex mb-0">
                         <button @click="cambiarTab('ingresar')" class="btn-tab left"
                             :class="{ 'active': tabActiva === 'ingresar' }">
                             INGRESAR CÓDIGOS
@@ -108,9 +106,8 @@ const cerrarModal = () => {
                                 </div>
 
                                 <div class="mb-2 d-flex align-items-center bg-white rounded p-1 shadow-sm">
-                                    <span class="flex-grow-1 ps-2 text-primary small fw-bold">Foto del código</span>
-                                    <label class="btn btn-amarillo-toni btn-sm m-0 px-2 fw-bold text-uppercase"
-                                        style="font-size: 0.7rem;">
+                                    <span class="flex-grow-1 ps-2 text-primary small">Foto del código</span>
+                                    <label class="btn btn-amarillo-toni btn-sm m-0 px-2 text-uppercase">
                                         CARGAR UNA IMAGEN
                                         <input type="file" hidden @change="handleFileChange($event, 'codigo')"
                                             accept="image/*" required>
@@ -118,10 +115,9 @@ const cerrarModal = () => {
                                 </div>
 
                                 <div class="mb-3 d-flex align-items-center bg-white rounded p-1 shadow-sm">
-                                    <span class="flex-grow-1 ps-2 text-primary small fw-bold">Foto empaque
+                                    <span class="flex-grow-1 ps-2 text-primary small">Foto empaque
                                         abierto</span>
-                                    <label class="btn btn-amarillo-toni btn-sm m-0 px-2 fw-bold text-uppercase"
-                                        style="font-size: 0.7rem;">
+                                    <label class="btn btn-amarillo-toni btn-sm m-0 px-2 text-uppercase">
                                         CARGAR UNA IMAGEN
                                         <input type="file" hidden @change="handleFileChange($event, 'empaque')"
                                             accept="image/*" required>
@@ -137,14 +133,13 @@ const cerrarModal = () => {
                                 <div class="row g-2 mb-4">
                                     <div class="col-6">
                                         <button type="button" @click="limpiarFormulario"
-                                            class="btn btn-dark-blue w-100 fw-bold text-uppercase py-2">
+                                            class="btn btn-dark-blue w-100 text-uppercase py-2">
                                             ELIMINAR
                                         </button>
                                     </div>
                                     <div class="col-6">
                                         <button type="button" @click="abrirModalReferencia"
-                                            class="btn btn-amarillo-toni w-100 fw-bold text-uppercase py-2"
-                                            style="font-size: 0.85rem;">
+                                            class="btn btn-amarillo-toni w-100 text-uppercase py-2">
                                             IMAGEN DE REFERENCIA
                                         </button>
                                     </div>
@@ -206,9 +201,7 @@ const cerrarModal = () => {
                         </div>
 
                     </div>
-                </div>
-            </div>
-        </div>
+        </HeroPromotion>
 
         <Transition name="fade">
             <div v-if="mostrarModal" class="modal-overlay" @click.self="cerrarModal">
@@ -232,7 +225,6 @@ const cerrarModal = () => {
 </template>
 
 <style scoped>
-/* Tus estilos se mantienen exactamente iguales a los que proporcionaste */
 .tab-content-container {
     background-color: var(--toni-celeste);
     border-radius: 0 0 20px 20px;
@@ -268,18 +260,6 @@ const cerrarModal = () => {
     border-radius: 10px;
     border: none;
     padding: 10px;
-}
-
-.btn-amarillo-toni {
-    background-color: var(--toni-amarillo);
-    border-color: var(--toni-amarillo);
-    color: var(--toni-azul-marino);
-}
-
-.btn-dark-blue {
-    background-color: var(--toni-azul-marino);
-    color: white;
-    border-radius: 10px;
 }
 
 .bg-info-light {

@@ -4,15 +4,12 @@
 
 :root {
     /* Colores Principales del Manual Toni */
-    --toni-azul-marino: #0033a0; /* Azul oscuro de cabeceras */
-    --toni-celeste: #00c2f3; /* Celeste brillante del fondo */
-    --toni-amarillo: #ffc107; /* Amarillo de botones "Ingresar" */
-    --toni-blanco-transp: rgba(
-        255,
-        255,
-        255,
-        0.2
-    );
+    --toni-azul-marino: #0033a0;
+    --toni-azul-oscuro: #000c93;
+    --toni-azul-cobalto: #050c63;
+    --toni-celeste: #00bbee; /* Celeste brillante del fondo */
+    --toni-amarillo: #fdc203; /* Amarillo de botones "Ingresar" */
+    --toni-blanco-transp: rgba(255, 255, 255, 0.2);
 
     /* Estados de validación */
     --estado-pendiente: #ffffff; /* Blanco */
@@ -20,19 +17,51 @@
     --estado-descartado: #ff0000; /* Rojo */
 
     /* Tipografía */
-    --fuente-principal: "Bebas Neue", sans-serif;
+    --fuente-principal: "AlternateGotNo1D", sans-serif;
+    --fuente-secundaria: "Helvetica", sans-serif;
 }
 
 /* Estilo base opcional para probar las variables */
 body {
-    font-family: var(--fuente-principal);
+    font-family: var(--fuente-secundaria);
     background-color: var(--toni-azul-marino);
+    font-size: 1rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--fuente-principal);
+    color: var(--toni-azul-oscuro) !important;
+}
+
+h1 {
+    font-size: 2.5rem;
+}
+
+h2 {
+    font-size: 2rem;
+}
+
+.fuente-principal {
+    font-family: var(--fuente-principal);
+}
+
+.fuente-secundaria {
+    font-family: var(--fuente-secundaria);
 }
 
 /* --- EFECTO ESQUELETO (SKELETON LOADER) --- */
 @keyframes shimmer {
-    0% { background-position: -468px 0; }
-    100% { background-position: 468px 0; }
+    0% {
+        background-position: -468px 0;
+    }
+    100% {
+        background-position: 468px 0;
+    }
 }
 
 .skeleton-item {
@@ -41,14 +70,64 @@ body {
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.1); /* Fondo sutil sobre el azul */
     background-image: linear-gradient(
-        to right, 
-        rgba(255, 255, 255, 0) 0%, 
-        rgba(255, 255, 255, 0.1) 20%, 
-        rgba(255, 255, 255, 0) 40%, 
+        to right,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.1) 20%,
+        rgba(255, 255, 255, 0) 40%,
         rgba(255, 255, 255, 0) 100%
     );
     background-repeat: no-repeat;
     background-size: 800px 100%;
     display: block;
     animation: shimmer 1.5s infinite linear;
+}
+
+.container {
+    max-width: 1100px !important;
+}
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1050px;
+    }
+}
+
+.btn {
+    font-family: var(--fuente-principal);
+    font-size: 22px;
+    padding: 5px 30px;
+}
+
+.btn-sm {
+    font-size: 18px;
+    padding: 5px 35px;
+}
+
+.btn-ingresa-codigo {
+    width: 100%;
+    font-size: 2rem;
+    margin-top: -190px;
+    rotate: -2deg;
+}
+
+.btn-dark-blue {
+    background-color: var(--toni-azul-marino);
+    color: white;
+    border-radius: 10px;
+}
+
+.btn-dark-blue:hover {
+    background-color: var(--toni-amarillo);
+    color: white;
+}
+
+.btn-amarillo-toni {
+    background-color: var(--toni-amarillo);
+    color: var(--toni-azul-marino);
+    border-radius: 10px;
+}
+
+.btn-amarillo-toni:hover {
+    background-color: var(--toni-amarillo);
+    color: white;
 }

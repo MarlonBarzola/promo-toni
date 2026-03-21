@@ -1,8 +1,8 @@
 <template>
     <div class="ranking-container shadow-lg p-4">
-        <div class="ranking-header text-center mb-4">
-            <h2 class="ranking-title">Ranking</h2>
-            <h3 class="ranking-subtitle">DE COMPRADORES</h3>
+        <div class="ranking-header text-center">
+            <img src="/images/titulo-ranking.png" alt="Tu Pasión de Hincha Toni"
+                class="img-fluid img-promo-ranking mb-3">
         </div>
 
         <div class="ranking-list">
@@ -38,8 +38,13 @@ defineProps({
 .ranking-container {
     background-color: var(--toni-celeste);
     border-radius: 25px;
-    width: 100%;
-    max-width: 500px;
+    height: 100%;
+}
+
+.ranking-header {
+    max-width: 350px;
+    margin: 0 auto;
+    margin-top: -55px;
 }
 
 .ranking-title {

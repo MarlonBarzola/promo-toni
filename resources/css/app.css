@@ -15,7 +15,7 @@
 
     /* Estados de validación */
     --estado-pendiente: #ffffff; /* Blanco */
-    --estado-verificado: #0033a0; /* Azul oscuro */
+    --estado-verificado: #ffffff; /* Azul oscuro */
     --estado-descartado: #ff0000; /* Rojo */
 
     /* Tipografía */
@@ -100,6 +100,21 @@ h2 {
     padding: 0 30px;
 }
 
+.btn-primary {
+    background-color: var(--toni-amarillo);
+    border: 0;
+    color: var(--toni-azul-marino);
+    border-radius: 10px;
+    font-size: 2rem;
+    padding: 0 1rem;
+    width: 90%;
+}
+
+.btn-primary:hover {
+    background-color: var(--toni-amarillo);
+    color: var(--toni-blanco);
+}
+
 .btn-sm {
     font-size: 18px;
     padding: 5px 35px;
@@ -116,6 +131,7 @@ h2 {
     background-color: var(--toni-azul-marino);
     color: white;
     border-radius: 10px;
+    padding: 0 5px;
 }
 
 .btn-dark-blue:hover {
@@ -127,9 +143,30 @@ h2 {
     background-color: var(--toni-amarillo);
     color: var(--toni-azul-marino);
     border-radius: 10px;
+    padding: 0 5px;
 }
 
 .btn-amarillo-toni:hover {
     background-color: var(--toni-amarillo);
     color: white;
+}
+
+select.custom-input {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300255a'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 30px;
+
+    cursor: pointer;
+    outline: none;
+    border: 0;
+}
+
+.custom-input:focus {
+    border: 0;
+    outline: none;
 }

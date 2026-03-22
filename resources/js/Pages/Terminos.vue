@@ -7,7 +7,7 @@ import LandingLayout from '@/Layouts/LandingLayout.vue';
         <div class="container py-5">
             <div class="row justify-content-center">
                 <div class="col-lg-10">
-                    <div class="p-4 p-md-5">
+                    <div>
                         <h2 class="text-center text-white fw-bold mb-5 text-uppercase">
                             Términos y Condiciones Generales de la Promoción "MEGA PROMO CON GELATONI"
                         </h2>

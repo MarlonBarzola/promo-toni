@@ -1,3 +1,10 @@
+<script setup>
+import { Link } from '@inertiajs/vue3';
+defineProps({
+    ranking: Array
+});
+
+</script>
 <template>
     <div class="ranking-container p-4">
         <div class="ranking-header text-center">
@@ -29,16 +36,10 @@
     <div class="img-ranking">
         <img src="/images/ranking.png" alt="Ranking Pasión de Hincha" class="img-fluid">
     </div>
-    <button class="text-uppercase btn btn-ingresar">
+    <Link :href="route('dashboard')" class="text-uppercase btn btn-ingresar">
         Ingresa tu código aquí
-    </button>
+    </Link>
 </template>
-
-<script setup>
-defineProps({
-    ranking: Array
-});
-</script>
 
 <style scoped>
 .ranking-container {

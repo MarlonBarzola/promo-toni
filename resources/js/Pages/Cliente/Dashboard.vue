@@ -2,21 +2,31 @@
 import { useForm, Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import LandingLayout from '@/Layouts/LandingLayout.vue';
-import HeroPromotion from '@/Components/HeroPromotion.vue';
 
 const props = defineProps({
     codigos: Object,
     mensaje: String
 });
 
-const urlParams = new URLSearchParams(window.location.search);
-const tabActiva = ref(urlParams.get('tab') || 'ingresar');
+// 👉 Vista activa (reemplaza tabs)
+const vistaActiva = ref(
+    new URLSearchParams(window.location.search).get('tab') || 'ingresar'
+);
 
-const cambiarTab = (tab) => {
-    tabActiva.value = tab;
+const actualizarURL = (vista) => {
     const url = new URL(window.location);
-    url.searchParams.set('tab', tab);
+    url.searchParams.set('tab', vista);
     window.history.pushState({}, '', url);
+};
+
+const irAIngresar = () => {
+    vistaActiva.value = 'ingresar';
+    actualizarURL('ingresar');
+};
+
+const irAMisCodigos = () => {
+    vistaActiva.value = 'mis-codigos';
+    actualizarURL('mis-codigos');
 };
 
 const form = useForm({
@@ -69,35 +79,26 @@ const cerrarModal = () => {
 
 <template>
     <LandingLayout>
-        <div class="container">
+        <div class="container py-0 py-md-5">
             <div class="row">
                 <div class="col-12">
-                    <img src="/images/registra-codigo.png" alt="Promoción Toni Camino al Mundial" class="img-fluid my-4">
+                    <img src="/images/registra-codigo.png" alt="Promoción Toni Camino al Mundial" />
                 </div>
             </div>
         </div>
-        <div class="container">
-            <div class="d-flex mb-0">
-                <button @click="cambiarTab('ingresar')" class="btn-tab left"
-                    :class="{ 'active': tabActiva === 'ingresar' }">
-                    INGRESAR CÓDIGOS
-                </button>
-                <button @click="cambiarTab('mis-codigos')" class="btn-tab right"
-                    :class="{ 'active': tabActiva === 'mis-codigos' }">
-                    MIS CÓDIGOS
-                </button>
-            </div>
-            <div class="tab-content-container shadow-lg">
 
-                <div v-if="tabActiva === 'ingresar'" class="p-4">
-                    <h4 class="text-center text-white mb-4 fw-bold">INGRESA TUS CÓDIGOS</h4>
+        <div class="container mb-5">
+            <div class="tab-content-container">
+
+                <!-- INGRESAR CÓDIGOS -->
+                <div v-if="vistaActiva === 'ingresar'" class="p-4">
+                    <h4 class="text-center text-white mb-4">INGRESA TUS CÓDIGOS</h4>
 
                     <form @submit.prevent="enviarFormulario">
                         <div class="mb-2">
                             <input v-model="form.codigo_unico" type="text" class="form-control custom-input"
                                 placeholder="Código único" required>
-                            <div v-if="form.errors.codigo_unico"
-                                class="text-danger small fw-bold mt-1 bg-white rounded px-2">
+                            <div v-if="form.errors.codigo_unico" class="text-danger small mt-1 bg-white rounded px-2">
                                 {{ form.errors.codigo_unico }}
                             </div>
                         </div>
@@ -111,19 +112,18 @@ const cerrarModal = () => {
                             </select>
                         </div>
 
-                        <div class="mb-2 d-flex align-items-center bg-white rounded p-1 shadow-sm">
-                            <span class="flex-grow-1 ps-2 text-primary small">Foto del código</span>
-                            <label class="btn btn-amarillo-toni btn-sm m-0 px-2 text-uppercase">
+                        <div class="mb-2 d-flex align-items-center bg-white rounded p-1">
+                            <span class="flex-grow-1 ps-2 small load-image">Foto del código</span>
+                            <label class="btn btn-amarillo-toni btn-sm btn-sm-xs m-0 px-2 text-uppercase">
                                 CARGAR UNA IMAGEN
                                 <input type="file" hidden @change="handleFileChange($event, 'codigo')" accept="image/*"
                                     required>
                             </label>
                         </div>
 
-                        <div class="mb-3 d-flex align-items-center bg-white rounded p-1 shadow-sm">
-                            <span class="flex-grow-1 ps-2 text-primary small">Foto empaque
-                                abierto</span>
-                            <label class="btn btn-amarillo-toni btn-sm m-0 px-2 text-uppercase">
+                        <div class="mb-3 d-flex align-items-center bg-white rounded p-1">
+                            <span class="flex-grow-1 ps-2 small load-image">Foto empaque abierto</span>
+                            <label class="btn btn-amarillo-toni btn-sm btn-sm-xs m-0 px-2 text-uppercase">
                                 CARGAR UNA IMAGEN
                                 <input type="file" hidden @change="handleFileChange($event, 'empaque')" accept="image/*"
                                     required>
@@ -138,13 +138,13 @@ const cerrarModal = () => {
                         <div class="row g-2 mb-4">
                             <div class="col-6">
                                 <button type="button" @click="limpiarFormulario"
-                                    class="btn btn-dark-blue w-100 text-uppercase py-2">
+                                    class="btn btn-dark-blue btn-sm-xs w-100 text-uppercase">
                                     ELIMINAR
                                 </button>
                             </div>
                             <div class="col-6">
                                 <button type="button" @click="abrirModalReferencia"
-                                    class="btn btn-amarillo-toni w-100 text-uppercase py-2">
+                                    class="btn btn-amarillo-toni btn-sm-xs w-100 text-uppercase">
                                     IMAGEN DE REFERENCIA
                                 </button>
                             </div>
@@ -157,16 +157,18 @@ const cerrarModal = () => {
                         </div>
 
                         <div class="text-center">
-                            <button type="submit" class="btn btn-dark-blue px-5 py-2 fw-bold text-uppercase shadow"
+                            <button type="submit" class="btn btn-dark-blue w-50 w-md-25 text-uppercase"
                                 :disabled="form.processing">
                                 {{ form.processing ? 'ENVIANDO...' : 'INGRESAR' }}
                             </button>
                         </div>
                     </form>
+
                 </div>
 
-                <div v-if="tabActiva === 'mis-codigos'" class="p-4">
-                    <h4 class="text-center text-white mb-4 fw-bold">MIS CÓDIGOS REGISTRADOS</h4>
+                <!-- MIS CÓDIGOS -->
+                <div v-if="vistaActiva === 'mis-codigos'" class="p-4">
+                    <h4 class="text-center text-white mb-4">MIS CÓDIGOS REGISTRADOS</h4>
 
                     <div class="historial-container">
                         <div v-if="$page.props.loading" class="skeletons">
@@ -176,7 +178,7 @@ const cerrarModal = () => {
                         <template v-else>
                             <div v-for="item in codigos.data" :key="item.id"
                                 class="codigo-row d-flex justify-content-between align-items-center mb-2 px-3 py-2">
-                                <span class="text-white fw-bold small">{{ item.codigo_unico }}</span>
+                                <span class="text-white small">{{ item.codigo_unico }}</span>
                                 <span class="text-white small">
                                     {{ new Date(item.created_at).toLocaleDateString('es-EC', {
                                         day: '2-digit', month: 'short', year: 'numeric'
@@ -203,9 +205,33 @@ const cerrarModal = () => {
                         </template>
                     </div>
                 </div>
+            </div>
+            <div class="img-ranking">
+                <img src="/images/ranking.png" alt="Ranking Pasión de Hincha" class="img-fluid">
+            </div>
+
+            <!-- BOTONES FUERA DEL CONTENEDOR -->
+            <div class="text-center mt-4 mb-3">
+
+                <!-- Cuando estás en formulario -->
+                <button v-if="vistaActiva === 'ingresar'" type="button" class="btn btn-primary text-uppercase"
+                    @click="irAMisCodigos">
+                    VER MIS CÓDIGOS
+                </button>
+
+                <!-- Cuando estás en historial -->
+                <button v-else type="button" class="btn btn-primary text-uppercase" @click="irAIngresar">
+                    INGRESAR OTRO CÓDIGO
+                </button>
 
             </div>
+
+            <div class="image-code">
+                <img src="/images/participa-por-entradas.png" alt="Participa por entradas al mundial" class="img-fluid">
+            </div>
         </div>
+
+        <!-- MODAL -->
         <Transition name="fade">
             <div v-if="mostrarModal" class="modal-overlay" @click.self="cerrarModal">
                 <div class="modal-content-custom">
@@ -215,10 +241,12 @@ const cerrarModal = () => {
                             <img src="/img/ejemplo-codigo.png" alt="Ejemplo Código" class="img-fluid">
                         </div>
                         <div class="col-md-6 p-4">
-                            <h3 class="fw-bold text-white text-uppercase mb-3">Carga una foto clara del código en el
-                                envase
+                            <h3 class="text-white text-uppercase mb-3">
+                                Carga una foto clara del código en el envase
                             </h3>
-                            <p class="text-white mb-0">Necesitamos una foto para verificar la veracidad del código</p>
+                            <p class="text-white mb-0">
+                                Necesitamos una foto para verificar la veracidad del código
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -230,43 +258,41 @@ const cerrarModal = () => {
 <style scoped>
 .tab-content-container {
     background-color: var(--toni-celeste);
-    border-radius: 0 0 20px 20px;
-    min-height: 450px;
+    border-radius: 20px;
+    margin-top: -50px;
+    padding-bottom: 3rem;
+    width: 90%;
+    margin-inline: auto;
 }
 
-.btn-tab {
-    flex: 1;
-    border: none;
-    padding: 12px;
-    font-weight: bold;
-    font-size: 0.9rem;
-    background-color: var(--toni-celeste);
-    color: white;
-    transition: 0.3s;
+.tab-content-container h4 {
+    font-size: 2rem;
 }
 
-.btn-tab.left {
-    border-radius: 20px 20px 0 0;
-    margin-right: 2px;
-}
-
-.btn-tab.right {
-    border-radius: 20px 20px 0 0;
-}
-
-.btn-tab.active {
-    background-color: white;
-    color: var(--toni-celeste);
+.img-ranking {
+    width: 90%;
+    margin: 0 auto;
+    margin-top: -4rem;
 }
 
 .custom-input {
+    color: var(--toni-celeste);
     border-radius: 10px;
     border: none;
     padding: 10px;
+    font-weight: bold;
+    font-size: 0.9rem;
 }
 
-.bg-info-light {
-    background-color: var(--toni-blanco-transp);
+.custom-input::placeholder {
+    color: var(--toni-celeste);
+    font-weight: bold;
+}
+
+.load-image {
+    color: var(--toni-celeste);
+    font-weight: bold;
+    font-size: 0.9rem;
 }
 
 .codigo-row {
@@ -292,30 +318,6 @@ const cerrarModal = () => {
 
 .badge-status.rechazado {
     color: var(--estado-descartado);
-}
-
-.page-num {
-    color: white;
-    font-weight: bold;
-}
-
-.page-num.active {
-    background-color: var(--toni-azul-marino);
-    border-radius: 50%;
-    width: 25px;
-    height: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.text-yellow {
-    color: var(--toni-amarillo) !important;
-}
-
-.btn-pag {
-    background: none;
-    border: none;
 }
 
 .page-link-custom {
@@ -364,11 +366,6 @@ const cerrarModal = () => {
     line-height: 1.2;
 }
 
-.custom-input::placeholder {
-    color: var(--toni-celeste);
-    font-weight: 500;
-}
-
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -399,7 +396,6 @@ const cerrarModal = () => {
     background: none;
     border: none;
     color: white;
-    font-weight: bold;
     font-size: 1.5rem;
     z-index: 10;
 }
@@ -418,5 +414,23 @@ const cerrarModal = () => {
     font-family: var(--fuente-principal);
     font-size: 1.8rem;
     line-height: 1.1;
+}
+
+@media (max-width: 380px) {
+    .tab-content-container {
+        margin-top: -40px;
+    }
+
+    .btn-sm-xs {
+        font-size: 15px !important;
+    }
+
+    .custom-input {
+        font-size: 0.6rem;
+    }
+
+    .load-image {
+        font-size: 0.6rem;
+    }
 }
 </style>

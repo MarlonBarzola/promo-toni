@@ -224,6 +224,10 @@ const toggleMenu = () => {
         display: block;
     }
 
+    .nav-links a:hover {
+        color: var(--toni-amarillo);
+    }
+
     /* Animación hamburguesa a X */
     .menu-toggle.open span:nth-child(1) {
         transform: rotate(45deg) translate(5px, 5px);

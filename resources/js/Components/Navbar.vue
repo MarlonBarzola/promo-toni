@@ -153,6 +153,11 @@ const toggleMenu = () => {
 .active-link {
     color: var(--toni-amarillo) !important;
 }
+
+.logo-mobile {
+    margin-top: -1rem;
+}
+
 .logo-mobile img {
     max-width: 25%;
     display: block;
@@ -195,7 +200,6 @@ const toggleMenu = () => {
         position: fixed;
         top: 0;
         left: -100%;
-        /* Oculto */
         flex-direction: column;
         background-color: var(--toni-azul-marino);
         width: 80%;
@@ -213,7 +217,6 @@ const toggleMenu = () => {
 
     .nav-links li {
         width: 100%;
-        margin-bottom: 20px;
     }
 
     .nav-links a {

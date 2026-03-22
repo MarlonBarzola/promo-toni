@@ -4,28 +4,18 @@ import Ranking from '@/Components/Ranking.vue';
 import SectionDivider from '@/Components/SectionDivider.vue';
 import HeroPromotion from '@/Components/HeroPromotion.vue';
 import RegistrationForm from '@/Components/Landing/RegistrationForm.vue';
+import LoginForm from '@/Components/Landing/LoginForm.vue';
 import PromoBannerRow from '@/Components/Landing/PromoBannerRow.vue';
-import { useForm, Link } from '@inertiajs/vue3';
+import AuthModal from '@/Components/Common/AuthModal.vue';
+import { ref } from 'vue';
 
 defineProps({
     ranking: Array
 });
 
-const form = useForm({
-    nombre: '',
-    apellido: '',
-    cedula: '',
-    ciudad: '',
-    fecha_nacimiento: '',
-    email: '',
-    acepto_terminos: false,
-});
+const activeModal = ref(null); // 'register', 'login' o null
 
-const submit = () => {
-    form.post(route('registro.store'), {
-        onSuccess: () => form.reset(),
-    });
-};
+const closeModal = () => activeModal.value = null;
 </script>
 
 <template>
@@ -37,18 +27,28 @@ const submit = () => {
 
         <div class="login">
             <div class="login-buttons">
-                <button class="text-uppercase btn-registro">
+                <button @click="activeModal = 'register'" class="text-uppercase btn-registro">
                     Regístrate
                 </button>
-                <button class="text-uppercase btn-login">
+                <button @click="activeModal = 'login'" class="text-uppercase btn-login">
                     Iniciar sesión
                 </button>
             </div>
         </div>
 
+        <AuthModal :show="activeModal !== null" @close="closeModal">
+            <div v-if="activeModal === 'register'">
+                <RegistrationForm @success="closeModal" />
+            </div>
+
+            <div v-if="activeModal === 'login'">
+                <LoginForm @success="closeModal" />
+            </div>
+        </AuthModal>
+
         <PromoBannerRow />
 
-       <!--  <SectionDivider bgTop="var(--toni-azul-marino)" bgBottom="var(--toni-azul-oscuro)" /> -->
+        <!--  <SectionDivider bgTop="var(--toni-azul-marino)" bgBottom="var(--toni-azul-oscuro)" /> -->
 
         <div class="py-2 ranking-section">
             <div class="container">
@@ -90,16 +90,6 @@ const submit = () => {
 
 .z-10 {
     z-index: 10;
-}
-
-/* Tarjeta de Formulario */
-.form-card {
-    background-color: #00aeef;
-    /* Celeste Toni */
-    padding: 40px;
-    border-radius: 30px;
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    margin: 0 auto;
 }
 
 .form-title {

@@ -1,9 +1,18 @@
+<script setup>
+defineProps({
+    imageSrc: {
+        type: String,
+        default: '/images/logo-lonchera.png',
+    },
+});
+</script>
+
 <template>
     <div class="hero-main">
         <div class="container position-relative z-10">
             <div class="row align-items-center py-0 py-md-5">
                 <div class="col-lg-6 text-center p-0">
-                    <img src="/images/logo-lonchera.png" alt="Tu Pasión de Hincha Toni"
+                    <img :src="imageSrc" alt="Tu Pasión de Hincha Toni"
                         class="img-fluid img-promo-main">
                 </div>
 
@@ -30,11 +39,5 @@
 
 .img-promo-main {
     max-width: 100%;
-}
-
-@media (max-width: 991px) {
-    .hero-main {
-        padding: 60px 0;
-    }
 }
 </style>

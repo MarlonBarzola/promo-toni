@@ -8,11 +8,13 @@ const form = useForm({
     ciudad: '',
     fecha_nacimiento: '',
     email: '',
+    password: '',
+    password_confirmation: '',
     acepto_terminos: false,
 });
 
 const submit = () => {
-    form.post(route('registro.store'), {
+    form.post(route('register'), {
         onSuccess: () => form.reset(),
     });
 };
@@ -24,22 +26,49 @@ const submit = () => {
 
         <form @submit.prevent="submit" class="mt-4">
             <div class="mb-2">
-                <input type="text" v-model="form.nombre" placeholder="Nombre:" class="form-input" required>
+                <input type="text" v-model="form.nombre" placeholder="Nombre:" class="form-input"
+                    :class="{ 'input-error': form.errors.nombre }">
+                <div v-if="form.errors.nombre" class="error-message">{{ form.errors.nombre }}</div>
+            </div>
+
+            <div class="mb-2">
+                <input type="text" v-model="form.apellido" placeholder="Apellido:" class="form-input"
+                    :class="{ 'input-error': form.errors.apellido }">
+                <div v-if="form.errors.apellido" class="error-message">{{ form.errors.apellido }}</div>
+            </div>
+
+            <div class="mb-2">
+                <input type="text" v-model="form.cedula" placeholder="Cédula:" class="form-input"
+                    :class="{ 'input-error': form.errors.cedula }">
+                <div v-if="form.errors.cedula" class="error-message">{{ form.errors.cedula }}</div>
+            </div>
+
+            <div class="mb-2">
+                <input type="text" v-model="form.ciudad" placeholder="Ciudad:" class="form-input"
+                    :class="{ 'input-error': form.errors.ciudad }">
+                <div v-if="form.errors.ciudad" class="error-message">{{ form.errors.ciudad }}</div>
+            </div>
+
+            <div class="mb-2">
+                <input type="date" v-model="form.fecha_nacimiento" class="form-input"
+                    :class="{ 'input-error': form.errors.fecha_nacimiento }">
+                <div v-if="form.errors.fecha_nacimiento" class="error-message">{{ form.errors.fecha_nacimiento }}</div>
+            </div>
+
+            <div class="mb-2">
+                <input type="email" v-model="form.email" placeholder="Correo electrónico:" class="form-input"
+                    :class="{ 'input-error': form.errors.email }">
+                <div v-if="form.errors.email" class="error-message">{{ form.errors.email }}</div>
             </div>
             <div class="mb-2">
-                <input type="text" v-model="form.apellido" placeholder="Apellido:" class="form-input" required>
+                <input type="password" v-model="form.password" placeholder="Contraseña:" class="form-input"
+                    :class="{ 'input-error': form.errors.password }">
+                <div v-if="form.errors.password" class="error-message">{{ form.errors.password }}</div>
             </div>
-            <div class="mb-2">
-                <input type="text" v-model="form.cedula" placeholder="Cédula:" class="form-input" required>
-            </div>
-            <div class="mb-2">
-                <input type="text" v-model="form.ciudad" placeholder="Ciudad:" class="form-input" required>
-            </div>
-            <div class="mb-2">
-                <input type="date" v-model="form.fecha_nacimiento" class="form-input" required>
-            </div>
+
             <div class="mb-4">
-                <input type="email" v-model="form.email" placeholder="Correo electrónico:" class="form-input" required>
+                <input type="password" v-model="form.password_confirmation" placeholder="Confirmar Contraseña:"
+                    class="form-input">
             </div>
 
             <div class="form-check mb-4">
@@ -62,8 +91,8 @@ const submit = () => {
 <style scoped>
 /* Pegamos aquí los estilos específicos del formulario que tenías en Home */
 .form-card {
-    background-color: #00aeef;
-    padding: 40px;
+    background-color: var(--toni-celeste);
+    padding: 20px;
     border-radius: 30px;
     border: 3px solid rgba(255, 255, 255, 0.3);
     max-width: 450px;
@@ -102,5 +131,19 @@ const submit = () => {
     border: none;
     transition: 0.3s;
     box-shadow: 0 5px 0px #00255a;
+}
+
+.error-message {
+    color: var(--toni-amarillo);
+    font-size: 0.75rem;
+    font-weight: bold;
+    margin-top: 2px;
+    padding-left: 5px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+.input-error {
+    border: 2px solid var(--toni-amarillo) !important;
+    background: rgba(255, 218, 0, 0.1) !important;
 }
 </style>

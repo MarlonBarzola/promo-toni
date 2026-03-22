@@ -1,6 +1,6 @@
 import { ref } from 'vue';
 <template>
-    <footer class="footer-toni">
+    <footer class="footer-toni py-4">
         <div class="container">
             <div class="footer">
                 <div class="info">
@@ -23,7 +23,7 @@ import { ref } from 'vue';
                     <p>o hasta agotar stock. Aplican términos y condiciones.</p>
                 </div>
                 <div>
-                    <img src="/images/footer.png" alt="Global Brand Awards" class="logo-footer">
+                    <img src="/images/footer.svg" alt="Global Brand Awards" class="logo-footer">
                 </div>
             </div>
         </div>
@@ -55,7 +55,7 @@ import { ref } from 'vue';
     font-size: 25px;
 }
 .logo-footer {
-    max-width: 140px;
+    width: 150px;
 }
 .leyenda {
     font-size: 13px;

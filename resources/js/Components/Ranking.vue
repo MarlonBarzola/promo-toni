@@ -82,7 +82,7 @@ defineProps({
     width: 50px;
     text-align: center;
     position: absolute;
-    top: 0;
+    top: -3px;
     left: -20px;
 }
 

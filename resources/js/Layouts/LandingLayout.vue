@@ -17,7 +17,7 @@ defineProps({
 
         <slot />
 
-        <SectionDivider :bgTop="dividerBgTop" bgBottom="var(--toni-azul-cobalto)" />
+       <!--  <SectionDivider :bgTop="dividerBgTop" bgBottom="var(--toni-azul-cobalto)" /> -->
 
         <Footer />
     </div>

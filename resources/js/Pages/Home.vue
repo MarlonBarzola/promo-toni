@@ -3,6 +3,8 @@ import LandingLayout from '@/Layouts/LandingLayout.vue';
 import Ranking from '@/Components/Ranking.vue';
 import SectionDivider from '@/Components/SectionDivider.vue';
 import HeroPromotion from '@/Components/HeroPromotion.vue';
+import RegistrationForm from '@/Components/Landing/RegistrationForm.vue';
+import PromoBannerRow from '@/Components/Landing/PromoBannerRow.vue';
 import { useForm, Link } from '@inertiajs/vue3';
 
 defineProps({
@@ -30,63 +32,29 @@ const submit = () => {
     <LandingLayout dividerBgTop="var(--toni-azul-oscuro)">
 
         <HeroPromotion>
-            <div class="form-card shadow-lg">
-                <h2 class="text-center">REGISTRA TUS DATOS</h2>
-
-                <form @submit.prevent="submit" class="mt-4">
-                    <div class="mb-2">
-                        <input type="text" v-model="form.nombre" placeholder="Nombre:" class="form-input" required>
-                    </div>
-                    <div class="mb-2">
-                        <input type="text" v-model="form.apellido" placeholder="Apellido:" class="form-input" required>
-                    </div>
-                    <div class="mb-2">
-                        <input type="text" v-model="form.cedula" placeholder="Cédula:" class="form-input" required>
-                    </div>
-                    <div class="mb-2">
-                        <input type="text" v-model="form.ciudad" placeholder="Ciudad:" class="form-input" required>
-                    </div>
-                    <div class="mb-2">
-                        <input type="date" v-model="form.fecha_nacimiento" class="form-input" required>
-                    </div>
-                    <div class="mb-4">
-                        <input type="email" v-model="form.email" placeholder="Correo electrónico:" class="form-input"
-                            required>
-                    </div>
-
-                    <div class="form-check mb-4">
-                        <input class="form-check-input" type="checkbox" v-model="form.acepto_terminos"
-                            id="checkTerminos" required>
-                        <label class="form-check-label text-white small" for="checkTerminos">
-                            Acepto Términos y Condiciones
-                        </label>
-                    </div>
-
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-dark-blue text-uppercase w-50" :disabled="form.processing">
-                            {{ form.processing ? 'ENVIANDO...' : 'ENVIAR' }}
-                        </button>
-                    </div>
-                </form>
-            </div>
+            <RegistrationForm class="d-none d-md-block" />
         </HeroPromotion>
 
-        <SectionDivider bgTop="var(--toni-azul-marino)" bgBottom="var(--toni-azul-oscuro)" />
+        <div class="login">
+            <div class="login-buttons">
+                <button class="text-uppercase btn-registro">
+                    Regístrate
+                </button>
+                <button class="text-uppercase btn-login">
+                    Iniciar sesión
+                </button>
+            </div>
+        </div>
 
-        <div class="py-5 ranking-section">
+        <PromoBannerRow />
+
+       <!--  <SectionDivider bgTop="var(--toni-azul-marino)" bgBottom="var(--toni-azul-oscuro)" /> -->
+
+        <div class="py-2 ranking-section">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-6">
+                    <div class="col-12">
                         <Ranking :ranking="ranking" />
-                    </div>
-                    <div class="col-lg-6">
-                        <img src="/images/promo-ranking.png" alt="Promo Ranking Pasión de Hincha Toni"
-                            class="img-fluid">
-                        <Link :href="route('dashboard')" class="d-block text-center">
-                            <button class="btn btn-amarillo-toni btn-ingresa-codigo text-uppercase">
-                                Ingresa tu código aquí
-                            </button>
-                        </Link>
                     </div>
                 </div>
             </div>
@@ -122,12 +90,6 @@ const submit = () => {
 
 .z-10 {
     z-index: 10;
-}
-
-/* Arte unificado */
-.img-promo-main {
-    max-width: 100%;
-    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
 }
 
 /* Tarjeta de Formulario */
@@ -192,8 +154,7 @@ const submit = () => {
 }
 
 .ranking-section {
-    background-color: var(--toni-azul-oscuro);
-    padding-bottom: 7rem !important;
+    background-color: var(--toni-azul-marino);
 }
 
 /* Sección Ranking */
@@ -201,6 +162,44 @@ const submit = () => {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 3rem;
     color: var(--toni-amarillo);
+}
+
+.login {
+    background-color: var(--toni-azul-marino);
+    background-image: url("/images/bg-malla.svg");
+    background-size: cover;
+    background-position: center;
+}
+
+.login-buttons {
+    display: flex;
+    justify-content: center;
+    padding-block: 3rem;
+}
+
+.login-buttons button {
+    color: var(--toni-azul-oscuro);
+    font-family: var(--fuente-principal);
+    font-size: 1.5rem;
+}
+
+.btn-registro {
+    background-color: var(--toni-amarillo);
+    padding: 0 25px;
+    transition: 0.3s;
+    border-right: 4px solid var(--toni-rojo);
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+
+.btn-login {
+    background-color: #cee5f2;
+    padding: 0 25px;
+    transition: 0.3s;
+    border-left: 4px solid var(--toni-rojo);
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
 }
 
 /* Responsive */
@@ -211,7 +210,7 @@ const submit = () => {
 
     .hero-main {
         height: auto;
-        padding: 100px 0;
+        padding: 0;
     }
 }
 </style>

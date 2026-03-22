@@ -10,6 +10,8 @@
     --toni-celeste: #00bbee; /* Celeste brillante del fondo */
     --toni-amarillo: #fdc203; /* Amarillo de botones "Ingresar" */
     --toni-blanco-transp: rgba(255, 255, 255, 0.2);
+    --toni-rojo: #d90c23;
+    --toni-blanco: #ffffff;
 
     /* Estados de validación */
     --estado-pendiente: #ffffff; /* Blanco */
@@ -95,7 +97,7 @@ h2 {
 .btn {
     font-family: var(--fuente-principal);
     font-size: 22px;
-    padding: 5px 30px;
+    padding: 0 30px;
 }
 
 .btn-sm {

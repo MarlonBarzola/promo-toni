@@ -1,5 +1,5 @@
 <template>
-    <div class="divider-container" :style="{ backgroundColor: bgTop }">
+    <div class="divider-container d-none d-md-block" :style="{ backgroundColor: bgTop }">
         <div class="slope" :style="{ backgroundColor: bgBottom }"></div>
     </div>
 </template>

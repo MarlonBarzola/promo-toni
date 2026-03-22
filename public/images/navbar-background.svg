@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 149">
+  <defs>
+    <style>
+      .cls-1 {
+        isolation: isolate;
+      }
+
+      .cls-2 {
+        mix-blend-mode: multiply;
+      }
+
+      .cls-3 {
+        fill: #000c93;
+      }
+    </style>
+  </defs>
+  <g class="cls-1">
+    <g id="Capa_2" data-name="Capa 2">
+      <g id="Capa_1-2" data-name="Capa 1">
+        <g class="cls-2">
+          <path class="cls-3" d="M0,0v149h434.11c14.87,0,29.16-5.38,40.6-14.88,23.13-19.23,52.86-30.8,85.29-30.8s62.16,11.57,85.29,30.8c11.43,9.5,25.73,14.88,40.6,14.88h434.11V0H0Z"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,5 +1,5 @@
 <template>
-    <div class="ranking-container shadow-lg p-4">
+    <div class="ranking-container p-4">
         <div class="ranking-header text-center">
             <img src="/images/titulo-ranking.png" alt="Tu Pasión de Hincha Toni"
                 class="img-fluid img-promo-ranking mb-3">
@@ -10,22 +10,28 @@
                 class="ranking-item d-flex align-items-center mb-2 px-3 py-2" :class="'pos-' + (index + 1)">
 
                 <div class="ranking-position me-3">
-                    <span v-if="index === 0">🥇</span>
-                    <span v-else-if="index === 1">🥈</span>
-                    <span v-else-if="index === 2">🥉</span>
+                    <span v-if="index === 0"><img src="/images/rank-1.svg" alt="Primer Lugar"></span>
+                    <span v-else-if="index === 1"><img src="/images/rank-2.svg" alt="Segundo Lugar"></span>
+                    <span v-else-if="index === 2"><img src="/images/rank-3.svg" alt="Tercer Lugar"></span>
                     <span v-else class="text-white fw-bold">{{ index + 1 }}</span>
                 </div>
 
-                <div class="ranking-name flex-grow-1 text-uppercase fw-bold text-white">
+                <div class="ranking-name flex-grow-1 fw-bold">
                     {{ usuario.name }} {{ usuario.apellido }}
                 </div>
 
-                <div class="ranking-points text-white fw-bold">
+                <div class="ranking-points fw-bold">
                     {{ String(usuario.codigos_count).padStart(3, '0') }}
                 </div>
             </div>
         </div>
     </div>
+    <div class="img-ranking">
+        <img src="/images/ranking.png" alt="Ranking Pasión de Hincha" class="img-fluid">
+    </div>
+    <button class="text-uppercase btn btn-ingresar">
+        Ingresa tu código aquí
+    </button>
 </template>
 
 <script setup>
@@ -38,7 +44,12 @@ defineProps({
 .ranking-container {
     background-color: var(--toni-celeste);
     border-radius: 25px;
-    height: 100%;
+    border-bottom: 12px solid var(--toni-amarillo);
+    min-height: 40vh;
+}
+
+.ranking-list {
+    padding-left: 15px;
 }
 
 .ranking-header {
@@ -47,61 +58,48 @@ defineProps({
     margin-top: -55px;
 }
 
-.ranking-title {
-    font-family: 'Bebas Neue', sans-serif;
-    color: var(--toni-amarillo);
-    font-size: 3rem;
-    line-height: 0.8;
-    margin-bottom: 0;
-    -webkit-text-stroke: 1px var(--toni-azul-marino);
+.img-ranking {
+    width: 75%;
+    margin: 0 auto;
+    margin-top: 0px;
+    margin-top: -4rem;
 }
 
-.ranking-subtitle {
-    font-family: 'Bebas Neue', sans-serif;
+.ranking-name {
     color: var(--toni-azul-marino);
-    background-color: white;
-    display: inline-block;
-    padding: 0 10px;
-    font-size: 1.5rem;
-    transform: rotate(-2deg);
 }
 
 .ranking-item {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: var(--toni-blanco);
     border-radius: 15px;
+    position: relative;
     transition: transform 0.2s;
-}
-
-.ranking-item:hover {
-    transform: scale(1.02);
-    background-color: rgba(255, 255, 255, 0.3);
-}
-
-/* Estilos especiales para el podio */
-.pos-1 {
-    background-color: rgba(255, 255, 255, 0.4);
-    border: 2px solid gold;
-}
-
-.pos-2 {
-    background-color: rgba(255, 255, 255, 0.35);
-    border: 2px solid silver;
-}
-
-.pos-3 {
-    background-color: rgba(255, 255, 255, 0.3);
-    border: 2px solid #cd7f32;
+    padding-left: 50px !important;
 }
 
 .ranking-position {
     font-size: 1.5rem;
-    width: 30px;
+    width: 50px;
     text-align: center;
+    position: absolute;
+    top: 0;
+    left: -20px;
 }
 
 .ranking-points {
     font-size: 1.2rem;
     font-family: 'Courier New', monospace;
+    color: var(--toni-azul-marino);
     /* Para estilo digital/contador */
+}
+
+.btn-ingresar {
+    background-color: var(--toni-amarillo);
+    color: var(--toni-azul-marino);
+    border-radius: 12px;
+    margin: 20px auto;
+    display: block;
+    font-size: 1.5rem;
+    transform: rotate(-3deg);
 }
 </style>

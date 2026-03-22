@@ -1,17 +1,5 @@
 import { ref } from 'vue';
 <template>
-    <div class="gana-premios">
-        <div class="container px-6">
-            <div class="row">
-                <div class="col-md-6">
-                    <img src="/images/escanea.png" alt="">
-                </div>
-                <div class="col-md-6">
-                    <img src="/images/gana-premios.png" alt="">
-                </div>
-            </div>
-    </div>
-    </div>
     <footer class="footer-toni">
         <div class="container">
             <div class="footer">
@@ -43,24 +31,9 @@ import { ref } from 'vue';
 </template>
 
 <style scoped>
-.gana-premios {
-    position: relative;
-    background-color: var(--toni-azul-cobalto);
-    margin-bottom: -90px;
-}
-
-.gana-premios .container {
-    padding-inline: 5rem;
-}
-
-.gana-premios img {
-    position: relative;
-    top: -100px;
-}
-
 .footer-toni {
     color: white;
-    background-color: var(--toni-azul-cobalto);
+    background-color: var(--toni-azul-marino);
     position: relative;
     z-index: 10;
 }

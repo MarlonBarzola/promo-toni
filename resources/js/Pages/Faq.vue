@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import LandingLayout from '@/Layouts/LandingLayout.vue';
+import { Head } from '@inertiajs/vue3';
 
 const indiceAbierto = ref(null);
 const faqs = [
@@ -28,6 +29,7 @@ const toggleFaq = (index) => {
 </script>
 
 <template>
+    <Head title="Preguntas Frecuentes" />
     <LandingLayout>
         <div class="container py-5">
             <div class="row justify-content-center">

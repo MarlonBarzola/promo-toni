@@ -6,7 +6,8 @@ import RegistrationForm from '@/Components/Landing/RegistrationForm.vue';
 import LoginForm from '@/Components/Landing/LoginForm.vue';
 import PromoBannerRow from '@/Components/Landing/PromoBannerRow.vue';
 import AuthModal from '@/Components/Common/AuthModal.vue';
-import { usePage, router } from '@inertiajs/vue3';
+import { usePage, router, Head } from '@inertiajs/vue3';
+
 
 defineProps({
     ranking: Array
@@ -44,6 +45,8 @@ const irDashboard = (openLogin) => {
 </script>
 
 <template>
+    <Head title="Inicio" />
+    
     <LandingLayout v-slot="{ activeModal, closeModal, openLogin, openRegister }">
 
         <HeroPromotion>

@@ -1,8 +1,10 @@
 <script setup>
+import { Head } from '@inertiajs/vue3';
 import LandingLayout from '@/Layouts/LandingLayout.vue';
 </script>
 
 <template>
+    <Head title="Términos y Condiciones" />
     <LandingLayout>
         <div class="container py-5">
             <div class="row justify-content-center">

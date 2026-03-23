@@ -194,7 +194,6 @@ const handleIngresarCodigo = () => {
     background: none;
     border: none;
     color: white;
-    font-weight: 800;
     font-size: 1rem;
     font-family: var(--fuente-principal);
     cursor: pointer;

@@ -1,5 +1,5 @@
 <script setup>
-import { useForm, Link } from '@inertiajs/vue3';
+import { useForm, Link, Head } from '@inertiajs/vue3';
 import { onMounted, ref } from 'vue';
 import LandingLayout from '@/Layouts/LandingLayout.vue';
 
@@ -97,6 +97,7 @@ const cerrarModal = () => {
 </script>
 
 <template>
+    <Head title="Ingresar Código" />
     <LandingLayout>
         <div class="container py-0 py-md-5">
             <div class="row">

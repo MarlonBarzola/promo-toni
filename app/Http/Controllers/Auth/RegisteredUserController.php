@@ -31,6 +31,8 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        //TODO: DESCOMENTAR
+        return redirect(route('home', absolute: false));
         $request->validate([
             'nombre' => 'required|string|max:255',
             'apellido' => 'required|string|max:255',
@@ -51,7 +53,7 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'usuario' => $request->usuario,
             'password' => Hash::make($request->password),
-            'rol' => 'cliente', // Por defecto todos son clientes
+            'rol' => 'cliente',
         ]);
 
         event(new Registered($user));

@@ -32,7 +32,7 @@ const toggleFaq = (index) => {
         <div class="container py-5">
             <div class="row justify-content-center">
                 <div class="col-md-8">
-                    <div class="faqs-container shadow-lg p-4">
+                    <div class="faqs-container p-4">
                         <h2 class="text-center text-white fw-bold mb-5 text-uppercase">Preguntas Frecuentes</h2>
 
                         <div class="accordion">
@@ -88,7 +88,7 @@ const toggleFaq = (index) => {
 }
 
 .faq-question.active {
-    color: var(--toni-amarillo);
+    color: var(--toni-azul-oscuro);
 }
 
 .icon {

@@ -7,7 +7,7 @@ import LandingLayout from '@/Layouts/LandingLayout.vue';
         <div class="container py-5">
             <div class="row justify-content-center">
                 <div class="col-lg-10">
-                    <div>
+                    <div class="">
                         <h2 class="text-center text-white fw-bold mb-5 text-uppercase">
                             Términos y Condiciones Generales de la Promoción "MEGA PROMO CON GELATONI"
                         </h2>
@@ -23,7 +23,7 @@ import LandingLayout from '@/Layouts/LandingLayout.vue';
                                 a los mismos al tenor de las siguientes cláusulas:
                             </p>
 
-                            <h5>PRIMERA: DEL ORGANIZADOR.</h5>
+                            <h3 class="text-white">PRIMERA: DEL ORGANIZADOR.</h3>
                             <p class="mb-4">
                                 EL organizador de la presente promoción MEGA PROMO CON GELATONI, es la compañía
                                 INDUSTRIAS LÁCTEAS
@@ -32,7 +32,7 @@ import LandingLayout from '@/Layouts/LandingLayout.vue';
                                 San Nicolás Fte. Pascuales Mz. 429 Solar 1.
                             </p>
 
-                            <h5>SEGUNDA: OBJETIVO.</h5>
+                            <h3 class="text-white">SEGUNDA: OBJETIVO.</h3>
                             <p class="mb-4">
                                 INDUSTRIAS LÁCTEAS TONI S.A., en adelante “El Organizador”, quiere premiar a los
                                 consumidores (“Los Participantes”)
@@ -41,7 +41,7 @@ import LandingLayout from '@/Layouts/LandingLayout.vue';
                                 page y participar para ganar increíbles premios.
                             </p>
 
-                            <h5>TERCERA: DURACIÓN Y VIGENCIA DE LA PROMOCIÓN.</h5>
+                            <h3 class="text-white">TERCERA: DURACIÓN Y VIGENCIA DE LA PROMOCIÓN.</h3>
                             <p class="mb-4">
                                 La promoción MEGA PROMO CON GELATONI, tendrá una vigencia comprendida a partir del 15 de
                                 agosto de 2021 y, finalizará el 30 de septiembre de 2021.
@@ -53,7 +53,7 @@ import LandingLayout from '@/Layouts/LandingLayout.vue';
                                 voluntad.
                             </p>
 
-                            <h5>CUARTA: OBJETO Y ÁMBITO DE APLICACIÓN.</h5>
+                            <h3 class="text-white">CUARTA: OBJETO Y ÁMBITO DE APLICACIÓN.</h3>
                             <p class="mb-4">
                                 Los presentes términos y condiciones generales tienen como objeto la regulación de la
                                 forma de participar en la promoción
@@ -66,7 +66,7 @@ import LandingLayout from '@/Layouts/LandingLayout.vue';
                                 que INDUSTRIAS LÁCTEAS TONI S.A, determine y seleccione previamente.
                             </p>
 
-                            <h5>QUINTA: ACEPTACIÓN DE LOS TÉRMINOS Y CONDICIONES DE USO.</h5>
+                            <h3 class="text-white">QUINTA: ACEPTACIÓN DE LOS TÉRMINOS Y CONDICIONES DE USO.</h3>
                             <p class="mb-4">
                                 EL CLIENTE que se adhiera a participar de la promoción GANA DIVERSIÓN CON GELATONI
                                 manifiesta conocer

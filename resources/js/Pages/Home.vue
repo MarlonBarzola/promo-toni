@@ -1,25 +1,50 @@
 <script setup>
 import LandingLayout from '@/Layouts/LandingLayout.vue';
 import Ranking from '@/Components/Ranking.vue';
-import SectionDivider from '@/Components/SectionDivider.vue';
 import HeroPromotion from '@/Components/HeroPromotion.vue';
 import RegistrationForm from '@/Components/Landing/RegistrationForm.vue';
 import LoginForm from '@/Components/Landing/LoginForm.vue';
 import PromoBannerRow from '@/Components/Landing/PromoBannerRow.vue';
 import AuthModal from '@/Components/Common/AuthModal.vue';
-import { ref } from 'vue';
+import { usePage, router } from '@inertiajs/vue3';
 
 defineProps({
     ranking: Array
 });
 
-const activeModal = ref(null); // 'register', 'login' o null
+const page = usePage();
+const user = page.props.auth?.user;
 
-const closeModal = () => activeModal.value = null;
+const logout = () => {
+    router.post(route('logout'), {}, {
+        onSuccess: () => {
+            router.visit('/', { replace: true });
+        }
+    });
+};
+
+const irDashboard = (openLogin) => {
+    if (!user) {
+        openLogin();
+        return;
+    }
+
+    window.scrollTo(0, 0);
+
+    router.visit(route('dashboard'), {
+        preserveScroll: false,
+        preserveState: false,
+        onSuccess: () => {
+            setTimeout(() => {
+                window.scrollTo(0, 0);
+            }, 50);
+        }
+    });
+};
 </script>
 
 <template>
-    <LandingLayout dividerBgTop="var(--toni-azul-oscuro)">
+    <LandingLayout v-slot="{ activeModal, closeModal, openLogin, openRegister }">
 
         <HeroPromotion>
             <RegistrationForm class="d-none d-md-block" />
@@ -27,38 +52,54 @@ const closeModal = () => activeModal.value = null;
 
         <div class="login">
             <div class="login-buttons">
-                <button @click="activeModal = 'register'" class="text-uppercase btn-registro">
-                    Regístrate
-                </button>
-                <button @click="activeModal = 'login'" class="text-uppercase btn-login">
-                    Iniciar sesión
-                </button>
+
+                <!-- 👇 USUARIO NO LOGUEADO -->
+                <template v-if="!user">
+                    <button @click="openRegister" class="text-uppercase btn-registro">
+                        Regístrate
+                    </button>
+                    <button @click="openLogin" class="text-uppercase btn-login">
+                        Iniciar sesión
+                    </button>
+                </template>
+
+                <!-- 👇 USUARIO LOGUEADO -->
+                <template v-else>
+                    <button @click="$inertia.visit(route('dashboard'))" class="text-uppercase btn-registro">
+                        Ingresa un código
+                    </button>
+
+                    <button @click="logout" class="text-uppercase btn-login">
+                        Cerrar sesión
+                    </button>
+                </template>
+
             </div>
         </div>
 
         <AuthModal :show="activeModal !== null" @close="closeModal">
+
             <div v-if="activeModal === 'register'">
-                <RegistrationForm @success="closeModal" />
+                <RegistrationForm @success="closeModal" @go-login="openLogin" />
             </div>
 
             <div v-if="activeModal === 'login'">
-                <LoginForm @success="closeModal" />
+                <LoginForm @success="closeModal" @go-register="openRegister" />
             </div>
+
         </AuthModal>
 
-        <PromoBannerRow />
-
-        <!--  <SectionDivider bgTop="var(--toni-azul-marino)" bgBottom="var(--toni-azul-oscuro)" /> -->
+        <PromoBannerRow class="mb-3" />
 
         <div class="py-2 ranking-section">
             <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <Ranking :ranking="ranking" />
-                    </div>
-                </div>
+                <Ranking :ranking="ranking" />
+                <button @click="irDashboard(openLogin)" class="text-uppercase btn btn-ingresar w-75">
+                    Ingresa tu código aquí
+                </button>
             </div>
         </div>
+
     </LandingLayout>
 </template>
 
@@ -190,6 +231,16 @@ const closeModal = () => activeModal.value = null;
     border-left: 4px solid var(--toni-rojo);
     border-top-right-radius: 15px;
     border-bottom-right-radius: 15px;
+}
+
+.btn-ingresar {
+    background-color: var(--toni-amarillo);
+    color: var(--toni-azul-marino);
+    border-radius: 12px;
+    margin: 20px auto;
+    display: block;
+    font-size: 1.5rem;
+    transform: rotate(-3deg);
 }
 
 /* Responsive */

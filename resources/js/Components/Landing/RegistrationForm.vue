@@ -1,6 +1,8 @@
 <script setup>
 import { useForm } from '@inertiajs/vue3';
 
+const emit = defineEmits(['success', 'go-login']);
+
 const form = useForm({
     nombre: '',
     apellido: '',
@@ -8,6 +10,7 @@ const form = useForm({
     ciudad: '',
     fecha_nacimiento: '',
     email: '',
+    usuario: '',
     password: '',
     password_confirmation: '',
     acepto_terminos: false,
@@ -15,7 +18,15 @@ const form = useForm({
 
 const submit = () => {
     form.post(route('register'), {
-        onSuccess: () => form.reset(),
+        preserveScroll: false,
+        onSuccess: () => {
+            form.reset();
+
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        },
     });
 };
 </script>
@@ -23,7 +34,9 @@ const submit = () => {
 <template>
     <div class="form-card">
         <h2 class="text-center">REGISTRA TUS DATOS</h2>
-
+        <span class="d-block text-center text-primary fw-bold cursor-pointer" @click="emit('go-login')">
+            ¿Ya tienes una cuenta? <span class="text-yellow">Ingresa aquí</span>
+        </span>
         <form @submit.prevent="submit" class="mt-4">
             <div class="mb-2">
                 <input type="text" v-model="form.nombre" placeholder="Nombre:" class="form-input"
@@ -60,6 +73,13 @@ const submit = () => {
                     :class="{ 'input-error': form.errors.email }">
                 <div v-if="form.errors.email" class="error-message">{{ form.errors.email }}</div>
             </div>
+
+            <div class="mb-2">
+                <input type="text" v-model="form.usuario" placeholder="Usuario:" class="form-input"
+                    :class="{ 'input-error': form.errors.usuario }">
+                <div v-if="form.errors.usuario" class="error-message">{{ form.errors.usuario }}</div>
+            </div>
+
             <div class="mb-2">
                 <input type="password" v-model="form.password" placeholder="Contraseña:" class="form-input"
                     :class="{ 'input-error': form.errors.password }">
@@ -139,7 +159,7 @@ const submit = () => {
     font-weight: bold;
     margin-top: 2px;
     padding-left: 5px;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .input-error {

@@ -25,6 +25,7 @@ class User extends Authenticatable
         'ciudad',
         'fecha_nacimiento',
         'email',
+        'usuario',
         'password',
         'rol', // Añadimos el rol aquí también
     ];

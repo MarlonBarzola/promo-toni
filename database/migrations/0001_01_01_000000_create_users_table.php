@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre'); // [cite: 12]
-            $table->string('apellido'); // [cite: 13]
-            $table->string('cedula')->unique(); // [cite: 14]
-            $table->string('ciudad'); // [cite: 15]
-            $table->date('fecha_nacimiento'); // [cite: 16]
-            $table->string('email')->unique(); // [cite: 17]
+            $table->string('nombre');
+            $table->string('apellido');
+            $table->string('cedula')->unique();
+            $table->string('ciudad');
+            $table->date('fecha_nacimiento');
+            $table->string('email')->unique();
+            $table->string('usuario')->unique();
             $table->string('password');
             $table->enum('rol', ['cliente', 'admin'])->default('cliente');
             $table->timestamps();

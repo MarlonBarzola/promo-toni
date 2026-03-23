@@ -48,12 +48,35 @@ h2 {
     font-size: 2rem;
 }
 
+h3 {
+    font-size: 1.5rem;
+}
+
+.form-input:focus, 
+.form-textarea:focus, 
+.form-select:focus, 
+.form-multiselect:focus,
+.custom-input:focus {
+    outline: none !important;
+    border-color: rgba(255, 255, 255, 0.8) !important;
+    box-shadow: none !important;
+    --tw-ring-color: transparent !important;
+}
+
+.text-yellow {
+    color: var(--toni-amarillo) !important;
+}
+
 .fuente-principal {
     font-family: var(--fuente-principal);
 }
 
 .fuente-secundaria {
     font-family: var(--fuente-secundaria);
+}
+
+.text-primary {
+    color: var(--toni-azul-oscuro) !important;
 }
 
 /* --- EFECTO ESQUELETO (SKELETON LOADER) --- */

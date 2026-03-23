@@ -1,27 +1,33 @@
 <script setup>
+import { ref } from 'vue';
 import Footer from '@/Components/Footer.vue';
-import SectionDivider from '@/Components/SectionDivider.vue';
 import Navbar from '@/Components/Navbar.vue';
 
-defineProps({
-    dividerBgTop: {
-        type: String,
-        default: 'var(--toni-azul-marino)'
-    }
-});
+const activeModal = ref(null);
+
+const openLogin = () => activeModal.value = 'login';
+const openRegister = () => activeModal.value = 'register';
+const closeModal = () => activeModal.value = null;
 </script>
 
 <template>
     <div class="landing-background">
-        <Navbar />
+        <Navbar 
+            @open-login="openLogin" 
+            @open-register="openRegister"
+        />
 
-        <slot />
-
-       <!--  <SectionDivider :bgTop="dividerBgTop" bgBottom="var(--toni-azul-cobalto)" /> -->
+        <slot 
+            :activeModal="activeModal"
+            :closeModal="closeModal"
+            :openLogin="openLogin"
+            :openRegister="openRegister"
+        />
 
         <Footer />
     </div>
 </template>
+
 <style>
 .landing-background {
     background-color: var(--toni-azul-marino);

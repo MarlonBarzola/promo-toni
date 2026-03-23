@@ -1,15 +1,33 @@
 <script setup>
 import { ref } from 'vue';
-import { Link, usePage } from '@inertiajs/vue3';
+import { Link, usePage, router } from '@inertiajs/vue3';
 
 const page = usePage();
 const menuAbierto = ref(false);
+
+const user = page.props.auth?.user;
+
+const emit = defineEmits(['open-login']);
 
 const isUrlActive = (url) => page.url === url;
 const isRouteActive = (routeName) => route().current(routeName);
 
 const toggleMenu = () => {
     menuAbierto.value = !menuAbierto.value;
+};
+
+const logout = () => {
+    router.post(route('logout'));
+};
+
+const handleIngresarCodigo = () => {
+    menuAbierto.value = false;
+
+    if (user) {
+        router.visit(route('dashboard'));
+    } else {
+        emit('open-login');
+    }
 };
 </script>
 
@@ -34,21 +52,38 @@ const toggleMenu = () => {
                     <li @click="menuAbierto = false">
                         <Link href="/" :class="{ 'active-link': isUrlActive('/') }">INICIO</Link>
                     </li>
+
                     <li @click="menuAbierto = false">
-                        <Link :href="route('dashboard')" :class="{ 'active-link': isRouteActive('dashboard') }">INGRESAR
-                            CÓDIGO</Link>
-                    </li>
-                    <li @click="menuAbierto = false">
-                        <a href="#productos" :class="{ 'active-link': isRouteActive('/#productos') }">PRODUCTOS
-                            PARTICIPANTES</a>
-                    </li>
-                    <li @click="menuAbierto = false">
-                        <Link :href="route('terminos')" :class="{ 'active-link': isRouteActive('terminos') }">TÉRMINOS Y
-                            CONDICIONES</Link>
-                    </li>
-                    <li @click="menuAbierto = false">
-                        <Link :href="route('faq')" :class="{ 'active-link': isRouteActive('faq') }">PREGUNTAS FRECUENTES
+                        <Link v-if="user" :href="route('dashboard')"
+                            :class="{ 'active-link': isRouteActive('dashboard') }">
+                            INGRESAR CÓDIGO
                         </Link>
+
+                        <a v-else href="#" @click.prevent="$emit('open-login')">
+                            INGRESAR CÓDIGO
+                        </a>
+                    </li>
+
+                    <li @click="menuAbierto = false">
+                        <a href="#productos">PRODUCTOS PARTICIPANTES</a>
+                    </li>
+
+                    <li @click="menuAbierto = false">
+                        <Link :href="route('terminos')" :class="{ 'active-link': isRouteActive('terminos') }">
+                            TÉRMINOS Y CONDICIONES
+                        </Link>
+                    </li>
+
+                    <li @click="menuAbierto = false">
+                        <Link :href="route('faq')" :class="{ 'active-link': isRouteActive('faq') }">
+                            PREGUNTAS FRECUENTES
+                        </Link>
+                    </li>
+
+                    <li v-if="user" @click="menuAbierto = false">
+                        <button @click="logout" class="logout-btn">
+                            CERRAR SESIÓN
+                        </button>
                     </li>
                 </ul>
 
@@ -57,6 +92,7 @@ const toggleMenu = () => {
                 </div>
             </div>
         </nav>
+
         <div class="logo-mobile d-md-none">
             <Link :href="route('home')">
                 <img src="/images/logo-pasion.png" alt="Logo Pasión de Hincha">
@@ -144,7 +180,6 @@ const toggleMenu = () => {
 .nav-links a {
     color: white;
     text-decoration: none;
-    font-weight: 800;
     font-size: 1rem;
     font-family: var(--fuente-principal);
     transition: 0.3s;
@@ -154,8 +189,25 @@ const toggleMenu = () => {
     color: var(--toni-amarillo) !important;
 }
 
+/* 👇 LOGOUT */
+.logout-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-weight: 800;
+    font-size: 1rem;
+    font-family: var(--fuente-principal);
+    cursor: pointer;
+    transition: 0.3s;
+    padding: 0;
+}
+
+.logout-btn:hover {
+    color: var(--toni-amarillo);
+}
+
 .logo-mobile {
-    margin-top: -1rem;
+    background-color: var(--toni-azul-marino);
 }
 
 .logo-mobile img {
@@ -163,6 +215,23 @@ const toggleMenu = () => {
     display: block;
     margin: 0 auto;
 }
+
+.nav-button {
+    background: none;
+    border: none;
+    color: white;
+    font-weight: 800;
+    font-size: 1rem;
+    font-family: var(--fuente-principal);
+    cursor: pointer;
+    transition: 0.3s;
+    padding: 0;
+}
+
+.nav-button:hover {
+    color: var(--toni-amarillo);
+}
+
 /* --- MEDIA QUERY: MOBILE --- */
 @media (max-width: 991px) {
     .navbar-custom {
@@ -176,7 +245,6 @@ const toggleMenu = () => {
         display: flex;
     }
 
-    /* Ajuste de logos en mobile */
     .logo-pasion {
         height: 80px;
         left: 50%;
@@ -195,7 +263,6 @@ const toggleMenu = () => {
         width: 40px;
     }
 
-    /* Menú desplegable */
     .nav-links {
         position: fixed;
         top: 0;
@@ -219,16 +286,17 @@ const toggleMenu = () => {
         width: 100%;
     }
 
-    .nav-links a {
+    .nav-links a,
+    .logout-btn {
         font-size: 1.5rem;
         display: block;
     }
 
-    .nav-links a:hover {
+    .nav-links a:hover,
+    .logout-btn:hover {
         color: var(--toni-amarillo);
     }
 
-    /* Animación hamburguesa a X */
     .menu-toggle.open span:nth-child(1) {
         transform: rotate(45deg) translate(5px, 5px);
     }
@@ -239,6 +307,11 @@ const toggleMenu = () => {
 
     .menu-toggle.open span:nth-child(3) {
         transform: rotate(-45deg) translate(7px, -8px);
+    }
+
+    .nav-button {
+        font-size: 1.5rem;
+        display: block;
     }
 }
 </style>

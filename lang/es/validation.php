@@ -28,11 +28,11 @@ return [
     'image'           => 'El campo :attribute debe ser una imagen.',
     'max'             => [
         'numeric' => 'El campo :attribute no debe ser mayor a :max.',
-        'file'    => 'La :attribute no debe pesar más de :max kilobytes (2MB).',
+        'file'    => 'El campo :attribute no debe pesar más de :max kilobytes (2MB).',
         'string'  => 'El campo :attribute no debe tener más de :max caracteres.',
     ],
     'mimes'           => 'El campo :attribute debe ser un archivo de tipo: :values.',
     'numeric'         => 'El campo :attribute debe ser un número.',
     'required'        => 'El campo :attribute es obligatorio.',
-    'unique'          => 'El :attribute ya ha sido registrado.',
+    'unique'          => 'El campo :attribute ya ha sido registrado.',
 ];

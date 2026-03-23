@@ -1,6 +1,8 @@
 <script setup>
 import { useForm } from '@inertiajs/vue3';
 
+const emit = defineEmits(['success', 'go-register']);
+
 const form = useForm({
     email: '',
     password: '',
@@ -9,6 +11,13 @@ const form = useForm({
 
 const submit = () => {
     form.post(route('login'), {
+        preserveScroll: false,
+        onSuccess: () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'auto'
+            });
+        },
         onFinish: () => form.reset('password'),
     });
 };
@@ -17,7 +26,9 @@ const submit = () => {
 <template>
     <div class="form-card">
         <h2 class="text-center">INICIA SESIÓN</h2>
-
+        <span class="d-block text-center text-primary fw-bold cursor-pointer" @click="emit('go-register')">
+            ¿Aún no tienes una cuenta? <span class="text-yellow">Regístrate aquí</span>
+        </span>
         <form @submit.prevent="submit" class="mt-4">
             <div class="mb-2">
                 <input type="email" v-model="form.email" placeholder="Correo electrónico:" class="form-input"
@@ -91,7 +102,7 @@ const submit = () => {
     font-weight: bold;
     margin-top: 2px;
     padding-left: 5px;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .input-error {

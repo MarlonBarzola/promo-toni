@@ -1,6 +1,6 @@
 <script setup>
 import { useForm, Link } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import LandingLayout from '@/Layouts/LandingLayout.vue';
 
 const props = defineProps({
@@ -8,10 +8,24 @@ const props = defineProps({
     mensaje: String
 });
 
-// 👉 Vista activa (reemplaza tabs)
 const vistaActiva = ref(
     new URLSearchParams(window.location.search).get('tab') || 'ingresar'
 );
+
+const contenedorRef = ref(null);
+
+onMounted(() => {
+    window.scrollTo(0, 0);
+});
+
+const scrollToFormulario = () => {
+    if (contenedorRef.value) {
+        contenedorRef.value.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }
+};
 
 const actualizarURL = (vista) => {
     const url = new URL(window.location);
@@ -22,11 +36,13 @@ const actualizarURL = (vista) => {
 const irAIngresar = () => {
     vistaActiva.value = 'ingresar';
     actualizarURL('ingresar');
+    scrollToFormulario();
 };
 
 const irAMisCodigos = () => {
     vistaActiva.value = 'mis-codigos';
     actualizarURL('mis-codigos');
+    scrollToFormulario();
 };
 
 const form = useForm({
@@ -58,6 +74,9 @@ const enviarFormulario = () => {
             form.reset();
             previewCodigo.value = null;
             previewEmpaque.value = null;
+
+            vistaActiva.value = 'success';
+            scrollToFormulario();
         },
     });
 };
@@ -88,9 +107,9 @@ const cerrarModal = () => {
         </div>
 
         <div class="container mb-5">
-            <div class="tab-content-container">
+            <div ref="contenedorRef" class="tab-content-container" :class="{ 'no-padding': vistaActiva === 'success' }">
 
-                <!-- INGRESAR CÓDIGOS -->
+                <!-- INGRESAR -->
                 <div v-if="vistaActiva === 'ingresar'" class="p-4">
                     <h4 class="text-center text-white mb-4">INGRESA TUS CÓDIGOS</h4>
 
@@ -163,7 +182,6 @@ const cerrarModal = () => {
                             </button>
                         </div>
                     </form>
-
                 </div>
 
                 <!-- MIS CÓDIGOS -->
@@ -205,46 +223,68 @@ const cerrarModal = () => {
                         </template>
                     </div>
                 </div>
-            </div>
-            <div class="img-ranking">
-                <img src="/images/ranking.png" alt="Ranking Pasión de Hincha" class="img-fluid">
+
+                <!-- SUCCESS -->
+                <div v-if="vistaActiva === 'success'" class="p-4 text-center success-content">
+                    <h4 class="text-white">TU CÓDIGO HA SIDO INGRESADO</h4>
+                    <p>REVISAREMOS LA INFORMACIÓN</p>
+                    <p>PARA ACEPTAR SU VERACIDAD</p>
+                    <div class="d-flex justify-content-center gap-3 flex-wrap">
+                        <img src="/images/ranking.png" class="img-fluid">
+                        <img src="/images/participa-por-entradas.png" class="img-fluid">
+                    </div>
+                </div>
+
             </div>
 
-            <!-- BOTONES FUERA DEL CONTENEDOR -->
-            <div class="text-center mt-4 mb-3">
+            <!-- ocultar en success -->
+            <div v-if="vistaActiva !== 'success'" class="img-ranking">
+                <img src="/images/ranking.png" class="img-fluid">
+            </div>
 
-                <!-- Cuando estás en formulario -->
+            <!-- BOTONES -->
+            <div class="text-center mt-4 mb-3 d-flex flex-column align-items-center gap-2">
+
                 <button v-if="vistaActiva === 'ingresar'" type="button" class="btn btn-primary text-uppercase"
                     @click="irAMisCodigos">
                     VER MIS CÓDIGOS
                 </button>
 
-                <!-- Cuando estás en historial -->
-                <button v-else type="button" class="btn btn-primary text-uppercase" @click="irAIngresar">
+                <button v-else-if="vistaActiva === 'mis-codigos'" type="button" class="btn btn-primary text-uppercase"
+                    @click="irAIngresar">
                     INGRESAR OTRO CÓDIGO
                 </button>
 
+                <template v-else-if="vistaActiva === 'success'">
+                    <button type="button" class="btn btn-primary text-uppercase" @click="irAIngresar">
+                        INGRESAR OTRO CÓDIGO
+                    </button>
+
+                    <button type="button" class="btn btn-primary text-uppercase" @click="irAMisCodigos">
+                        VER MIS CÓDIGOS
+                    </button>
+                </template>
+
             </div>
 
-            <div class="image-code">
-                <img src="/images/participa-por-entradas.png" alt="Participa por entradas al mundial" class="img-fluid">
+            <div class="image-code" v-if="vistaActiva !== 'success'">
+                <img src="/images/participa-por-entradas.png" class="img-fluid">
             </div>
         </div>
 
-        <!-- MODAL -->
         <Transition name="fade">
             <div v-if="mostrarModal" class="modal-overlay" @click.self="cerrarModal">
                 <div class="modal-content-custom">
                     <button class="btn-close-custom" @click="cerrarModal">X</button>
                     <div class="row align-items-center g-0">
-                        <div class="col-md-6 text-center bg-white p-4 rounded-start">
-                            <img src="/img/ejemplo-codigo.png" alt="Ejemplo Código" class="img-fluid">
+                        <div class="col-6 text-center p-3 rounded-start">
+                            <img src="/images/producto.png" class="img-fluid">
                         </div>
-                        <div class="col-md-6 p-4">
-                            <h3 class="text-white text-uppercase mb-3">
+                        <div class="col-6 p-3">
+                            <h3 class="text-white text-uppercase mb-3 lh-1">
                                 Carga una foto clara del código en el envase
                             </h3>
-                            <p class="text-white mb-0">
+                            <p class="text-white mb-0 lh-1">
                                 Necesitamos una foto para verificar la veracidad del código
                             </p>
                         </div>
@@ -259,7 +299,7 @@ const cerrarModal = () => {
 .tab-content-container {
     background-color: var(--toni-celeste);
     border-radius: 20px;
-    margin-top: -50px;
+    margin-top: -42px;
     padding-bottom: 3rem;
     width: 90%;
     margin-inline: auto;
@@ -416,7 +456,18 @@ const cerrarModal = () => {
     line-height: 1.1;
 }
 
-@media (max-width: 380px) {
+.success-content {
+    font-family: var(--fuente-principal);
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--toni-azul-oscuro);
+}
+
+.no-padding {
+    padding-bottom: 0 !important;
+}
+
+@media (max-width: 430px) {
     .tab-content-container {
         margin-top: -40px;
     }

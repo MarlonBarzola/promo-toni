@@ -1,5 +1,7 @@
 <script setup>
 import { useForm } from '@inertiajs/vue3';
+import { DatePicker } from 'v-calendar';
+import 'v-calendar/style.css';
 
 const emit = defineEmits(['success', 'go-login']);
 
@@ -8,13 +10,17 @@ const form = useForm({
     apellido: '',
     cedula: '',
     ciudad: '',
-    fecha_nacimiento: '',
+    fecha_nacimiento: null,
     email: '',
     usuario: '',
     password: '',
     password_confirmation: '',
     acepto_terminos: false,
 });
+
+const masks = {
+    modelValue: 'YYYY-MM-DD',
+};
 
 const submit = () => {
     form.post(route('register'), {
@@ -63,9 +69,16 @@ const submit = () => {
             </div>
 
             <div class="mb-2">
-                <input type="date" v-model="form.fecha_nacimiento" class="form-input"
-                    :class="{ 'input-error': form.errors.fecha_nacimiento }">
-                <div v-if="form.errors.fecha_nacimiento" class="error-message">{{ form.errors.fecha_nacimiento }}</div>
+                <DatePicker v-model.string="form.fecha_nacimiento" :masks="masks" :popover="{ visibility: 'click' }"
+                    locale="es">
+                    <template #default="{ inputValue, inputEvents }">
+                        <input class="form-input" placeholder="Fecha de nacimiento:" :value="inputValue"
+                            v-on="inputEvents" readonly />
+                    </template>
+                </DatePicker>
+                <div v-if="form.errors.fecha_nacimiento" class="error-message">
+                    {{ form.errors.fecha_nacimiento }}
+                </div>
             </div>
 
             <div class="mb-2">

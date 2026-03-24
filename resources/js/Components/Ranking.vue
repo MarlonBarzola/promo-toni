@@ -56,13 +56,20 @@ defineProps({
 }
 
 .ranking-header {
+    position: relative;
     max-width: 270px;
     margin: 0 auto;
     margin-top: -90px;
+    z-index: 1;
+}
+
+.ranking-container {
+    max-width: 70%;
+    margin: 0 auto;
 }
 
 .img-ranking {
-    width: 75%;
+    width: 500px;
     margin: 0 auto;
     margin-top: 0px;
     margin-top: -4rem;
@@ -94,5 +101,15 @@ defineProps({
     font-family: 'Courier New', monospace;
     color: var(--toni-azul-marino);
     /* Para estilo digital/contador */
+}
+
+@media (max-width: 765px) {
+    .ranking-container {
+        max-width: 100%;
+    }
+    
+    .img-ranking {
+        width: 75%;
+    }
 }
 </style>

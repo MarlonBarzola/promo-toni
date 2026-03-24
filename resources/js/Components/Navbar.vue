@@ -20,15 +20,6 @@ const logout = () => {
     router.post(route('logout'));
 };
 
-const handleIngresarCodigo = () => {
-    menuAbierto.value = false;
-
-    if (user) {
-        router.visit(route('dashboard'));
-    } else {
-        emit('open-login');
-    }
-};
 </script>
 
 <template>
@@ -180,7 +171,7 @@ const handleIngresarCodigo = () => {
 .nav-links a {
     color: white;
     text-decoration: none;
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-family: var(--fuente-principal);
     transition: 0.3s;
 }
@@ -189,7 +180,6 @@ const handleIngresarCodigo = () => {
     color: var(--toni-amarillo) !important;
 }
 
-/* 👇 LOGOUT */
 .logout-btn {
     background: none;
     border: none;

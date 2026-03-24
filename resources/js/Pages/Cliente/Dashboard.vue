@@ -246,12 +246,12 @@ const cerrarModal = () => {
             <!-- BOTONES -->
             <div class="text-center mt-4 mb-3 d-flex flex-column align-items-center gap-2">
 
-                <button v-if="vistaActiva === 'ingresar'" type="button" class="btn btn-primary text-uppercase"
+                <button v-if="vistaActiva === 'ingresar'" type="button" class="btn btn-primary text-uppercase btn-code"
                     @click="irAMisCodigos">
                     VER MIS CÓDIGOS
                 </button>
 
-                <button v-else-if="vistaActiva === 'mis-codigos'" type="button" class="btn btn-primary text-uppercase"
+                <button v-else-if="vistaActiva === 'mis-codigos'" type="button" class="btn btn-primary text-uppercase btn-code"
                     @click="irAIngresar">
                     INGRESAR OTRO CÓDIGO
                 </button>
@@ -261,7 +261,7 @@ const cerrarModal = () => {
                         INGRESAR OTRO CÓDIGO
                     </button>
 
-                    <button type="button" class="btn btn-primary text-uppercase" @click="irAMisCodigos">
+                    <button type="button" class="btn btn-primary text-uppercase btn-code" @click="irAMisCodigos">
                         VER MIS CÓDIGOS
                     </button>
                 </template>
@@ -269,7 +269,7 @@ const cerrarModal = () => {
             </div>
 
             <div class="image-code" v-if="vistaActiva !== 'success'">
-                <img src="/images/participa-por-entradas.png" class="img-fluid">
+                <img src="/images/participa-por-entradas.png" class="img-fluid m-auto">
             </div>
         </div>
 
@@ -308,12 +308,6 @@ const cerrarModal = () => {
 
 .tab-content-container h4 {
     font-size: 2rem;
-}
-
-.img-ranking {
-    width: 90%;
-    margin: 0 auto;
-    margin-top: -4rem;
 }
 
 .custom-input {
@@ -466,6 +460,26 @@ const cerrarModal = () => {
 
 .no-padding {
     padding-bottom: 0 !important;
+}
+
+.img-ranking {
+    width: 500px;
+    margin: 0 auto;
+    margin-top: 0px;
+    margin-top: -4rem;
+}
+
+.btn-code {
+    width: 50%;
+}
+
+@media (max-width: 991px) {
+    .btn-code {
+        width: 100%;
+    }
+    .img-ranking {
+        width: 75%;
+    }
 }
 
 @media (max-width: 430px) {

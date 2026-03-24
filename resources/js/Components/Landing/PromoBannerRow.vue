@@ -7,7 +7,7 @@ import { Link } from '@inertiajs/vue3';
         <div class="container-fluid p-0">
             <!-- <img src="/images/banner-promo-desktop.png" alt="Promoción Toni Pasión del Hincha"
                 class="img-fluid d-none d-md-block w-100"> -->
-            <img src="/images/banner-promo-mobile.png" alt="Promoción Toni" class="img-fluid d-block d-md-none w-100">
+            <img src="/images/banner-promo-mobile.png" alt="Promoción Toni" class="img-fluid d-block">
         </div>
     </section>
 </template>
@@ -19,7 +19,18 @@ import { Link } from '@inertiajs/vue3';
     padding-left: 1rem;
 }
 
+.promo-banner-simple {
+    margin: auto;
+    width: 60%;
+}
+
 .img-fluid {
     height: auto;
+}
+
+@media (max-width: 767px) {
+    .promo-banner-simple {
+        width: 100%;
+    }
 }
 </style>

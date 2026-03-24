@@ -76,7 +76,7 @@ import { ref } from 'vue';
 .icons-social a:hover {
     filter: drop-shadow(0 4px 6px rgba(255, 255, 255, 0.5));
 }
-@media (max-width: 768px) {
+@media (max-width: 991px) {
     .footer {
         flex-direction: column;
         text-align: center;

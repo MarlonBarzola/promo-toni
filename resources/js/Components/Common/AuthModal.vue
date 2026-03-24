@@ -57,17 +57,24 @@ defineEmits(['close']);
 }
 
 .modal-header-img {
-    margin-bottom: -40px;
-    /* Hace que se encime sobre el cuadro celeste */
     position: relative;
     z-index: 2;
     text-align: center;
+    max-width: 50%;
+    margin: auto;
+    margin-bottom: -40px;
 }
 
 .modal-content-body {
     width: 90%;
     display: block;
     margin: auto;
+}
+
+@media (max-width: 768px) {
+    .modal-header-img {
+        max-width: 100%;
+    }
 }
 
 </style>

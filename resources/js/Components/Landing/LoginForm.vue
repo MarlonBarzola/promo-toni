@@ -52,7 +52,6 @@ const submit = () => {
 </template>
 
 <style scoped>
-/* Pegamos aquí los estilos específicos del formulario que tenías en Home */
 .form-card {
     background-color: var(--toni-celeste);
     padding: 20px;
@@ -60,6 +59,8 @@ const submit = () => {
     border: 3px solid rgba(255, 255, 255, 0.3);
     max-width: 450px;
     margin: 0 auto;
+    position: relative;
+    z-index: 10;
 }
 
 .form-title {

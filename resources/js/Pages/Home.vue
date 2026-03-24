@@ -45,40 +45,36 @@ const irDashboard = (openLogin) => {
 </script>
 
 <template>
+
     <Head title="Inicio" />
-    
+
     <LandingLayout v-slot="{ activeModal, closeModal, openLogin, openRegister }">
 
         <HeroPromotion>
-            <RegistrationForm class="d-none d-md-block" />
-        </HeroPromotion>
+            <div class="login">
+                <div class="login-buttons">
+                    <template v-if="!user">
+                        <button @click="openRegister" class="text-uppercase btn-registro">
+                            Regístrate
+                        </button>
+                        <button @click="openLogin" class="text-uppercase btn-login">
+                            Iniciar sesión
+                        </button>
+                    </template>
 
-        <div class="login">
-            <div class="login-buttons">
+                    <template v-else>
+                        <button @click="$inertia.visit(route('dashboard'))" class="text-uppercase btn-registro">
+                            Ingresa un código
+                        </button>
 
-                <!-- 👇 USUARIO NO LOGUEADO -->
-                <template v-if="!user">
-                    <button @click="openRegister" class="text-uppercase btn-registro">
-                        Regístrate
-                    </button>
-                    <button @click="openLogin" class="text-uppercase btn-login">
-                        Iniciar sesión
-                    </button>
-                </template>
+                        <button @click="logout" class="text-uppercase btn-login">
+                            Cerrar sesión
+                        </button>
+                    </template>
 
-                <!-- 👇 USUARIO LOGUEADO -->
-                <template v-else>
-                    <button @click="$inertia.visit(route('dashboard'))" class="text-uppercase btn-registro">
-                        Ingresa un código
-                    </button>
-
-                    <button @click="logout" class="text-uppercase btn-login">
-                        Cerrar sesión
-                    </button>
-                </template>
-
+                </div>
             </div>
-        </div>
+        </HeroPromotion>
 
         <AuthModal :show="activeModal !== null" @close="closeModal">
 
@@ -97,7 +93,7 @@ const irDashboard = (openLogin) => {
         <div class="py-2 ranking-section">
             <div class="container">
                 <Ranking :ranking="ranking" />
-                <button @click="irDashboard(openLogin)" class="text-uppercase btn btn-ingresar w-75">
+                <button @click="irDashboard(openLogin)" class="text-uppercase btn btn-ingresar">
                     Ingresa tu código aquí
                 </button>
             </div>
@@ -244,6 +240,7 @@ const irDashboard = (openLogin) => {
     display: block;
     font-size: 1.5rem;
     transform: rotate(-3deg);
+    width: 40%;
 }
 
 /* Responsive */
@@ -255,6 +252,10 @@ const irDashboard = (openLogin) => {
     .hero-main {
         height: auto;
         padding: 0;
+    }
+
+    .btn-ingresar {
+        width: 75%;
     }
 }
 </style>

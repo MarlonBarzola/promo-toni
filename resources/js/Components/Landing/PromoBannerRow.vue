@@ -5,11 +5,9 @@ import { Link } from '@inertiajs/vue3';
 <template>
     <section class="promo-banner-simple">
         <div class="container-fluid p-0">
-            <Link :href="route('dashboard')">
-                <!-- <img src="/images/banner-promo-desktop.png" alt="Promoción Toni Pasión del Hincha"
-                    class="img-fluid d-none d-md-block w-100"> -->
-                <img src="/images/banner-promo-mobile.png" alt="Promoción Toni" class="img-fluid d-block d-md-none w-100">
-            </Link>
+            <!-- <img src="/images/banner-promo-desktop.png" alt="Promoción Toni Pasión del Hincha"
+                class="img-fluid d-none d-md-block w-100"> -->
+            <img src="/images/banner-promo-mobile.png" alt="Promoción Toni" class="img-fluid d-block d-md-none w-100">
         </div>
     </section>
 </template>

@@ -14,7 +14,10 @@ const actualizarEstado = (id, nuevoEstado) => {
 
 <template>
     <div class="container py-5">
-        <h2 class="mb-4 text-primary">Validación de Códigos "Pasión de Hincha"</h2>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="text-primary mb-0">Validación de Códigos "Pasión de Hincha"</h2>
+            <button @click="router.post(route('logout'))" class="btn btn-outline-danger">Cerrar sesión</button>
+        </div>
         
         <div class="row">
             <div v-for="item in codigos" :key="item.id" class="col-md-6 mb-4">

@@ -29,6 +29,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware(['can:access-admin'])->prefix('admin')->group(function () {
         Route::get('/revision', [AdminController::class, 'index'])->name('admin.index');
         Route::patch('/validar-codigo/{codigo}', [AdminController::class, 'update'])->name('admin.validar');
+        Route::get('/reportes', [AdminController::class, 'reportes'])->name('admin.reportes');
+        Route::get('/export', [AdminController::class, 'export'])->name('admin.export');
     });
 });
 

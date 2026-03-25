@@ -10,6 +10,7 @@ class Codigo extends Model
     use HasFactory;
 
     protected $table = 'codigos';
+    protected $appends = ['fecha_formateada'];
 
     protected $fillable = [
         'user_id',
@@ -19,6 +20,11 @@ class Codigo extends Model
         'foto_empaque',
         'estado' // pendiente, aprobado, rechazado
     ];
+
+    public function getFechaFormateadaAttribute()
+    {
+        return $this->created_at->format('Y-m-d H:i');
+    }
 
     public function usuario()
     {

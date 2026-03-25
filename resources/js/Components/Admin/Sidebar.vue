@@ -11,8 +11,9 @@ import { Link } from '@inertiajs/vue3';
                 📦 Códigos
             </Link>
 
-            <!-- futuro -->
-            <!-- <Link :href="route('admin.users')" class="nav-link">👤 Usuarios</Link> -->
+            <Link :href="route('admin.reportes')" class="nav-link">
+                🧾 Reportes
+            </Link>
         </nav>
     </aside>
 </template>

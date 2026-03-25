@@ -72,9 +72,9 @@ const logout = () => {
                     </li>
 
                     <li v-if="user" @click="menuAbierto = false">
-                        <button @click="logout" class="logout-btn">
+                        <a @click="logout" class="logout-btn">
                             CERRAR SESIÓN
-                        </button>
+                        </a>
                     </li>
                 </ul>
 
@@ -184,7 +184,7 @@ const logout = () => {
     background: none;
     border: none;
     color: white;
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-family: var(--fuente-principal);
     cursor: pointer;
     transition: 0.3s;

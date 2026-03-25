@@ -32,7 +32,7 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         //TODO: DESCOMENTAR
-        return redirect(route('home', absolute: false));
+        //return redirect(route('home', absolute: false));
         $request->validate([
             'nombre' => 'required|string|max:255',
             'apellido' => 'required|string|max:255',

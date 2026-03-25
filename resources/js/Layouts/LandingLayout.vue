@@ -2,6 +2,9 @@
 import { ref } from 'vue';
 import Footer from '@/Components/Footer.vue';
 import Navbar from '@/Components/Navbar.vue';
+import RegistrationForm from '@/Components/Landing/RegistrationForm.vue';
+import LoginForm from '@/Components/Landing/LoginForm.vue';
+import AuthModal from '@/Components/Common/AuthModal.vue';
 
 const activeModal = ref(null);
 
@@ -12,17 +15,21 @@ const closeModal = () => activeModal.value = null;
 
 <template>
     <div class="landing-background">
-        <Navbar 
-            @open-login="openLogin" 
-            @open-register="openRegister"
-        />
+        <Navbar @open-login="openLogin" @open-register="openRegister" />
 
-        <slot 
-            :activeModal="activeModal"
-            :closeModal="closeModal"
-            :openLogin="openLogin"
-            :openRegister="openRegister"
-        />
+        <slot :activeModal="activeModal" :closeModal="closeModal" :openLogin="openLogin" :openRegister="openRegister" />
+
+        <AuthModal :show="activeModal !== null" @close="closeModal">
+
+            <div v-if="activeModal === 'register'">
+                <RegistrationForm @success="closeModal" @go-login="openLogin" />
+            </div>
+
+            <div v-if="activeModal === 'login'">
+                <LoginForm @success="closeModal" @go-register="openRegister" />
+            </div>
+
+        </AuthModal>
 
         <Footer />
     </div>

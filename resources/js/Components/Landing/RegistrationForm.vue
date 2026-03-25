@@ -69,11 +69,11 @@ const submit = () => {
             </div>
 
             <div class="mb-2">
-                <DatePicker v-model.string="form.fecha_nacimiento" :masks="masks" :popover="{ visibility: 'click' }"
-                    locale="es">
+                <DatePicker v-model.string="form.fecha_nacimiento" :masks="{ modelValue: 'YYYY-MM-DD' }" mode="date"
+                    :popover="{ visibility: 'click' }" locale="es">
                     <template #default="{ inputValue, inputEvents }">
-                        <input class="form-input" placeholder="Fecha de nacimiento:" :value="inputValue"
-                            v-on="inputEvents" readonly />
+                        <input class="form-input" :class="{ 'input-error': form.errors.fecha_nacimiento }"
+                            placeholder="Fecha de nacimiento:" :value="inputValue" v-on="inputEvents" />
                     </template>
                 </DatePicker>
                 <div v-if="form.errors.fecha_nacimiento" class="error-message">

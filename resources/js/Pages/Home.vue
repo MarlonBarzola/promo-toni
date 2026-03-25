@@ -2,10 +2,7 @@
 import LandingLayout from '@/Layouts/LandingLayout.vue';
 import Ranking from '@/Components/Ranking.vue';
 import HeroPromotion from '@/Components/HeroPromotion.vue';
-import RegistrationForm from '@/Components/Landing/RegistrationForm.vue';
-import LoginForm from '@/Components/Landing/LoginForm.vue';
 import PromoBannerRow from '@/Components/Landing/PromoBannerRow.vue';
-import AuthModal from '@/Components/Common/AuthModal.vue';
 import { usePage, router, Head } from '@inertiajs/vue3';
 
 
@@ -75,18 +72,6 @@ const irDashboard = (openLogin) => {
                 </div>
             </div>
         </HeroPromotion>
-
-        <AuthModal :show="activeModal !== null" @close="closeModal">
-
-            <div v-if="activeModal === 'register'">
-                <RegistrationForm @success="closeModal" @go-login="openLogin" />
-            </div>
-
-            <div v-if="activeModal === 'login'">
-                <LoginForm @success="closeModal" @go-register="openRegister" />
-            </div>
-
-        </AuthModal>
 
         <PromoBannerRow class="mb-3" />
 

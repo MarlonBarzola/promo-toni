@@ -207,6 +207,9 @@ const irDashboard = (openLogin) => {
     border-bottom-left-radius: 15px;
 }
 
+.btn-registro:hover {
+    color: white;
+}
 
 .btn-login {
     background-color: #cee5f2;
@@ -215,6 +218,10 @@ const irDashboard = (openLogin) => {
     border-left: 4px solid var(--toni-rojo);
     border-top-right-radius: 15px;
     border-bottom-right-radius: 15px;
+}
+
+.btn-login:hover {
+    color: var(--toni-rojo);
 }
 
 .btn-ingresar {
@@ -226,6 +233,10 @@ const irDashboard = (openLogin) => {
     font-size: 1.5rem;
     transform: rotate(-3deg);
     width: 40%;
+}
+
+.btn-ingresar:hover {
+    color: white;
 }
 
 /* Responsive */

@@ -257,7 +257,7 @@ const cerrarModal = () => {
                 </button>
 
                 <template v-else-if="vistaActiva === 'success'">
-                    <button type="button" class="btn btn-primary text-uppercase" @click="irAIngresar">
+                    <button type="button" class="btn btn-primary text-uppercase btn-code" @click="irAIngresar">
                         INGRESAR OTRO CÓDIGO
                     </button>
 
@@ -475,7 +475,7 @@ const cerrarModal = () => {
 
 @media (max-width: 991px) {
     .btn-code {
-        width: 100%;
+        width: 90%;
     }
     .img-ranking {
         width: 75%;

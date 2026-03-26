@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Codigo;
-use App\Exports\CodigosExport;
-use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -102,13 +100,70 @@ class AdminController extends Controller
 
     public function export(Request $request)
     {
-        return Excel::download(
-            new CodigosExport(
-                $request->desde,
-                $request->hasta,
-                $request->search
-            ),
-            'reporte_codigos.xlsx'
-        );
+        $desde = $request->desde;
+        $hasta = $request->hasta;
+        $search = $request->search;
+
+        $query = Codigo::with('usuario');
+
+        if ($desde && $hasta) {
+            $query->whereBetween('created_at', [$desde, $hasta]);
+        }
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('codigo_unico', 'like', "%{$search}%")
+                    ->orWhereHas('usuario', function ($u) use ($search) {
+                        $u->where('nombre', 'like', "%{$search}%")
+                            ->orWhere('apellido', 'like', "%{$search}%")
+                            ->orWhere('cedula', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        $codigos = $query->get();
+
+        $filename = "reporte_codigos.csv";
+
+        $headers = [
+            "Content-type" => "text/csv",
+            "Content-Disposition" => "attachment; filename=$filename",
+        ];
+
+        $callback = function () use ($codigos) {
+            $file = fopen('php://output', 'w');
+
+            fputs($file, "\xEF\xBB\xBF");
+
+            fputcsv($file, [
+                'Nombre',
+                'Apellido',
+                'Cédula',
+                'Código',
+                'Producto',
+                'Estado',
+                'Fecha',
+                'Foto Código',
+                'Foto Empaque'
+            ]);
+
+            foreach ($codigos as $c) {
+                fputcsv($file, [
+                    $c->usuario->nombre,
+                    $c->usuario->apellido,
+                    $c->usuario->cedula,
+                    $c->codigo_unico,
+                    $c->producto,
+                    $c->estado,
+                    $c->created_at->format('Y-m-d H:i'),
+                    url('/storage/' . $c->foto_codigo),
+                    url('/storage/' . $c->foto_empaque),
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
     }
 }

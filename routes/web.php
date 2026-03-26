@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\Cliente\CodigoController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\HomeController;
@@ -19,7 +20,7 @@ Route::get('/preguntas-frecuentes', function () {
 
 // --- RUTAS PROTEGIDAS (DEBEN ESTAR LOGUEADOS) ---
 Route::middleware(['auth', 'verified'])->group(function () {
-    
+
     // Rutas para el CLIENTE (HINCHA)
     Route::prefix('ingresar-codigo')->group(function () {
         Route::get('/', [CodigoController::class, 'index'])->name('dashboard');
@@ -33,14 +34,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/reportes', [AdminController::class, 'reportes'])->name('admin.reportes');
         Route::get('/export', [AdminController::class, 'export'])->name('admin.export');
     });
-
-    Route::get('/setup', function () {
-        Artisan::call('migrate', ['--force' => true]);
-        Artisan::call('db:seed', ['--force' => true]);
-        Artisan::call('storage:link');
-
-        return 'SETUP COMPLETADO';
-    });
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

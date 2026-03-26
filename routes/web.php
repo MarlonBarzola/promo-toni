@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Artisan;
 
 // --- RUTA PÚBLICA (LANDING) ---
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -31,6 +32,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::patch('/validar-codigo/{codigo}', [AdminController::class, 'update'])->name('admin.validar');
         Route::get('/reportes', [AdminController::class, 'reportes'])->name('admin.reportes');
         Route::get('/export', [AdminController::class, 'export'])->name('admin.export');
+    });
+
+    Route::get('/setup', function () {
+        Artisan::call('migrate', ['--force' => true]);
+        Artisan::call('db:seed', ['--force' => true]);
+        Artisan::call('storage:link');
+
+        return 'SETUP COMPLETADO';
     });
 });
 

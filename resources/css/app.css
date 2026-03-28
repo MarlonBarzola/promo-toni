@@ -198,3 +198,12 @@ select.custom-input {
     border: 0;
     outline: none;
 }
+
+.guest-card button {
+    background-color: var(--toni-azul-marino);
+    border: 0 !important;
+}
+
+.guest-card button:hover {
+    background-color: var(--toni-azul-marino);
+}

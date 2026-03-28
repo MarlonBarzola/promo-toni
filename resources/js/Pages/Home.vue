@@ -73,46 +73,35 @@ const irDashboard = (openLogin) => {
             </div>
         </HeroPromotion>
 
-        <PromoBannerRow class="mb-3" />
-
-        <div class="py-2 ranking-section">
-            <div class="container">
-                <Ranking :ranking="ranking" />
-                <button @click="irDashboard(openLogin)" class="text-uppercase btn btn-ingresar">
-                    Ingresa tu código aquí
-                </button>
-            </div>
+        <div class="d-block d-md-none pl-3">
+            <img src="/images/banner-promo-mobile.png" alt="">
         </div>
 
+        <div class="container">
+            <div class="ranking">
+                <div class="ranking-section">
+                    <Ranking :ranking="ranking" />
+                     <button @click="irDashboard(openLogin)" class="text-uppercase btn btn-ingresar d-block d-md-none">
+                        Ingresa tu código aquí
+                    </button>
+                </div>
+                <div class="promo-section d-none d-md-block">
+                    <PromoBannerRow />
+                    <button @click="irDashboard(openLogin)" class="text-uppercase btn btn-ingresar d-none d-md-block">
+                        Ingresa tu código aquí
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="banner-semanal">
+                <img src="/images/banner-semanal.png" alt="Gana premios semanales">
+            </div>
+        </div>
     </LandingLayout>
 </template>
 
 <style scoped>
-/* Contenedor principal del Hero */
-.hero-main {
-    position: relative;
-    background-color: var(--toni-azul-marino);
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-}
-
-/* El fondo de la cancha (Imagen de las líneas) */
-.cancha-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('/images/fondo-lineas-estadio.png');
-    /* Asegúrate de que el nombre coincida */
-    background-size: cover;
-    background-position: center;
-    opacity: 0.6;
-    /* Ajusta la opacidad según prefieras */
-    z-index: 1;
-}
-
 .z-10 {
     z-index: 10;
 }
@@ -145,29 +134,6 @@ const irDashboard = (openLogin) => {
     border-bottom-color: var(--toni-amarillo);
 }
 
-/* Botón de envío */
-.btn-enviar-toni {
-    background-color: var(--toni-azul-marino);
-    color: white;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2rem;
-    padding: 10px 60px;
-    border-radius: 50px;
-    border: none;
-    transition: 0.3s;
-    box-shadow: 0 5px 0px #00255a;
-}
-
-.btn-enviar-toni:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 0px #00255a;
-}
-
-.btn-enviar-toni:active {
-    transform: translateY(2px);
-    box-shadow: 0 2px 0px #00255a;
-}
-
 .ranking-section {
     background-color: var(--toni-azul-marino);
 }
@@ -180,10 +146,7 @@ const irDashboard = (openLogin) => {
 }
 
 .login {
-    background-color: var(--toni-azul-marino);
-    background-image: url("/images/bg-malla.svg");
-    background-size: cover;
-    background-position: center;
+    margin-top: -2rem;
 }
 
 .login-buttons {
@@ -203,8 +166,8 @@ const irDashboard = (openLogin) => {
     padding: 0 25px;
     transition: 0.3s;
     border-right: 4px solid var(--toni-rojo);
-    border-top-left-radius: 15px;
-    border-bottom-left-radius: 15px;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
 }
 
 .btn-registro:hover {
@@ -216,8 +179,8 @@ const irDashboard = (openLogin) => {
     padding: 0 25px;
     transition: 0.3s;
     border-left: 4px solid var(--toni-rojo);
-    border-top-right-radius: 15px;
-    border-bottom-right-radius: 15px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
 }
 
 .btn-login:hover {
@@ -226,32 +189,86 @@ const irDashboard = (openLogin) => {
 
 .btn-ingresar {
     background-color: var(--toni-amarillo);
-    color: var(--toni-azul-marino);
     border-radius: 12px;
-    margin: 20px auto;
+    color: var(--toni-azul-marino);
     display: block;
     font-size: 1.5rem;
-    transform: rotate(-3deg);
-    width: 40%;
+    margin: 20px auto;
+    margin-top: -4rem;
+    transform: rotate(3deg);
+    width: auto;
 }
 
 .btn-ingresar:hover {
     color: white;
 }
 
-/* Responsive */
+.banner-semanal {
+    width: calc(50% + 50vw);
+    overflow: hidden;
+}
+
+.banner-semanal img {
+    width: 100%;
+    display: block;
+}
+
+.ranking {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.ranking-section {
+    width: 48%;
+}
+
+.promo-section {
+    width: 50%;
+}
+
 @media (max-width: 991px) {
     .form-card {
         margin-top: 40px;
     }
 
-    .hero-main {
-        height: auto;
-        padding: 0;
+    .btn-ingresar {
+        margin-top: 1rem;
+        transform: none;
     }
 
-    .btn-ingresar {
-        width: 75%;
+    .promo-section {
+        padding-right: 0 !important;
+    }
+
+    .login {
+        align-items: center;
+        background-image: url("/images/bg-cancha.svg");
+        background-position: center top;
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        height: 50vw;
+        justify-content: center;
+        margin-top: -15.5vw;
+        width: 100%;
+    }
+
+    .login-buttons button {
+        font-size: 1.2rem;
+    }
+
+    .ranking {
+        flex-direction: column-reverse;
+    }
+
+    .ranking-section {
+        width: 100%;
+    }
+
+    .promo-section {
+        width: 100%;
     }
 }
 </style>

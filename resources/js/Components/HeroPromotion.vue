@@ -9,28 +9,26 @@ defineProps({
 
 <template>
     <div class="hero-main">
-        <div class="container position-relative z-10">
-            <div class="row align-items-center py-0 py-md-5">
-                <div class="col-lg-6 text-center p-0">
-                    <img :src="imageSrc" alt="Tu Pasión de Hincha Toni"
-                        class="img-fluid img-promo-main">
-                </div>
-
-                <div class="col-lg-6">
-                    <slot />
-                </div>
-            </div>
-        </div>
+        <img src="/images/logo-lonchera.png" alt="Tu Pasión de Hincha Toni" class="img-fluid img-promo-main d-none d-md-block">
+        <img src="/images/logo-lonchera-mobile.png" alt="Tu Pasión de Hincha Toni" class="img-fluid img-promo-main d-block d-md-none">
+        <slot />
     </div>
 </template>
 
 <style scoped>
 .hero-main {
-    position: relative;
-    background-color: var(--toni-azul-marino);
-    overflow: hidden;
-    display: flex;
     align-items: center;
+    background-color: var(--toni-azul-marino);
+    background-image: url("/images/bg-cancha.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 110%;
+    display: flex;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
 }
 
 .z-10 {
@@ -38,6 +36,17 @@ defineProps({
 }
 
 .img-promo-main {
-    max-width: 100%;
+    width: 100%;
+    max-width: 1024px;
+    position: relative;
+    z-index: 1;
+}
+
+@media (max-width: 991px) {
+    .hero-main {
+        background-image: none;
+        height: auto;
+        padding: 0;
+    }
 }
 </style>

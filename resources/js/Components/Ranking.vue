@@ -38,9 +38,6 @@ defineProps({
             </template>
         </div>
     </div>
-    <div class="img-ranking">
-        <img src="/images/ranking.png" alt="Ranking Pasión de Hincha" class="img-fluid">
-    </div>
 </template>
 
 <style scoped>
@@ -61,11 +58,6 @@ defineProps({
     margin: 0 auto;
     margin-top: -90px;
     z-index: 1;
-}
-
-.ranking-container {
-    max-width: 70%;
-    margin: 0 auto;
 }
 
 .img-ranking {

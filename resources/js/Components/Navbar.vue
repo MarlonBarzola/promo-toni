@@ -17,7 +17,11 @@ const toggleMenu = () => {
 };
 
 const logout = () => {
-    router.post(route('logout'));
+    router.post(route('logout'), {}, {
+        onSuccess: () => {
+            router.visit('/', { replace: true });
+        }
+    });
 };
 
 </script>

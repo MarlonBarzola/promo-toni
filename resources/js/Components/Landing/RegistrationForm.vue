@@ -1,4 +1,5 @@
 <script setup>
+import { ref } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import { DatePicker } from 'v-calendar';
 import 'v-calendar/style.css';
@@ -22,19 +23,17 @@ const masks = {
     modelValue: 'YYYY-MM-DD',
 };
 
+const enviado = ref(false);
+
 const submit = () => {
     form.post(route('register'), {
-        preserveScroll: false,
         onSuccess: () => {
+            enviado.value = true;
             form.reset();
-
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
         },
     });
 };
+
 </script>
 
 <template>
@@ -43,7 +42,7 @@ const submit = () => {
         <span class="d-block text-center text-primary fw-bold cursor-pointer" @click="emit('go-login')">
             ¿Ya tienes una cuenta? <span class="text-yellow">Ingresa aquí</span>
         </span>
-        <form @submit.prevent="submit" class="mt-4">
+        <form v-if="!enviado" @submit.prevent="submit" class="mt-4">
             <div class="mb-2">
                 <input type="text" v-model="form.nombre" placeholder="Nombre:" class="form-input"
                     :class="{ 'input-error': form.errors.nombre }">
@@ -73,7 +72,7 @@ const submit = () => {
                     :popover="{ visibility: 'click' }" locale="es">
                     <template #default="{ inputValue, inputEvents }">
                         <input class="form-input" :class="{ 'input-error': form.errors.fecha_nacimiento }"
-                            placeholder="Fecha de nacimiento:" :value="inputValue" v-on="inputEvents" />
+                            placeholder="Fecha de nacimiento: (dd-mm-aaaa)" :value="inputValue" v-on="inputEvents" />
                     </template>
                 </DatePicker>
                 <div v-if="form.errors.fecha_nacimiento" class="error-message">
@@ -118,6 +117,11 @@ const submit = () => {
                 </button>
             </div>
         </form>
+        <div v-else class="success-box">
+            Te enviamos un enlace de verificación a tu correo.
+            <br>
+            Debes confirmarlo para ingresar.
+        </div>
     </div>
 </template>
 
@@ -179,5 +183,15 @@ const submit = () => {
 .input-error {
     border: 2px solid var(--toni-amarillo) !important;
     background: rgba(255, 218, 0, 0.1) !important;
+}
+
+.success-box {
+    background:#03fd6547;
+    color: var(--toni-azul-oscuro);
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 10px;
+    text-align: center;
+    font-weight: bold;
 }
 </style>

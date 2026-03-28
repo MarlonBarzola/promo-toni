@@ -20,6 +20,7 @@ class DefaultUsersSeeder extends Seeder
             'email' => 'admin@correo.com',
             'usuario' => 'admin',
             'rol' => 'admin',
+            'email_verified_at' => now(),
             'password' => Hash::make('47@t8h"8~GJm'),
         ]);
 
@@ -33,6 +34,7 @@ class DefaultUsersSeeder extends Seeder
             'email' => 'user@correo.com',
             'usuario' => 'user_1',
             'rol' => 'cliente',
+            'email_verified_at' => now(),
             'password' => Hash::make('47@t8h"8~GJm'),
         ]);
 
@@ -46,6 +48,7 @@ class DefaultUsersSeeder extends Seeder
             'email' => 'user2@correo.com',
             'usuario' => 'user',
             'rol' => 'cliente',
+            'email_verified_at' => now(),
             'password' => Hash::make('47@t8h"8~GJm'),
         ]);
     }

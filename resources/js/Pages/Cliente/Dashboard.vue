@@ -3,47 +3,26 @@ import { useForm, Link, Head } from '@inertiajs/vue3';
 import { onMounted, ref } from 'vue';
 import LandingLayout from '@/Layouts/LandingLayout.vue';
 
-const props = defineProps({
+defineProps({
     codigos: Object,
-    mensaje: String
+    mensaje: String,
 });
 
 const vistaActiva = ref(
     new URLSearchParams(window.location.search).get('tab') || 'ingresar'
 );
 
-const contenedorRef = ref(null);
+onMounted(() => window.scrollTo(0, 0));
 
-onMounted(() => {
-    window.scrollTo(0, 0);
-});
-
-const scrollToFormulario = () => {
-    if (contenedorRef.value) {
-        /* contenedorRef.value.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        }); */
-    }
-};
-
-const actualizarURL = (vista) => {
+const irAVista = (vista) => {
+    vistaActiva.value = vista;
     const url = new URL(window.location);
     url.searchParams.set('tab', vista);
     window.history.pushState({}, '', url);
 };
 
-const irAIngresar = () => {
-    vistaActiva.value = 'ingresar';
-    actualizarURL('ingresar');
-    scrollToFormulario();
-};
-
-const irAMisCodigos = () => {
-    vistaActiva.value = 'mis-codigos';
-    actualizarURL('mis-codigos');
-    scrollToFormulario();
-};
+const irAIngresar   = () => irAVista('ingresar');
+const irAMisCodigos = () => irAVista('mis-codigos');
 
 const form = useForm({
     codigo_unico: '',
@@ -74,9 +53,7 @@ const enviarFormulario = () => {
             form.reset();
             previewCodigo.value = null;
             previewEmpaque.value = null;
-
             vistaActiva.value = 'success';
-            scrollToFormulario();
         },
     });
 };
@@ -87,13 +64,13 @@ const limpiarFormulario = () => {
     previewEmpaque.value = null;
 };
 
-const abrirModalReferencia = () => {
-    mostrarModal.value = true;
-};
+const estadoLabel = (estado) =>
+    ({ aprobado: 'VERIFICADO', rechazado: 'DESCARTADO' })[estado] ?? 'PENDIENTE';
 
-const cerrarModal = () => {
-    mostrarModal.value = false;
-};
+const formatFecha = (fecha) =>
+    new Date(fecha).toLocaleDateString('es-EC', {
+        day: '2-digit', month: 'short', year: 'numeric',
+    }).toUpperCase();
 </script>
 
 <template>
@@ -122,7 +99,7 @@ const cerrarModal = () => {
                             </button>
                         </div>
 
-                        <div ref="contenedorRef" class="tab-content-container" :class="{ 'no-padding': vistaActiva === 'success' }">
+                        <div class="tab-content-container" :class="{ 'no-padding': vistaActiva === 'success' }">
                             <!-- INGRESAR -->
                             <div v-if="vistaActiva === 'ingresar'" class="p-4">
                                 <h4 class="text-center text-white mb-4">INGRESA TUS CÓDIGOS</h4>
@@ -176,7 +153,7 @@ const cerrarModal = () => {
                                             </button>
                                         </div>
                                         <div class="col-6">
-                                            <button type="button" @click="abrirModalReferencia"
+                                            <button type="button" @click="mostrarModal = true"
                                                 class="btn btn-amarillo-toni btn-sm-xs w-100 text-uppercase">
                                                 IMAGEN DE REFERENCIA
                                             </button>
@@ -211,15 +188,8 @@ const cerrarModal = () => {
                                         <div v-for="item in codigos.data" :key="item.id"
                                             class="codigo-row d-flex justify-content-between align-items-center mb-2 px-3 py-2">
                                             <span class="text-white small">{{ item.codigo_unico }}</span>
-                                            <span class="text-white small">
-                                                {{ new Date(item.created_at).toLocaleDateString('es-EC', {
-                                                    day: '2-digit', month: 'short', year: 'numeric'
-                                                }).toUpperCase() }}
-                                            </span>
-                                            <span class="badge-status" :class="item.estado">
-                                                {{ item.estado === 'aprobado' ? 'VERIFICADO' : (item.estado === 'rechazado'
-                                                    ? 'DESCARTADO' : 'PENDIENTE') }}
-                                            </span>
+                                            <span class="text-white small">{{ formatFecha(item.created_at) }}</span>
+                                            <span class="badge-status" :class="item.estado">{{ estadoLabel(item.estado) }}</span>
                                         </div>
 
                                         <div v-if="codigos.data.length === 0" class="text-center text-white py-4">
@@ -281,9 +251,9 @@ const cerrarModal = () => {
         </div>
 
         <Transition name="fade">
-            <div v-if="mostrarModal" class="modal-overlay" @click.self="cerrarModal">
+            <div v-if="mostrarModal" class="modal-overlay" @click.self="mostrarModal = false">
                 <div class="modal-content-custom">
-                    <button class="btn-close-custom" @click="cerrarModal">X</button>
+                    <button class="btn-close-custom" @click="mostrarModal = false">X</button>
                     <div class="row align-items-center g-0">
                         <div class="col-6 text-center p-3 rounded-start">
                             <img src="/images/producto.png" class="img-fluid">

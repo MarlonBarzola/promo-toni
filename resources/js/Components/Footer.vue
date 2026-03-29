@@ -1,30 +1,36 @@
-import { ref } from 'vue';
 <template>
     <footer class="footer-toni py-4">
-        <div class="container">
-            <div class="footer">
+        <div class="container d-flex align-items-center justify-content-center flex-wrap">
+            <div class="footer mb-2">
                 <div class="info">
                     <span>
                         Para más información ingresa a
                     </span>
                     <div class="text-uppercase icons-social">
-                        <a href="#" class="flex align-items-center">
-                            <img src="/images/instagram.svg" alt="instagram" class="icon-social">
-                            @Tonilacteos
-                        </a>
-                        <a href="#" class="flex align-items-center">
-                            <img src="/images/facebook.svg" alt="facebook" class="icon-social">
-                            Toni Lácteos Ec
-                        </a>
+                        <div class="icons-row">
+                            <a href="#" class="flex align-items-center">
+                                <img src="/images/instagram.svg" alt="instagram" class="icon-social">
+                                @tonimundial
+                            </a>
+                            <a href="#" class="flex align-items-center">
+                                <img src="/images/instagram.svg" alt="instagram" class="icon-social">
+                                @pasiondelhinchatoni
+                            </a>
+                        </div>
+                        <div class="icons-row">
+                            <a href="#" class="flex align-items-center">
+                                <img src="/images/facebook.svg" alt="facebook" class="icon-social">
+                                Toni Mundial
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <div class="leyenda">
-                    <p>*Imágenes referenciales. Promoción válida desde el 1 de abril hasta el 1 de mayo de 2026</p>
-                    <p>o hasta agotar stock. Aplican términos y condiciones.</p>
+                    Promoción válida desde el 6 de abril hasta 28 junio de 2026 o hasta agotar stock. Anuncio de ganadores paquetes mundialistas: 31 mayo 2026. Aplican términos y condiciones.
                 </div>
-                <div>
-                    <img src="/images/footer.svg" alt="Global Brand Awards" class="logo-footer">
-                </div>
+            </div>
+            <div>
+                <img src="/images/footer.svg" alt="Global Brand Awards" class="logo-footer">
             </div>
         </div>
     </footer>
@@ -59,12 +65,19 @@ import { ref } from 'vue';
 }
 .leyenda {
     font-size: 13px;
+    text-align: right;
+    max-width: 40%;
 }
 .x-small {
     font-size: 0.7rem;
     line-height: 1.2;
 }
 .icons-social {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.icons-row {
     display: flex;
     gap: 10px;
 }
@@ -81,6 +94,18 @@ import { ref } from 'vue';
         flex-direction: column;
         text-align: center;
         gap: 20px;
+    }
+    .leyenda {
+        text-align: center;
+        max-width: 50%;
+        margin-bottom: 1rem;
+    }
+    .icons-social {
+        align-items: center;
+    }
+    .icons-row {
+        flex-direction: column;
+        align-items: center;
     }
 }
 </style>

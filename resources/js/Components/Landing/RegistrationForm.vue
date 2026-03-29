@@ -107,7 +107,7 @@ const submit = () => {
                 <input class="form-check-input" type="checkbox" v-model="form.acepto_terminos" id="checkTerminos"
                     required>
                 <label class="form-check-label text-white small" for="checkTerminos">
-                    Acepto Términos y Condiciones
+                    Acepto los términos y condiciones y reconozco que, en caso de resultar ganador del premio final, la documentación para viajar a Estados Unidos (incluida visa vigente) es mi responsabilidad, y que el organizador no se hace responsable por su gestión, obtención o rechazo.
                 </label>
             </div>
 

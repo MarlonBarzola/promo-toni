@@ -27,15 +27,11 @@ const irDashboard = (openLogin) => {
         return;
     }
 
-    window.scrollTo(0, 0);
-
     router.visit(route('dashboard'), {
         preserveScroll: false,
         preserveState: false,
         onSuccess: () => {
-            setTimeout(() => {
-                window.scrollTo(0, 0);
-            }, 50);
+            setTimeout(() => window.scrollTo(0, 0), 50);
         }
     });
 };
@@ -45,7 +41,7 @@ const irDashboard = (openLogin) => {
 
     <Head title="Inicio" />
 
-    <LandingLayout v-slot="{ activeModal, closeModal, openLogin, openRegister }">
+    <LandingLayout v-slot="{ openLogin, openRegister }">
 
         <HeroPromotion>
             <div class="login">
@@ -73,7 +69,7 @@ const irDashboard = (openLogin) => {
             </div>
         </HeroPromotion>
 
-        <div class="d-block d-md-none pl-3">
+        <div class="d-block d-lg-none pl-3">
             <img src="/images/banner-promo-mobile.png" alt="">
         </div>
 
@@ -81,70 +77,47 @@ const irDashboard = (openLogin) => {
             <div class="ranking">
                 <div class="ranking-section">
                     <Ranking :ranking="ranking" />
-                     <button @click="irDashboard(openLogin)" class="text-uppercase btn btn-ingresar d-block d-md-none">
+                     <button @click="irDashboard(openLogin)" class="text-uppercase btn btn-ingresar d-block d-lg-none">
                         Ingresa tu código aquí
                     </button>
                 </div>
-                <div class="promo-section d-none d-md-block">
+                <div class="promo-section d-none d-lg-block">
                     <PromoBannerRow />
-                    <button @click="irDashboard(openLogin)" class="text-uppercase btn btn-ingresar d-none d-md-block">
+                    <button @click="irDashboard(openLogin)" class="text-uppercase btn btn-ingresar d-none d-lg-block">
                         Ingresa tu código aquí
                     </button>
                 </div>
             </div>
         </div>
-        <div class="container">
+        <div class="container d-none d-lg-block">
             <div class="banner-semanal">
                 <img src="/images/banner-semanal.png" alt="Gana premios semanales">
             </div>
         </div>
+       
+        <img src="/images/premios-mobile.png" alt="Gana premios semanales" class="d-block d-lg-none">
     </LandingLayout>
 </template>
 
 <style scoped>
-.z-10 {
-    z-index: 10;
-}
-
-.form-title {
-    font-family: 'Bebas Neue', sans-serif;
-    color: var(--toni-azul-marino);
-    font-size: 2.8rem;
-    text-align: center;
-    margin: 0;
-}
-
-/* Inputs minimalistas (Líneas blancas) */
-.form-input {
-    width: 100%;
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.8);
-    border-radius: 10px;
-    color: white;
-    padding: 10px 5px;
-    font-weight: bold;
-    outline: none;
-}
-
-.form-input::placeholder {
-    color: rgba(255, 255, 255, 0.8);
-}
-
-.form-input:focus {
-    border-bottom-color: var(--toni-amarillo);
+/* ── Layout ─────────────────────────────────────────────── */
+.ranking {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 .ranking-section {
+    width: 48%;
     background-color: var(--toni-azul-marino);
 }
 
-/* Sección Ranking */
-.ranking-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 3rem;
-    color: var(--toni-amarillo);
+.promo-section {
+    width: 50%;
 }
 
+/* ── Sección login / cancha ──────────────────────────────── */
 .login {
     margin-top: -2rem;
 }
@@ -161,6 +134,7 @@ const irDashboard = (openLogin) => {
     font-size: 1.5rem;
 }
 
+/* ── Botones ─────────────────────────────────────────────── */
 .btn-registro {
     background-color: var(--toni-amarillo);
     padding: 0 25px;
@@ -189,12 +163,11 @@ const irDashboard = (openLogin) => {
 
 .btn-ingresar {
     background-color: var(--toni-amarillo);
-    border-radius: 12px;
     color: var(--toni-azul-marino);
+    border-radius: 12px;
     display: block;
     font-size: 1.5rem;
-    margin: 20px auto;
-    margin-top: -4rem;
+    margin: -4rem auto 20px;
     transform: rotate(3deg);
     width: auto;
 }
@@ -203,6 +176,7 @@ const irDashboard = (openLogin) => {
     color: white;
 }
 
+/* ── Banner semanal ──────────────────────────────────────── */
 .banner-semanal {
     width: calc(50% + 50vw);
     overflow: hidden;
@@ -213,35 +187,8 @@ const irDashboard = (openLogin) => {
     display: block;
 }
 
-.ranking {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-}
-
-.ranking-section {
-    width: 48%;
-}
-
-.promo-section {
-    width: 50%;
-}
-
+/* ── Responsive ──────────────────────────────────────────── */
 @media (max-width: 991px) {
-    .form-card {
-        margin-top: 40px;
-    }
-
-    .btn-ingresar {
-        margin-top: 1rem;
-        transform: none;
-    }
-
-    .promo-section {
-        padding-right: 0 !important;
-    }
-
     .login {
         align-items: center;
         background-image: url("/images/bg-cancha.svg");
@@ -263,12 +210,14 @@ const irDashboard = (openLogin) => {
         flex-direction: column-reverse;
     }
 
-    .ranking-section {
+    .ranking-section,
+    .promo-section {
         width: 100%;
     }
 
-    .promo-section {
-        width: 100%;
+    .btn-ingresar {
+        margin-top: 1rem;
+        transform: none;
     }
 }
 </style>

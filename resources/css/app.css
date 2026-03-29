@@ -5,7 +5,7 @@
 
 :root {
     /* Colores Principales del Manual Toni */
-    --toni-azul-marino: #0033a0;
+    --toni-azul-marino: #000c93;
     --toni-azul-oscuro: #000c93;
     --toni-azul-cobalto: #050c63;
     --toni-celeste: #00bbee; /* Celeste brillante del fondo */
@@ -206,4 +206,32 @@ select.custom-input {
 
 .guest-card button:hover {
     background-color: var(--toni-azul-marino);
+}
+
+.bg-malla {
+    background-image: url('/images/bg-cancha.svg');
+    background-size: 110%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.malla-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-block: 5rem;
+}
+
+.malla-content {
+    width: 50%;
+}
+
+@media (max-width: 992px) {
+    .malla-container {
+        flex-direction: column;
+        padding-block: 2rem;
+    }
+    .malla-content {
+        width: 100%;
+    }
 }

@@ -4,22 +4,51 @@ namespace App\Http\Controllers\Cliente;
 
 use App\Http\Controllers\Controller;
 use App\Models\Codigo;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class CodigoController extends Controller
 {
     public function index()
-    {
-        $codigos = Codigo::where('user_id', auth()->id())
-            ->orderBy('created_at', 'desc')
-            ->paginate(6);
+{
+    $userId = auth()->id();
 
-        return Inertia::render('Cliente/Dashboard', [
-            'codigos' => $codigos
-        ]);
+    $codigos = Codigo::where('user_id', $userId)
+        ->orderBy('created_at', 'desc')
+        ->paginate(6);
+
+    // 1. Obtener puntos del usuario
+    $puntos = DB::table('codigos')
+        ->where('estado', 'aprobado')
+        ->where('user_id', $userId)
+        ->count();
+
+    // 2. Calcular puesto
+    $puesto = null;
+
+    if ($puntos > 0) {
+        $usuariosConMasPuntos = DB::table('codigos')
+            ->select('user_id', DB::raw('COUNT(*) as total'))
+            ->where('estado', 'aprobado')
+            ->groupBy('user_id')
+            ->havingRaw('COUNT(*) > ?', [$puntos])
+            ->count();
+
+        $puesto = $usuariosConMasPuntos + 1;
     }
+
+    return Inertia::render('Cliente/Dashboard', [
+        'codigos' => $codigos,
+        'ranking' => [
+            'usuario' => auth()->user()->usuario,
+            'puntos'  => $puntos,
+            'puesto'  => $puesto,
+        ],
+    ]);
+}
 
     public function store(Request $request)
     {

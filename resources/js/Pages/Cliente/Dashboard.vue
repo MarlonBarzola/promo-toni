@@ -1,18 +1,31 @@
 <script setup>
-import { useForm, Link, Head } from '@inertiajs/vue3';
-import { onMounted, ref } from 'vue';
+import { useForm, Link, Head, router } from '@inertiajs/vue3';
+import { onMounted, ref, computed } from 'vue';
 import LandingLayout from '@/Layouts/LandingLayout.vue';
 
-defineProps({
+const props = defineProps({
     codigos: Object,
     mensaje: String,
+});
+
+const paginacion = computed(() => {
+    const links = props.codigos?.links ?? [];
+    return {
+        prev:  links.at(0)  ?? null,
+        next:  links.at(-1) ?? null,
+        pages: links.slice(1, -1),
+    };
 });
 
 const vistaActiva = ref(
     new URLSearchParams(window.location.search).get('tab') || 'ingresar'
 );
 
-onMounted(() => window.scrollTo(0, 0));
+onMounted(() => {
+    if (!new URLSearchParams(window.location.search).get('page')) {
+        window.scrollTo(0, 0);
+    }
+});
 
 const irAVista = (vista) => {
     vistaActiva.value = vista;
@@ -25,25 +38,18 @@ const irAIngresar   = () => irAVista('ingresar');
 const irAMisCodigos = () => irAVista('mis-codigos');
 
 const form = useForm({
-    codigo_unico: '',
-    producto: '',
+    codigo_lote: '',
+    codigo_conteo: '',
     foto_codigo: null,
-    foto_empaque: null,
 });
 
 const previewCodigo = ref(null);
-const previewEmpaque = ref(null);
 const mostrarModal = ref(false);
 
-const handleFileChange = (e, tipo) => {
+const handleFileChange = (e) => {
     const file = e.target.files[0];
-    if (tipo === 'codigo') {
-        form.foto_codigo = file;
-        previewCodigo.value = URL.createObjectURL(file);
-    } else {
-        form.foto_empaque = file;
-        previewEmpaque.value = URL.createObjectURL(file);
-    }
+    form.foto_codigo = file;
+    previewCodigo.value = URL.createObjectURL(file);
 };
 
 const enviarFormulario = () => {
@@ -52,7 +58,6 @@ const enviarFormulario = () => {
         onSuccess: () => {
             form.reset();
             previewCodigo.value = null;
-            previewEmpaque.value = null;
             vistaActiva.value = 'success';
         },
     });
@@ -61,7 +66,16 @@ const enviarFormulario = () => {
 const limpiarFormulario = () => {
     form.reset();
     previewCodigo.value = null;
-    previewEmpaque.value = null;
+};
+
+const historialRef = ref(null);
+
+const navegarPagina = (url) => {
+    const scrollY = window.scrollY;
+    router.visit(url + '&tab=mis-codigos', {
+        preserveScroll: true,
+        onFinish: () => window.scrollTo({ top: scrollY, behavior: 'instant' }),
+    });
 };
 
 const estadoLabel = (estado) =>
@@ -99,50 +113,39 @@ const formatFecha = (fecha) =>
                             </button>
                         </div>
 
-                        <div class="tab-content-container" :class="{ 'no-padding': vistaActiva === 'success' }">
+                        <div class="tab-content-container mis-codigos-content">
                             <!-- INGRESAR -->
                             <div v-if="vistaActiva === 'ingresar'" class="p-4">
                                 <h4 class="text-center text-white mb-4">INGRESA TUS CÓDIGOS</h4>
 
                                 <form @submit.prevent="enviarFormulario">
                                     <div class="mb-2">
-                                        <input v-model="form.codigo_unico" type="text" class="form-control custom-input"
-                                            placeholder="Código único" required>
-                                        <div v-if="form.errors.codigo_unico" class="text-danger small mt-1 bg-white rounded px-2">
-                                            {{ form.errors.codigo_unico }}
+                                        <div class="d-flex gap-2">
+                                            <input v-model="form.codigo_lote" type="text"
+                                                class="form-control custom-input flex-fill"
+                                                placeholder="Código de lote" required>
+                                            <input v-model="form.codigo_conteo" type="text"
+                                                class="form-control custom-input flex-fill"
+                                                placeholder="Código de conteo" required>
+                                        </div>
+                                        <div v-if="form.errors.codigo_lote" class="text-danger small mt-1 bg-white rounded px-2">
+                                            {{ form.errors.codigo_lote }}
+                                        </div>
+                                        <div v-if="form.errors.codigo_conteo" class="text-danger small mt-1 bg-white rounded px-2">
+                                            {{ form.errors.codigo_conteo }}
                                         </div>
                                     </div>
 
-                                    <div class="mb-2">
-                                        <select v-model="form.producto" class="form-select custom-input" required>
-                                            <option value="" disabled selected>Producto participante</option>
-                                            <option value="Yogurt Clásico">Yogurt Clásico</option>
-                                            <option value="Gelatoni">Gelatoni</option>
-                                            <option value="Avena Toni">Avena Toni</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="mb-2 d-flex align-items-center bg-white rounded p-1">
+                                    <label class="mb-3 d-flex align-items-center bg-white rounded p-1" style="cursor:pointer">
                                         <span class="flex-grow-1 ps-2 small load-image">Foto del código</span>
-                                        <label class="btn btn-amarillo-toni btn-sm btn-sm-xs m-0 px-2 text-uppercase">
+                                        <span class="btn btn-amarillo-toni btn-sm btn-sm-xs m-0 px-2 text-uppercase">
                                             CARGAR UNA IMAGEN
-                                            <input type="file" hidden @change="handleFileChange($event, 'codigo')" accept="image/*"
-                                                required>
-                                        </label>
-                                    </div>
+                                        </span>
+                                        <input type="file" hidden @change="handleFileChange($event)" accept="image/*" required>
+                                    </label>
 
-                                    <div class="mb-3 d-flex align-items-center bg-white rounded p-1">
-                                        <span class="flex-grow-1 ps-2 small load-image">Foto empaque abierto</span>
-                                        <label class="btn btn-amarillo-toni btn-sm btn-sm-xs m-0 px-2 text-uppercase">
-                                            CARGAR UNA IMAGEN
-                                            <input type="file" hidden @change="handleFileChange($event, 'empaque')" accept="image/*"
-                                                required>
-                                        </label>
-                                    </div>
-
-                                    <div class="d-flex gap-2 mb-3 justify-content-center" v-if="previewCodigo || previewEmpaque">
-                                        <img v-if="previewCodigo" :src="previewCodigo" class="img-thumbnail" width="60">
-                                        <img v-if="previewEmpaque" :src="previewEmpaque" class="img-thumbnail" width="60">
+                                    <div class="d-flex gap-2 mb-3 justify-content-center" v-if="previewCodigo">
+                                        <img :src="previewCodigo" class="img-thumbnail" width="60">
                                     </div>
 
                                     <div class="row g-2 mb-4">
@@ -187,8 +190,8 @@ const formatFecha = (fecha) =>
                                     <template v-else>
                                         <div v-for="item in codigos.data" :key="item.id"
                                             class="codigo-row d-flex justify-content-between align-items-center mb-2 px-3 py-2">
-                                            <span class="text-white small">{{ item.codigo_unico }}</span>
-                                            <span class="text-white small">{{ formatFecha(item.created_at) }}</span>
+                                            <span class="small">{{ item.codigo_unico }}</span>
+                                            <span class="small">{{ formatFecha(item.created_at) }}</span>
                                             <span class="badge-status" :class="item.estado">{{ estadoLabel(item.estado) }}</span>
                                         </div>
 
@@ -198,52 +201,61 @@ const formatFecha = (fecha) =>
                                     </template>
                                 </div>
 
-                                <div v-if="codigos.links.length > 3"
-                                    class="d-flex justify-content-center align-items-center mt-4 gap-2">
-                                    <template v-for="(link, k) in codigos.links" :key="k">
-                                        <Link v-if="link.url" :href="link.url + '&tab=mis-codigos'" class="page-link-custom"
-                                            :class="{ 'active': link.active }" v-html="link.label" preserve-scroll />
-                                        <span v-else class="page-link-disabled" v-html="link.label"></span>
-                                    </template>
+                                <div v-if="codigos.links.length > 3" class="paginacion mt-4">
+                                    <button v-if="paginacion.prev?.url"
+                                        @click="navegarPagina(paginacion.prev.url)"
+                                        class="pag-nav">&#9664;</button>
+                                    <span v-else class="pag-nav pag-nav--disabled">&#9664;</span>
+
+                                    <div class="pag-pages">
+                                        <template v-for="(link, k) in paginacion.pages" :key="k">
+                                            <button v-if="link.url"
+                                                @click="navegarPagina(link.url)"
+                                                class="pag-num" :class="{ 'pag-num--active': link.active }"
+                                                v-html="link.label" />
+                                            <span v-else class="pag-dots" v-html="link.label"></span>
+                                        </template>
+                                    </div>
+
+                                    <button v-if="paginacion.next?.url"
+                                        @click="navegarPagina(paginacion.next.url)"
+                                        class="pag-nav">&#9654;</button>
+                                    <span v-else class="pag-nav pag-nav--disabled">&#9654;</span>
                                 </div>
                             </div>
 
                             <!-- SUCCESS -->
-                            <div v-if="vistaActiva === 'success'" class="p-4 text-center success-content">
+                            <div v-if="vistaActiva === 'success'" class="text-center success-content py-4">
                                 <h4 class="text-white">TU CÓDIGO HA SIDO INGRESADO</h4>
                                 <p>REVISAREMOS LA INFORMACIÓN</p>
                                 <p>PARA ACEPTAR SU VERACIDAD</p>
-                                <div class="d-flex justify-content-center gap-3 flex-wrap">
-                                    <img src="/images/ranking.png" class="img-fluid">
-                                    <img src="/images/participa-por-entradas.png" class="img-fluid">
+                                <div class="d-flex mt-3 justify-content-center gap-3 flex-wrap">
+                                    <img src="/images/codigo-ingresado.png" class="img-fluid">
+                                </div>
+
+                                <div class="text-center mt-4 mb-3 d-flex flex-column align-items-center gap-2">
+                                    <button type="button" class="btn btn-primary text-uppercase btn-code" @click="irAIngresar">
+                                        INGRESAR OTRO CÓDIGO
+                                    </button>
+
+                                    <button type="button" class="btn btn-primary text-uppercase btn-code" @click="irAMisCodigos">
+                                        VER MIS CÓDIGOS
+                                    </button>
                                 </div>
                             </div>
 
                         </div>
 
-                        <!-- BOTONES -->
+                        <!-- BOTONES MOBILE -->
                         <div class="text-center mt-4 mb-3 d-flex d-lg-none flex-column align-items-center gap-2">
-
                             <button v-if="vistaActiva === 'ingresar'" type="button" class="btn btn-primary text-uppercase btn-code"
                                 @click="irAMisCodigos">
                                 VER MIS CÓDIGOS
                             </button>
-
                             <button v-else-if="vistaActiva === 'mis-codigos'" type="button" class="btn btn-primary text-uppercase btn-code"
                                 @click="irAIngresar">
                                 INGRESAR MÁS EMPAQUES
                             </button>
-
-                            <template v-else-if="vistaActiva === 'success'">
-                                <button type="button" class="btn btn-primary text-uppercase btn-code" @click="irAIngresar">
-                                    INGRESAR OTRO CÓDIGO
-                                </button>
-
-                                <button type="button" class="btn btn-primary text-uppercase btn-code" @click="irAMisCodigos">
-                                    VER MIS CÓDIGOS
-                                </button>
-                            </template>
-
                         </div>
                     </div>
                 </div>
@@ -305,9 +317,15 @@ const formatFecha = (fecha) =>
 }
 
 .codigo-row {
-    background-color: var(--toni-blanco-transp);
+    background-color: var(--toni-blanco);
     border-radius: 10px;
     font-size: 0.85rem;
+}
+
+.codigo-row span {
+    font-weight: bold;
+    color: var(--toni-azul-oscuro);
+    text-align: center;
 }
 
 .badge-status {
@@ -317,52 +335,71 @@ const formatFecha = (fecha) =>
     text-align: right;
 }
 
-.badge-status.pendiente {
-    color: var(--estado-pendiente);
-}
-
-.badge-status.aprobado {
-    color: var(--estado-verificado);
-}
-
 .badge-status.rechazado {
     color: var(--estado-descartado);
 }
 
-.page-link-custom {
+.paginacion {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.pag-nav {
+    color: var(--toni-amarillo);
+    font-size: 1rem;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 2px 6px;
+    flex-shrink: 0;
+    line-height: 1;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.pag-nav--disabled {
+    color: rgba(255, 255, 255, 0.25);
+    cursor: not-allowed;
+}
+
+.pag-pages {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.pag-num {
     color: white;
     text-decoration: none;
     font-weight: bold;
-    padding: 2px 8px;
-    transition: 0.3s;
-    font-size: 0.9rem;
-}
-
-.page-link-custom.active {
-    background-color: var(--toni-azul-marino);
-    border-radius: 50%;
+    font-size: 0.85rem;
     width: 28px;
     height: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+    background: none;
+    border: none;
+    cursor: pointer;
 }
 
-.page-link-disabled {
-    color: rgba(255, 255, 255, 0.4);
-    cursor: not-allowed;
-    padding: 2px 8px;
-    font-size: 0.9rem;
-}
-
-:deep(.page-link-custom) {
+:deep(.pag-num) {
     color: white;
 }
 
-.page-link-custom:first-child,
-.page-link-custom:last-child {
-    color: var(--toni-amarillo);
-    font-size: 1.2rem;
+.pag-num--active {
+    background-color: var(--toni-azul-marino);
+}
+
+.pag-dots {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.85rem;
+    padding: 0 2px;
 }
 
 .important-box {
@@ -432,10 +469,6 @@ const formatFecha = (fecha) =>
     font-size: 2rem;
     line-height: 1;
     color: var(--toni-azul-oscuro);
-}
-
-.no-padding {
-    padding-bottom: 0 !important;
 }
 
 .tab-nav {

@@ -15,15 +15,13 @@ class Codigo extends Model
     protected $fillable = [
         'user_id',
         'codigo_unico',
-        'producto',
         'foto_codigo',
-        'foto_empaque',
-        'estado' // pendiente, aprobado, rechazado
+        'estado',
     ];
 
     public function getFechaFormateadaAttribute()
     {
-        return $this->created_at->format('Y-m-d H:i');
+        return $this->created_at?->format('Y-m-d H:i');
     }
 
     public function usuario()

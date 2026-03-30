@@ -24,26 +24,31 @@ class CodigoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'codigo_unico' => 'required|string|max:20|unique:codigos,codigo_unico',
-            'producto' => 'required|string',
-            'foto_codigo' => 'required|image|max:2048',
-            'foto_empaque' => 'required|image|max:2048',
+            'codigo_lote'   => ['required', 'string', 'regex:/^L\d{5}$/'],
+            'codigo_conteo' => ['required', 'digits_between:1,50'],
+            'foto_codigo'   => ['required', 'image', 'max:2048'],
         ], [
-            'codigo_unico.unique' => 'Este código ya ha sido registrado anteriormente por otro participante o por ti.',
-            'codigo_unico.required' => 'El código del empaque es obligatorio.',
+            'codigo_lote.required'   => 'El código de lote es obligatorio.',
+            'codigo_lote.regex'      => 'El código de lote debe iniciar con "L" seguido de 5 números (ej. L12345).',
+            'codigo_conteo.required' => 'El código de conteo es obligatorio.',
+            'codigo_conteo.digits_between' => 'El código de conteo solo debe contener números.',
         ]);
 
-        // Guardar archivos en storage/app/public/promocion
+        $codigoUnico = $request->codigo_lote . $request->codigo_conteo;
+
+        if (Codigo::where('codigo_unico', $codigoUnico)->exists()) {
+            return back()->withErrors([
+                'codigo_lote' => 'Este código ya ha sido registrado anteriormente por otro participante o por ti.',
+            ])->withInput();
+        }
+
         $pathCodigo = $request->file('foto_codigo')->store('promocion/codigos', 'public');
-        $pathEmpaque = $request->file('foto_empaque')->store('promocion/empaques', 'public');
 
         Codigo::create([
-            'user_id' => auth()->id(),
-            'codigo_unico' => $request->codigo_unico,
-            'producto' => $request->producto,
-            'foto_codigo' => $pathCodigo,
-            'foto_empaque' => $pathEmpaque,
-            'estado' => 'pendiente'
+            'user_id'      => auth()->id(),
+            'codigo_unico' => $codigoUnico,
+            'foto_codigo'  => $pathCodigo,
+            'estado'       => 'pendiente',
         ]);
 
         return back()->with('mensaje', '¡Tu código ha sido enviado con éxito y está en revisión!');

@@ -14,9 +14,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('codigo_unico')->unique();
-            $table->string('producto');
             $table->string('foto_codigo');
-            $table->string('foto_empaque');
             $table->enum('estado', ['pendiente', 'aprobado', 'rechazado'])->default('pendiente'); // [cite: 106, 108, 111]
             $table->timestamps();
         });

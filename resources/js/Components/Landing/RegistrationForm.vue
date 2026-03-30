@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import { DatePicker } from 'v-calendar';
 import 'v-calendar/style.css';
@@ -21,6 +21,40 @@ const form = useForm({
 
 const masks = {
     modelValue: 'YYYY-MM-DD',
+};
+
+const fechaDisplay = ref('');
+
+// Sync display when calendar picker selects a date
+watch(() => form.fecha_nacimiento, (val) => {
+    if (val) {
+        const [y, m, d] = val.split('-');
+        const formatted = `${d}/${m}/${y}`;
+        if (formatted !== fechaDisplay.value) {
+            fechaDisplay.value = formatted;
+        }
+    }
+});
+
+const handleFechaInput = (e) => {
+    // Keep only digits, max 8 (ddmmyyyy)
+    const digits = e.target.value.replace(/\D/g, '').substring(0, 8);
+
+    let formatted = digits;
+    if (digits.length > 4) {
+        formatted = `${digits.substring(0, 2)}/${digits.substring(2, 4)}/${digits.substring(4)}`;
+    } else if (digits.length > 2) {
+        formatted = `${digits.substring(0, 2)}/${digits.substring(2)}`;
+    }
+
+    fechaDisplay.value = formatted;
+    e.target.value = formatted;
+
+    if (digits.length === 8) {
+        form.fecha_nacimiento = `${digits.substring(4, 8)}-${digits.substring(2, 4)}-${digits.substring(0, 2)}`;
+    } else {
+        form.fecha_nacimiento = null;
+    }
 };
 
 const enviado = ref(false);
@@ -70,9 +104,11 @@ const submit = () => {
             <div class="mb-2">
                 <DatePicker v-model.string="form.fecha_nacimiento" :masks="{ modelValue: 'YYYY-MM-DD' }" mode="date"
                     :popover="{ visibility: 'click' }" locale="es">
-                    <template #default="{ inputValue, inputEvents }">
+                    <template #default="{ inputEvents }">
                         <input class="form-input" :class="{ 'input-error': form.errors.fecha_nacimiento }"
-                            placeholder="Fecha de nacimiento: (dd-mm-aaaa)" :value="inputValue" v-on="inputEvents" />
+                            placeholder="Fecha de nacimiento: (dd/mm/aaaa)" :value="fechaDisplay"
+                            v-on="{ ...inputEvents, input: handleFechaInput }"
+                            inputmode="numeric" maxlength="10" />
                     </template>
                 </DatePicker>
                 <div v-if="form.errors.fecha_nacimiento" class="error-message">

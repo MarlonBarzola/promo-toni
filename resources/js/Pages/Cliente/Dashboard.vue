@@ -91,7 +91,7 @@ const formatFecha = (fecha) =>
         <div class="bg-malla">
             <div class="container">
                 <div class="malla-container">
-                    <div class="malla-content img-dashboard">
+                    <div class="img-malla">
                         <img src="/images/registra-codigo.png" alt="Promoción Toni Camino al Mundial" />
                     </div>
                     <div class="malla-content">
@@ -453,7 +453,7 @@ const formatFecha = (fecha) =>
     .btn-motivo {
         right: -40px;
     }
-    .img-dashboard {
+    .img-malla {
         margin-bottom: -2.4rem;
         position: relative;
     }

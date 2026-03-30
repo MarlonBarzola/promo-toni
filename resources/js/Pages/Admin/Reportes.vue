@@ -77,9 +77,9 @@ const exportar = () => {
                     <th>Nombre</th>
                     <th>Cédula</th>
                     <th>Código</th>
-                    <th>Producto</th>
                     <th>Estado</th>
                     <th>Fecha</th>
+                    <th>Foto Código</th>
                 </tr>
             </thead>
 
@@ -88,13 +88,15 @@ const exportar = () => {
                     <td>{{ item.usuario.nombre }} {{ item.usuario.apellido }}</td>
                     <td>{{ item.usuario.cedula }}</td>
                     <td>{{ item.codigo_unico }}</td>
-                    <td>{{ item.producto }}</td>
                     <td>
                         <span :class="'badge ' + item.estado">
                             {{ item.estado }}
                         </span>
                     </td>
                     <td>{{ item.fecha_formateada }}</td>
+                    <td>
+                        <a :href="'/storage/' + item.foto_codigo" target="_blank">Ver foto</a>
+                    </td>
                 </tr>
             </tbody>
         </table>

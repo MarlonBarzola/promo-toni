@@ -60,7 +60,9 @@ const logout = () => {
                     </li>
 
                     <li @click="menuAbierto = false">
-                        <a href="#productos">PRODUCTOS PARTICIPANTES</a>
+                        <Link :href="route('ganadores')" :class="{ 'active-link': isRouteActive('ganadores') }">
+                            GANADORES SEMANALES
+                        </Link>
                     </li>
 
                     <li @click="menuAbierto = false">

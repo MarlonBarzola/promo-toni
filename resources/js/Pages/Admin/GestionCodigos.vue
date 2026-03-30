@@ -1,9 +1,8 @@
 <script setup>
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import ImageModal from '@/Components/Admin/ImageModal.vue';
-import { router } from '@inertiajs/vue3';
-import { ref } from 'vue';
-import { watch } from 'vue';
+import { router, usePage } from '@inertiajs/vue3';
+import { ref, watch, computed } from 'vue';
 
 const props = defineProps({
     codigos: Object,
@@ -48,7 +47,27 @@ const cambiarFiltro = (estado) => {
     });
 };
 
+const modalRechazo = ref(false);
+const codigoArechazar = ref(null);
+const motivoSeleccionado = ref('');
+
+const abrirRechazo = (id) => {
+    codigoArechazar.value = id;
+    motivoSeleccionado.value = '';
+    modalRechazo.value = true;
+};
+
+const confirmarRechazo = () => {
+    if (!motivoSeleccionado.value) return;
+    router.patch(route('admin.validar', codigoArechazar.value), {
+        estado: 'rechazado',
+        motivo_descarte: motivoSeleccionado.value,
+    }, { preserveScroll: true });
+    modalRechazo.value = false;
+};
+
 const actualizarEstado = (id, estado) => {
+    if (!confirm('¿Estás seguro de que deseas aprobar este código?')) return;
     router.patch(route('admin.validar', id), { estado }, {
         preserveScroll: true
     });
@@ -62,6 +81,20 @@ const irPagina = (url) => {
         preserveState: true
     });
 };
+
+const page = usePage();
+const toast = ref(null);
+let toastTimer = null;
+
+watch(
+    () => page.props.flash?.mensaje,
+    (msg) => {
+        if (!msg) return;
+        toast.value = msg;
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => { toast.value = null; }, 3500);
+    }
+);
 </script>
 
 <template>
@@ -109,7 +142,7 @@ const irPagina = (url) => {
             <div v-for="item in codigos.data" :key="item.id" class="admin-card">
 
                 <div class="admin-card-header">
-                    <strong>{{ item.usuario.nombre }} {{ item.usuario.apellido }}</strong>
+                    <strong class="mr-2">{{ item.usuario.nombre }} {{ item.usuario.apellido }}</strong>
                     <small>{{ item.codigo_unico }}</small>
                 </div>
 
@@ -122,12 +155,6 @@ const irPagina = (url) => {
                             @click="abrirImagen('/storage/' + item.foto_codigo)" />
                     </div>
 
-                    <div class="image-box">
-                        <span>Foto del empaque</span>
-                        <img :src="'/storage/' + item.foto_empaque"
-                            @click="abrirImagen('/storage/' + item.foto_empaque)" />
-                    </div>
-
                 </div>
 
                 <!-- ACCIONES -->
@@ -135,7 +162,7 @@ const irPagina = (url) => {
                     <button class="btn-approve" @click="actualizarEstado(item.id, 'aprobado')">
                         Aprobar
                     </button>
-                    <button class="btn-reject" @click="actualizarEstado(item.id, 'rechazado')">
+                    <button class="btn-reject" @click="abrirRechazo(item.id)">
                         Rechazar
                     </button>
                 </div>
@@ -160,8 +187,35 @@ const irPagina = (url) => {
                 :class="{ active: link.active }" @click="irPagina(link.url)" />
         </div>
 
-        <!-- MODAL -->
+        <!-- MODAL IMAGEN -->
         <ImageModal :show="modal" :image="imagenSeleccionada" @close="modal = false" />
+
+        <!-- MODAL RECHAZO -->
+        <Teleport to="body">
+            <div v-if="modalRechazo" class="rechazo-overlay" @click.self="modalRechazo = false">
+                <div class="rechazo-modal">
+                    <h3>Motivo de rechazo</h3>
+                    <select v-model="motivoSeleccionado" class="rechazo-select">
+                        <option value="" disabled>Seleccione el motivo de rechazo</option>
+                        <option value="foto">Foto no cumple con parámetros de empaque abierto</option>
+                        <option value="codigo_empaque">Código de empaque no coincide con código registrado</option>
+                    </select>
+                    <div class="rechazo-actions">
+                        <button class="btn-cancelar" @click="modalRechazo = false">Cancelar</button>
+                        <button class="btn-confirmar" :disabled="!motivoSeleccionado" @click="confirmarRechazo">Confirmar rechazo</button>
+                    </div>
+                </div>
+            </div>
+        </Teleport>
+
+        <!-- TOAST -->
+        <Teleport to="body">
+            <Transition name="toast">
+                <div v-if="toast" class="admin-toast">
+                    ✓ {{ toast }}
+                </div>
+            </Transition>
+        </Teleport>
 
     </AdminLayout>
 </template>
@@ -247,6 +301,7 @@ const irPagina = (url) => {
     display: flex;
     gap: 10px;
     padding: 15px;
+    justify-content: center;
 }
 
 .image-box {
@@ -336,5 +391,101 @@ const irPagina = (url) => {
 
 .pagination button:disabled {
     opacity: 0.5;
+}
+
+/* MODAL RECHAZO */
+.rechazo-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.rechazo-modal {
+    background: white;
+    border-radius: 12px;
+    padding: 28px;
+    width: 100%;
+    max-width: 440px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.rechazo-modal h3 {
+    margin: 0 0 18px;
+    font-size: 1.1rem;
+}
+
+.rechazo-select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    outline: none;
+    cursor: pointer;
+}
+
+.rechazo-select:focus {
+    border-color: #111827;
+}
+
+.rechazo-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-cancelar {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+}
+
+.btn-confirmar {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background: #ef4444;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-confirmar:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* TOAST */
+.admin-toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #111827;
+    color: white;
+    padding: 14px 22px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    z-index: 2000;
+}
+
+.toast-enter-active,
+.toast-leave-active {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.toast-enter-from,
+.toast-leave-to {
+    opacity: 0;
+    transform: translateY(12px);
 }
 </style>

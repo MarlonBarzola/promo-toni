@@ -222,8 +222,12 @@ select.custom-input {
     padding-block: 5rem;
 }
 
+.img-malla {
+    width: 55%;
+}
+
 .malla-content {
-    width: 50%;
+    width: 45%;
 }
 
 @media (max-width: 992px) {
@@ -231,6 +235,10 @@ select.custom-input {
         flex-direction: column;
         padding-block: 2rem;
     }
+    .img-malla {
+    width: 100%;
+}
+
     .malla-content {
         width: 100%;
     }

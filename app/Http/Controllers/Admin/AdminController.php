@@ -51,12 +51,19 @@ class AdminController extends Controller
     public function update(Request $request, Codigo $codigo)
     {
         $request->validate([
-            'estado' => 'required|in:aprobado,rechazado'
+            'estado'           => 'required|in:aprobado,rechazado',
+            'motivo_descarte'  => 'nullable|in:codigo_empaque,foto|required_if:estado,rechazado',
         ]);
 
-        $codigo->update([
-            'estado' => $request->estado
-        ]);
+        $data = ['estado' => $request->estado];
+
+        if ($request->estado === 'rechazado') {
+            $data['motivo_descarte'] = $request->motivo_descarte;
+        } else {
+            $data['motivo_descarte'] = null;
+        }
+
+        $codigo->update($data);
 
         return back()->with('mensaje', 'El código ha sido ' . $request->estado);
     }
@@ -140,11 +147,9 @@ class AdminController extends Controller
                 'Apellido',
                 'Cédula',
                 'Código',
-                'Producto',
                 'Estado',
                 'Fecha',
-                'Foto Código',
-                'Foto Empaque'
+                'Foto Código'
             ]);
 
             foreach ($codigos as $c) {
@@ -153,11 +158,9 @@ class AdminController extends Controller
                     $c->usuario->apellido,
                     $c->usuario->cedula,
                     $c->codigo_unico,
-                    $c->producto,
                     $c->estado,
                     $c->created_at->format('Y-m-d H:i'),
                     url('/storage/' . $c->foto_codigo),
-                    url('/storage/' . $c->foto_empaque),
                 ]);
             }
 

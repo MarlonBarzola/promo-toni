@@ -18,6 +18,10 @@ Route::get('/preguntas-frecuentes', function () {
     return Inertia::render('Faq');
 })->name('faq');
 
+Route::get('/ganadores-semanales', function () {
+    return Inertia::render('Ganadores');
+})->name('ganadores');
+
 // --- RUTAS PROTEGIDAS (DEBEN ESTAR LOGUEADOS) ---
 Route::middleware(['auth', 'verified'])->group(function () {
 

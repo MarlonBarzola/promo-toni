@@ -17,6 +17,7 @@ class Codigo extends Model
         'codigo_unico',
         'foto_codigo',
         'estado',
+        'motivo_descarte',
     ];
 
     public function getFechaFormateadaAttribute()

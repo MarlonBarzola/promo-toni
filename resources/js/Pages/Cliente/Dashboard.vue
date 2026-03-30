@@ -73,6 +73,7 @@ const limpiarFormulario = () => {
 };
 
 const mostrarModalRechazo = ref(false);
+const motivoRechazo = ref(null);
 
 const estadoLabel = (estado) =>
     ({ aprobado: 'VERIFICADO', rechazado: 'DESCARTADO' })[estado] ?? 'PENDIENTE';
@@ -210,7 +211,8 @@ const formatFecha = (fecha) =>
                                             <span class="badge-status" :class="item.estado">{{ estadoLabel(item.estado)
                                                 }}</span>
                                             <button v-if="item.estado === 'rechazado'" class="btn-motivo"
-                                                @click="mostrarModalRechazo = true" title="Ver motivo">
+                                                @click="mostrarModalRechazo = true; motivoRechazo = item.motivo_descarte"
+                                                title="Ver motivo">
                                                 <img src="/images/icon-buzon.svg" alt="Motivo de rechazo">
                                             </button>
                                         </div>
@@ -265,7 +267,7 @@ const formatFecha = (fecha) =>
         </div>
 
         <Transition name="fade">
-            <ModalRechazo v-if="mostrarModalRechazo" @close="mostrarModalRechazo = false" />
+            <ModalRechazo v-if="mostrarModalRechazo" :motivo="motivoRechazo" @close="mostrarModalRechazo = false" />
         </Transition>
 
         <Transition name="fade">

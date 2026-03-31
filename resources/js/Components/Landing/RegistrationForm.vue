@@ -10,6 +10,7 @@ const form = useForm({
     nombre: '',
     apellido: '',
     cedula: '',
+    telefono: '',
     ciudad: '',
     fecha_nacimiento: null,
     email: '',
@@ -93,6 +94,12 @@ const submit = () => {
                 <input type="text" v-model="form.cedula" placeholder="Cédula:" class="form-input"
                     :class="{ 'input-error': form.errors.cedula }">
                 <div v-if="form.errors.cedula" class="error-message">{{ form.errors.cedula }}</div>
+            </div>
+
+            <div class="mb-2">
+                <input type="tel" v-model="form.telefono" placeholder="Teléfono:" class="form-input"
+                    :class="{ 'input-error': form.errors.telefono }">
+                <div v-if="form.errors.telefono" class="error-message">{{ form.errors.telefono }}</div>
             </div>
 
             <div class="mb-2">

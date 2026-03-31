@@ -49,6 +49,7 @@ const form = useForm({
 
 const previewCodigo = ref(null);
 const mostrarModal = ref(false);
+const fileInputKey = ref(0);
 
 const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -70,6 +71,7 @@ const enviarFormulario = () => {
 const limpiarFormulario = () => {
     form.reset();
     previewCodigo.value = null;
+    fileInputKey.value++;
 };
 
 const mostrarModalRechazo = ref(false);
@@ -139,7 +141,7 @@ const formatFecha = (fecha) =>
                                         <span class="btn btn-amarillo-toni btn-sm btn-sm-xs m-0 px-2 text-uppercase">
                                             CARGAR UNA IMAGEN
                                         </span>
-                                        <input type="file" hidden @change="handleFileChange($event)" accept="image/*"
+                                        <input :key="fileInputKey" type="file" hidden @change="handleFileChange($event)" accept="image/*"
                                             required>
                                     </label>
 

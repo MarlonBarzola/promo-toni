@@ -7,7 +7,7 @@
     /* Colores Principales del Manual Toni */
     --toni-azul-marino: #000c93;
     --toni-azul-oscuro: #000c93;
-    --toni-azul-cobalto: #050c63;
+    --toni-azul-cobalto: #000155;
     --toni-celeste: #00bbee; /* Celeste brillante del fondo */
     --toni-amarillo: #fdc203; /* Amarillo de botones "Ingresar" */
     --toni-blanco-transp: rgba(255, 255, 255, 0.2);
@@ -70,6 +70,10 @@ h3 {
 
 .text-yellow {
     color: var(--toni-amarillo) !important;
+}
+
+.text-dark-blue {
+    color: var(--toni-azul-oscuro) !important;
 }
 
 .fuente-principal {

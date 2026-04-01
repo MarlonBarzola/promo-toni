@@ -4,7 +4,7 @@ defineEmits(['close']);
 </script>
 
 <template>
-    <ModalToni max-width="800px" @close="$emit('close')">
+    <ModalToni max-width="680px" @close="$emit('close')">
         <div class="row align-items-center g-0">
             <div class="col-6 text-center p-3 rounded-start">
                 <img src="/images/producto.png" class="img-fluid">
@@ -20,3 +20,25 @@ defineEmits(['close']);
         </div>
     </ModalToni>
 </template>
+
+<style scoped>
+h3 {
+    padding-right: 5rem;
+}
+
+p {
+    padding-right: 4rem;
+    font-size: 1.1rem;
+}
+
+@media (max-width: 992px) {
+    h3 {
+        font-size: 1.5rem;
+        padding-right: 0;
+    }
+    p {
+        font-size: 1rem;
+        padding-right: 0;
+    }
+}
+</style>

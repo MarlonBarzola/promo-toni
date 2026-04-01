@@ -113,7 +113,7 @@ const formatFecha = (fecha) =>
                         <div class="tab-content-container mis-codigos-content">
                             <!-- INGRESAR -->
                             <div v-if="vistaActiva === 'ingresar'" class="p-4">
-                                <h4 class="text-center text-white mb-4">INGRESA TUS CÓDIGOS</h4>
+                                <h4 class="text-center text-dark-blue mb-4">INGRESA TUS CÓDIGOS</h4>
 
                                 <form @submit.prevent="enviarFormulario">
                                     <div class="mb-2">
@@ -198,7 +198,7 @@ const formatFecha = (fecha) =>
                                     </div>
                                 </div>
 
-                                <h4 class="text-center text-white mb-4">MIS CÓDIGOS REGISTRADOS</h4>
+                                <h4 class="text-center text-dark-blue mb-4">MIS CÓDIGOS REGISTRADOS</h4>
 
                                 <div class="historial-container">
                                     <div v-if="$page.props.loading" class="skeletons">

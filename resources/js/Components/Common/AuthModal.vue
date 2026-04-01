@@ -60,9 +60,9 @@ defineEmits(['close']);
     position: relative;
     z-index: 2;
     text-align: center;
-    max-width: 50%;
+    max-width: 90%;
     margin: auto;
-    margin-bottom: -40px;
+    margin-bottom: -10px;
 }
 
 .modal-content-body {

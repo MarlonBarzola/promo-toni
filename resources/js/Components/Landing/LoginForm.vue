@@ -9,7 +9,7 @@ const modo = ref('login');
 
 // LOGIN
 const form = useForm({
-    email: '',
+    login: '',
     password: '',
     remember: false,
 });
@@ -48,15 +48,15 @@ const enviarRecuperacion = () => {
 
 <template>
     <div class="form-card">
-        <h2 class="text-center">
-            {{ modo === 'login' ? 'INICIA SESIÓN' : 'RECUPERAR CONTRASEÑA' }}
+        <h2 class="text-center text-dark-blue">
+            {{ modo === 'login' ? 'INGRESA TUS EMPAQUES' : 'RECUPERAR CONTRASEÑA' }}
         </h2>
 
         <!-- ir a registro -->
         <span v-if="modo === 'login'" class="d-block text-center text-primary fw-bold cursor-pointer"
             @click="emit('go-register')">
             ¿Aún no tienes una cuenta?
-            <span class="text-yellow">Regístrate aquí</span>
+            <span class="text-white">Regístrate aquí</span>
         </span>
 
         <!-- mensaje éxito -->
@@ -67,10 +67,10 @@ const enviarRecuperacion = () => {
         <!-- LOGIN -->
         <form v-if="modo === 'login'" @submit.prevent="submit" class="mt-4">
             <div class="mb-2">
-                <input type="email" v-model="form.email" placeholder="Correo electrónico:" class="form-input"
-                    :class="{ 'input-error': form.errors.email }" autocomplete="username">
-                <div v-if="form.errors.email" class="error-message">
-                    {{ form.errors.email }}
+                <input type="text" v-model="form.login" placeholder="Usuario o correo electrónico:" class="form-input"
+                    :class="{ 'input-error': form.errors.login }" autocomplete="username">
+                <div v-if="form.errors.login" class="error-message">
+                    {{ form.errors.login }}
                 </div>
             </div>
 
@@ -146,7 +146,7 @@ const enviarRecuperacion = () => {
 }
 
 .error-message {
-    color: var(--toni-amarillo);
+    color: var(--toni-azul-oscuro);
     font-size: 0.75rem;
     font-weight: bold;
     margin-top: 2px;
@@ -154,8 +154,8 @@ const enviarRecuperacion = () => {
 }
 
 .input-error {
-    border: 2px solid var(--toni-amarillo) !important;
-    background: rgba(255, 218, 0, 0.1) !important;
+    border: 2px solid var(--toni-azul-oscuro) !important;
+    background: rgba(0, 37, 90, 0.1) !important;
 }
 
 .forgot-link,

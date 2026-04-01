@@ -73,9 +73,9 @@ const submit = () => {
 
 <template>
     <div class="form-card">
-        <h2 class="text-center">REGISTRA TUS DATOS</h2>
+        <h2 class="text-center text-dark-blue">REGISTRA TUS DATOS</h2>
         <span class="d-block text-center text-primary fw-bold cursor-pointer" @click="emit('go-login')">
-            ¿Ya tienes una cuenta? <span class="text-yellow">Ingresa aquí</span>
+            ¿Ya tienes una cuenta? <span class="text-white">Ingresa aquí</span>
         </span>
         <form v-if="!enviado" @submit.prevent="submit" class="mt-4">
             <div class="mb-2">
@@ -215,17 +215,16 @@ const submit = () => {
 }
 
 .error-message {
-    color: var(--toni-amarillo);
+    color: var(--toni-azul-oscuro);
     font-size: 0.75rem;
     font-weight: bold;
     margin-top: 2px;
     padding-left: 5px;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .input-error {
-    border: 2px solid var(--toni-amarillo) !important;
-    background: rgba(255, 218, 0, 0.1) !important;
+    border: 2px solid var(--toni-azul-oscuro) !important;
+    background: rgba(0, 37, 90, 0.1) !important;
 }
 
 .success-box {

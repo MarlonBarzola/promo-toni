@@ -157,7 +157,6 @@ const logout = () => {
     height: 120px;
     width: auto;
     background: white;
-    padding: 10px;
     position: absolute;
     top: -25px;
     right: 20px;
@@ -250,7 +249,6 @@ const logout = () => {
     .logo-toni-mundial {
         height: 90px;
         top: -30px;
-        padding: 5px;
     }
 
     .logo-wrapper-left,

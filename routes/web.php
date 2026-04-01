@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Cliente\CodigoController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\GanadoresSemanalesController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -18,9 +19,7 @@ Route::get('/preguntas-frecuentes', function () {
     return Inertia::render('Faq');
 })->name('faq');
 
-Route::get('/ganadores-semanales', function () {
-    return Inertia::render('Ganadores');
-})->name('ganadores');
+Route::get('/ganadores-semanales', [GanadoresSemanalesController::class, 'public'])->name('ganadores');
 
 // --- RUTAS PROTEGIDAS (DEBEN ESTAR LOGUEADOS) ---
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -37,6 +36,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::patch('/validar-codigo/{codigo}', [AdminController::class, 'update'])->name('admin.validar');
         Route::get('/reportes', [AdminController::class, 'reportes'])->name('admin.reportes');
         Route::get('/export', [AdminController::class, 'export'])->name('admin.export');
+        Route::get('/ganadores-semanales', [GanadoresSemanalesController::class, 'index'])->name('admin.ganadores');
+        Route::post('/ganadores-semanales', [GanadoresSemanalesController::class, 'store'])->name('admin.ganadores.store');
     });
 });
 

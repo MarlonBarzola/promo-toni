@@ -112,11 +112,11 @@ img {
 
 /* Logo */
 
-.logo {
-    height: 80px;
+.logo-mail {
+    height: 110px;
     margin-top: 10px;
     margin-bottom: 10px;
-    max-height: 80px;
+    max-height: 110px;
     width: auto;
 }
 

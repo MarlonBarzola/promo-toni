@@ -90,7 +90,7 @@ const logout = () => {
             </div>
         </nav>
 
-        <div class="logo-mobile d-md-none">
+        <div class="logo-mobile d-lg-none">
             <Link :href="route('home')">
                 <img src="/images/logo-pasion.png" alt="Logo Pasión de Hincha">
             </Link>
@@ -102,12 +102,8 @@ const logout = () => {
 .navbar-custom {
     background-color: var(--toni-azul-cobalto);
     width: 100%;
-    top: 0;
-    z-index: 1000;
     display: flex;
     align-items: center;
-    padding-block: 25px;
-    height: 80px;
 }
 
 .container-nav {
@@ -119,6 +115,11 @@ const logout = () => {
     margin: 0 auto;
     padding: 0 20px;
     position: relative;
+    height: 80px;
+    background-image: url(/images/curva.png);
+    background-size: 15%;
+    background-repeat: no-repeat;
+    background-position: left bottom;
 }
 
 /* --- BOTÓN HAMBURGUESA --- */
@@ -147,10 +148,10 @@ const logout = () => {
 .logo-pasion {
     height: 110px;
     position: absolute;
-    top: -20px;
-    left: 20px;
+    top: 60px;
+    left: 7.5%; /* Centrado sobre curva (background-size: 15%) */
+    transform: translateX(-50%);
     z-index: 1002;
-    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
 }
 
 .logo-toni-mundial {
@@ -158,7 +159,7 @@ const logout = () => {
     width: auto;
     background: white;
     position: absolute;
-    top: -25px;
+    top: 0;
     right: 20px;
     z-index: 1001;
 }
@@ -228,11 +229,9 @@ const logout = () => {
 
 /* --- MEDIA QUERY: MOBILE --- */
 @media (max-width: 991px) {
-    .navbar-custom {
-        background-color: transparent;
-        background-image: url("/images/navbar-background.svg");
-        background-size: cover;
-        background-position: center;
+    .container-nav {
+        background-size: 35%;
+        background-position: center bottom;
     }
 
     .menu-toggle {
@@ -247,8 +246,7 @@ const logout = () => {
     }
 
     .logo-toni-mundial {
-        height: 90px;
-        top: -30px;
+        height: 110px;
     }
 
     .logo-wrapper-left,

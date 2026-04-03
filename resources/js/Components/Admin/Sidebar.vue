@@ -18,6 +18,14 @@ import { Link } from '@inertiajs/vue3';
             <Link :href="route('admin.ganadores')" class="nav-link">
                 🏆 Ganadores Semanales
             </Link>
+
+            <Link :href="route('admin.terminos')" class="nav-link">
+                📄 Términos y Condiciones
+            </Link>
+
+            <Link :href="route('admin.faq')" class="nav-link">
+                ❓ Preguntas Frecuentes
+            </Link>
         </nav>
     </aside>
 </template>

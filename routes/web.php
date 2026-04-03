@@ -1,23 +1,21 @@
 <?php
 
-use App\Http\Controllers\Cliente\CodigoController;
+use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\TerminosController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\GanadoresSemanalesController;
+use App\Http\Controllers\Cliente\CodigoController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Artisan;
 
-// --- RUTA PÚBLICA (LANDING) ---
+// --- RUTA PÚblica (LANDING) ---
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/terminos-y-condiciones', function () {
-    return Inertia::render('Terminos');
-})->name('terminos');
+Route::get('/terminos-y-condiciones', [HomeController::class, 'terminos'])->name('terminos');
 
-Route::get('/preguntas-frecuentes', function () {
-    return Inertia::render('Faq');
-})->name('faq');
+Route::get('/preguntas-frecuentes', [HomeController::class, 'faq'])->name('faq');
 
 Route::get('/ganadores-semanales', [GanadoresSemanalesController::class, 'public'])->name('ganadores');
 
@@ -38,6 +36,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/export', [AdminController::class, 'export'])->name('admin.export');
         Route::get('/ganadores-semanales', [GanadoresSemanalesController::class, 'index'])->name('admin.ganadores');
         Route::post('/ganadores-semanales', [GanadoresSemanalesController::class, 'store'])->name('admin.ganadores.store');
+        Route::get('/terminos-y-condiciones', [TerminosController::class, 'edit'])->name('admin.terminos');
+        Route::put('/terminos-y-condiciones', [TerminosController::class, 'update'])->name('admin.terminos.update');
+        Route::get('/faq', [FaqController::class, 'index'])->name('admin.faq');
+        Route::post('/faq', [FaqController::class, 'store'])->name('admin.faq.store');
+        Route::put('/faq/{faq}', [FaqController::class, 'update'])->name('admin.faq.update');
+        Route::delete('/faq/{faq}', [FaqController::class, 'destroy'])->name('admin.faq.destroy');
     });
 });
 

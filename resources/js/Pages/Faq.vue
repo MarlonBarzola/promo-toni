@@ -3,25 +3,11 @@ import { ref } from 'vue';
 import LandingLayout from '@/Layouts/LandingLayout.vue';
 import { Head } from '@inertiajs/vue3';
 
+const props = defineProps({
+    faqs: Array,
+});
+
 const indiceAbierto = ref(null);
-const faqs = [
-    {
-        pregunta: "¿CÓMO PUEDO PARTICIPAR EN LA PROMOCIÓN?",
-        respuesta: "Es muy fácil. Compra tus productos Toni participantes, busca el código único en el empaque e ingrésalo en la sección 'Ingresar Códigos' de esta web junto con una foto del envase."
-    },
-    {
-        pregunta: "¿CUÁLES SON LOS PRODUCTOS PARTICIPANTES?",
-        respuesta: "Participan Yogurt Clásico, Gelatoni y Avena Toni en sus presentaciones marcadas con la promoción."
-    },
-    {
-        pregunta: "¿HASTA CUÁNDO PUEDO REGISTRAR MIS CÓDIGOS?",
-        respuesta: "La promoción está vigente desde el 15 de agosto hasta el 30 de septiembre de 2021."
-    },
-    {
-        pregunta: "¿QUÉ HAGO SI MI CÓDIGO NO ES LEGIBLE?",
-        respuesta: "Si tienes problemas con la lectura del código, por favor comunícate con nuestras líneas de servicio al cliente o escríbenos a través de nuestras redes sociales oficiales de Toni."
-    }
-];
 
 const toggleFaq = (index) => {
     indiceAbierto.value = indiceAbierto.value === index ? null : index;

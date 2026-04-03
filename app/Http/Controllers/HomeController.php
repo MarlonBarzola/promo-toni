@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Faq;
+use App\Models\TerminosCondiciones;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -20,6 +22,22 @@ class HomeController extends Controller
 
         return Inertia::render('Home', [
             'ranking' => $ranking
+        ]);
+    }
+
+    public function terminos()
+    {
+        $terminos = TerminosCondiciones::first();
+
+        return Inertia::render('Terminos', [
+            'contenido' => $terminos?->contenido ?? '',
+        ]);
+    }
+
+    public function faq()
+    {
+        return Inertia::render('Faq', [
+            'faqs' => Faq::orderBy('orden')->orderBy('id')->get(),
         ]);
     }
 }

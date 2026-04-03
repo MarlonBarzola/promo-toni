@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Helpers\ValidationRules;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -32,15 +33,15 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'nombre' => 'required|string|max:255',
-            'apellido' => 'required|string|max:255',
-            'cedula' => 'required|string|unique:users,cedula',
-            'telefono' => 'required|string|max:20',
-            'ciudad' => 'required|string',
+            'nombre'           => ValidationRules::name(),
+            'apellido'         => ValidationRules::name(),
+            'cedula'           => ValidationRules::cedula(['unique:users,cedula']),
+            'telefono'         => ValidationRules::telefono(),
+            'ciudad'           => ValidationRules::ciudad(),
             'fecha_nacimiento' => 'required|date',
-            'email' => 'required|string|lowercase|email|max:255|unique:users,email',
-            'usuario' => 'required|string|max:255|unique:users,usuario',
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'email'            => 'required|string|lowercase|email|max:255|unique:users,email',
+            'usuario'          => ValidationRules::username(['unique:users,usuario']),
+            'password'         => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $user = User::create([
@@ -48,7 +49,7 @@ class RegisteredUserController extends Controller
             'apellido' => $request->apellido,
             'cedula' => $request->cedula,
             'telefono' => $request->telefono,
-            'ciudad' => $request->ciudad,
+            'ciudad' => strtoupper($request->ciudad),
             'fecha_nacimiento' => $request->fecha_nacimiento,
             'email' => $request->email,
             'usuario' => $request->usuario,

@@ -1,9 +1,19 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { Link, usePage, router } from '@inertiajs/vue3';
 
 const page = usePage();
 const menuAbierto = ref(false);
+const navRef = ref(null);
+
+const handleClickOutside = (event) => {
+    if (menuAbierto.value && navRef.value && !navRef.value.contains(event.target)) {
+        menuAbierto.value = false;
+    }
+};
+
+onMounted(() => document.addEventListener('click', handleClickOutside));
+onUnmounted(() => document.removeEventListener('click', handleClickOutside));
 
 const user = page.props.auth?.user;
 
@@ -28,7 +38,7 @@ const logout = () => {
 
 <template>
     <div>
-        <nav class="navbar-custom">
+        <nav class="navbar-custom" ref="navRef">
             <div class="container-nav">
 
                 <button class="menu-toggle" @click="toggleMenu" :class="{ 'open': menuAbierto }">

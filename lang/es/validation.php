@@ -14,6 +14,8 @@ return [
         'foto_codigo'      => 'foto del código',
         'foto_empaque'     => 'foto del empaque',
         'email'            => 'correo electrónico',
+        'usuario'          => 'usuario',
+        'telefono'         => 'teléfono',
         'password'         => 'contraseña',
     ],
     'before'          => 'El campo :attribute debe ser una fecha anterior a :date.',
@@ -24,6 +26,7 @@ return [
     ],
     'confirmed'       => 'La confirmación de :attribute no coincide.',
     'date'            => 'El campo :attribute no es una fecha válida.',
+    'digits'          => 'El campo :attribute debe tener :digits dígitos.',
     'email'           => 'El campo :attribute debe ser una dirección de correo válida.',
     'image'           => 'El campo :attribute debe ser una imagen.',
     'max'             => [
@@ -33,6 +36,14 @@ return [
     ],
     'mimes'           => 'El campo :attribute debe ser un archivo de tipo: :values.',
     'numeric'         => 'El campo :attribute debe ser un número.',
+    'regex'           => 'El formato del campo :attribute no es válido.',
     'required'        => 'El campo :attribute es obligatorio.',
     'unique'          => 'El campo :attribute ya ha sido registrado.',
+    'password'        => [
+        'letters'     => 'La :attribute debe contener al menos una letra.',
+        'mixed'       => 'La :attribute debe contener al menos una mayúscula y una minúscula.',
+        'numbers'     => 'La :attribute debe contener al menos un número.',
+        'symbols'     => 'La :attribute debe contener al menos un símbolo.',
+        'uncompromised' => 'La :attribute ha aparecido en filtraciones de datos. Por favor elige otra.',
+    ],
 ];

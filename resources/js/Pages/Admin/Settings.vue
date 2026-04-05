@@ -7,14 +7,24 @@ const props = defineProps({
     settings: Object,
 });
 
-const form = useForm({
+const formRegistro = useForm({
     key:   'registro_habilitado',
     value: props.settings.registro_habilitado,
 });
 
-const toggle = (nuevoValor) => {
-    form.value = nuevoValor;
-    form.post(route('admin.settings.update'));
+const formModo = useForm({
+    key:   'modo_lotes',
+    value: props.settings.modo_lotes,
+});
+
+const toggleRegistro = (nuevoValor) => {
+    formRegistro.value = nuevoValor;
+    formRegistro.post(route('admin.settings.update'));
+};
+
+const setModo = (nuevoModo) => {
+    formModo.value = nuevoModo;
+    formModo.post(route('admin.settings.update'));
 };
 </script>
 
@@ -25,6 +35,7 @@ const toggle = (nuevoValor) => {
 
             <FlashToast />
 
+            <!-- Registro de usuarios -->
             <div class="setting-card">
                 <div class="d-flex justify-content-between align-items-center gap-4 flex-wrap">
                     <div>
@@ -36,29 +47,53 @@ const toggle = (nuevoValor) => {
                     </div>
 
                     <div class="d-flex align-items-center gap-3 flex-shrink-0">
-                        <span class="badge-estado" :class="form.value ? 'badge--activo' : 'badge--inactivo'">
-                            {{ form.value ? 'ACTIVO' : 'INACTIVO' }}
+                        <span class="badge-estado" :class="formRegistro.value ? 'badge--activo' : 'badge--inactivo'">
+                            {{ formRegistro.value ? 'ACTIVO' : 'INACTIVO' }}
                         </span>
 
                         <button
                             class="btn btn-sm px-4"
-                            :class="form.value ? 'btn-outline-danger' : 'btn-success'"
-                            :disabled="form.processing"
-                            @click="toggle(!form.value)"
+                            :class="formRegistro.value ? 'btn-outline-danger' : 'btn-success'"
+                            :disabled="formRegistro.processing"
+                            @click="toggleRegistro(!formRegistro.value)"
                         >
-                            {{ form.processing ? '...' : (form.value ? 'Desactivar' : 'Activar') }}
+                            {{ formRegistro.processing ? '...' : (formRegistro.value ? 'Desactivar' : 'Activar') }}
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Placeholder para futuras configuraciones -->
-            <!-- 
+            <!-- Modo de lotes -->
             <div class="setting-card mt-3">
-                <h5 class="text-white mb-1">Otra configuración</h5>
-                ...
+                <div class="d-flex justify-content-between align-items-start gap-4 flex-wrap">
+                    <div>
+                        <h5 class="text-white mb-1">Modo de validación de códigos</h5>
+                        <p class="text-white-50 small mb-0">
+                            <strong class="text-white">Estricto:</strong> los códigos deben existir en la tabla de lotes importados. Acumula puntos según el lote.<br>
+                            <strong class="text-white">Libre:</strong> se acepta cualquier código sin validación de lotes. El ranking se basa en cantidad de códigos registrados.
+                        </p>
+                    </div>
+
+                    <div class="d-flex align-items-center gap-2 flex-shrink-0">
+                        <button
+                            class="btn btn-sm px-4"
+                            :class="formModo.value === 'estricto' ? 'btn-primary' : 'btn-outline-secondary'"
+                            :disabled="formModo.processing"
+                            @click="setModo('estricto')"
+                        >
+                            Estricto
+                        </button>
+                        <button
+                            class="btn btn-sm px-4"
+                            :class="formModo.value === 'libre' ? 'btn-warning' : 'btn-outline-secondary'"
+                            :disabled="formModo.processing"
+                            @click="setModo('libre')"
+                        >
+                            Libre
+                        </button>
+                    </div>
+                </div>
             </div>
-            -->
         </div>
     </AdminLayout>
 </template>

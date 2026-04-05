@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Cliente;
 use App\Http\Controllers\Controller;
 use App\Models\Codigo;
 use App\Models\Lote;
+use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,6 +17,7 @@ class CodigoController extends Controller
     {
         $user   = auth()->user();
         $userId = $user->id;
+        $modo   = Setting::get('modo_lotes', 'estricto');
 
         $codigos = Codigo::where('codigos.user_id', $userId)
             ->leftJoin('lotes', 'lotes.lote', '=', 'codigos.codigo_unico')
@@ -23,11 +25,26 @@ class CodigoController extends Controller
             ->orderBy('codigos.created_at', 'desc')
             ->paginate(6);
 
-        $puntos = (int) $user->puntos_acumulados;
-
-        $puesto = null;
-        if ($puntos > 0) {
-            $puesto = User::where('puntos_acumulados', '>', $puntos)->count() + 1;
+        if ($modo === 'estricto') {
+            $puntos = (int) $user->puntos_acumulados;
+            $puesto = null;
+            if ($puntos > 0) {
+                $puesto = User::where('puntos_acumulados', '>', $puntos)->count() + 1;
+            }
+        } else {
+            // Modo libre: puntaje = cantidad de códigos del usuario
+            $puntos = Codigo::where('user_id', $userId)
+                        ->where('estado', 'aprobado')
+                        ->count();
+            $puesto = null;
+            if ($puntos > 0) {
+                $puesto = DB::table('codigos')
+                    ->select('user_id', DB::raw('COUNT(*) as total'))
+                    ->where('estado', 'aprobado')
+                    ->groupBy('user_id')
+                    ->havingRaw('COUNT(*) > ?', [$puntos])
+                    ->count() + 1;
+            }
         }
 
         return Inertia::render('Cliente/Dashboard', [
@@ -55,46 +72,51 @@ class CodigoController extends Controller
 
         $codigoUnico = $request->codigo_lote . $request->codigo_conteo;
 
-        // Bloqueo temprano: evitar doble envío del mismo código por el mismo usuario
+        // Bloqueo temprano: evitar doble envío del mismo código
         if (Codigo::where('codigo_unico', $codigoUnico)->exists()) {
             return back()->withErrors([
                 'codigo_lote' => 'Este código ya ha sido registrado anteriormente.',
             ])->withInput();
         }
 
-        // Validación atómica con locking para evitar condiciones de carrera
-        $resultado = DB::transaction(function () use ($codigoUnico) {
-            /** @var \App\Models\Lote|null $lote */
-            $lote = Lote::where('lote', $codigoUnico)->lockForUpdate()->first();
+        $modo = Setting::get('modo_lotes', 'estricto');
 
-            if (!$lote) {
-                return ['estado' => 'invalido'];
+        if ($modo === 'estricto') {
+            // Validación atómica con locking para evitar condiciones de carrera
+            $resultado = DB::transaction(function () use ($codigoUnico) {
+                /** @var \App\Models\Lote|null $lote */
+                $lote = Lote::where('lote', $codigoUnico)->lockForUpdate()->first();
+
+                if (!$lote) {
+                    return ['estado' => 'invalido'];
+                }
+
+                if ($lote->usado) {
+                    return ['estado' => 'ya_usado'];
+                }
+
+                $lote->update([
+                    'usado'   => true,
+                    'user_id' => auth()->id(),
+                ]);
+
+                // Los puntos se acumularán cuando el admin apruebe el código
+                return ['estado' => 'ok'];
+            });
+
+            if ($resultado['estado'] === 'invalido') {
+                return back()->withErrors([
+                    'codigo_lote' => 'El código ingresado no es válido para esta promoción.',
+                ])->withInput();
             }
 
-            if ($lote->usado) {
-                return ['estado' => 'ya_usado'];
+            if ($resultado['estado'] === 'ya_usado') {
+                return back()->withErrors([
+                    'codigo_lote' => 'Este código ya fue canjeado por otro participante.',
+                ])->withInput();
             }
-
-            $lote->update([
-                'usado'   => true,
-                'user_id' => auth()->id(),
-            ]);
-
-            // Los puntos se acumularán cuando el admin apruebe el código
-            return ['estado' => 'ok', 'puntos' => $lote->puntos];
-        });
-
-        if ($resultado['estado'] === 'invalido') {
-            return back()->withErrors([
-                'codigo_lote' => 'El código ingresado no es válido para esta promoción.',
-            ])->withInput();
         }
-
-        if ($resultado['estado'] === 'ya_usado') {
-            return back()->withErrors([
-                'codigo_lote' => 'Este código ya fue canjeado por otro participante.',
-            ])->withInput();
-        }
+        // Modo libre: no se valida contra lotes, se acepta cualquier código
 
         $pathCodigo = $request->file('foto_codigo')->store('promocion/codigos', 'public');
 

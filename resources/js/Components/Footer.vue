@@ -12,17 +12,17 @@ import { Link} from '@inertiajs/vue3';
                     <div class="text-uppercase icons-social">
                         <div class="icons-row">
                             <a href="https://www.instagram.com/pasiondelhinchatoni/" target="_blank" class="flex align-items-center">
-                                <img src="/images/instagram.svg" alt="instagram" class="icon-social">
+                                <img src="/images/instagram.svg" alt="instagram" class="icon-social" loading="lazy">
                                 @pasiondelhinchatoni
                             </a>
                             <a href="https://www.instagram.com/tonilacteos/" target="_blank" class="flex align-items-center">
-                                <img src="/images/instagram.svg" alt="instagram" class="icon-social">
+                                <img src="/images/instagram.svg" alt="instagram" class="icon-social" loading="lazy">
                                 @tonilacteos
                             </a>
                         </div>
                         <div class="icons-row">
                             <a href="https://www.facebook.com/Tonilacteos " target="_blank" class="flex align-items-center">
-                                <img src="/images/facebook.svg" alt="facebook" class="icon-social">
+                                <img src="/images/facebook.svg" alt="facebook" class="icon-social" loading="lazy">
                                 tonilacteos
                             </a>
                         </div>
@@ -33,7 +33,7 @@ import { Link} from '@inertiajs/vue3';
                 </div>
             </div>
             <div>
-                <img src="/images/footer.svg" alt="Global Brand Awards" class="logo-footer">
+                <img src="/images/footer.svg" alt="Global Brand Awards" class="logo-footer" loading="lazy">
             </div>
         </div>
     </footer>

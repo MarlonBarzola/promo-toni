@@ -70,7 +70,7 @@ const irDashboard = (openLogin) => {
         </HeroPromotion>
 
         <div class="d-block d-lg-none pl-3">
-            <img src="/images/banner-promo-mobile.png" alt="">
+            <img src="/images/banner-promo-mobile.png" alt="" loading="lazy">
         </div>
 
         <div class="container">

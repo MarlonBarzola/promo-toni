@@ -9,8 +9,8 @@ defineProps({
 
 <template>
     <div class="hero-main">
-        <img src="/images/logo-lonchera.png" alt="Tu Pasión de Hincha Toni" class="img-fluid img-promo-main d-none d-md-block">
-        <img src="/images/logo-lonchera-mobile.png" alt="Tu Pasión de Hincha Toni" class="img-fluid img-promo-main d-block d-md-none">
+        <img src="/images/logo-lonchera.png" alt="Tu Pasión de Hincha Toni" class="img-fluid img-promo-main d-none d-md-block" fetchpriority="high">
+        <img src="/images/logo-lonchera-mobile.png" alt="Tu Pasión de Hincha Toni" class="img-fluid img-promo-main d-block d-md-none" fetchpriority="high">
         <slot />
     </div>
 </template>

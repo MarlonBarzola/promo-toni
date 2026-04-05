@@ -19,14 +19,14 @@ const props = defineProps({
                 <div class="malla-container">
                     <div class="img-malla">
                         <img class="d-none d-lg-block" src="/images/ganadores-semanales.png"
-                            alt="Gana premios semanales" />
+                            alt="Gana premios semanales" loading="lazy" />
                         <img class="d-block d-lg-none" src="/images/ganadores-semanales-mobile.png"
-                            alt="Gana premios semanales" />
+                            alt="Gana premios semanales" loading="lazy" />
                     </div>
                     <div class="malla-content">
                         <div class="content-container">
                             <img src="/images/titulo-ganadores.png" alt="Ganadores semanales"
-                                class="mb-2 titulo-ganadores">
+                                class="mb-2 titulo-ganadores" loading="lazy">
 
                             <div v-if="ganadores.length === 0" class="sin-ganadores">
                                 <p>Aún no hay ganadores publicados esta semana.</p>

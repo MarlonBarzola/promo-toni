@@ -1,10 +1,15 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, defineAsyncComponent } from 'vue';
 import Footer from '@/Components/Footer.vue';
 import Navbar from '@/Components/Navbar.vue';
-import RegistrationForm from '@/Components/Landing/RegistrationForm.vue';
-import LoginForm from '@/Components/Landing/LoginForm.vue';
 import AuthModal from '@/Components/Common/AuthModal.vue';
+
+const RegistrationForm = defineAsyncComponent(() =>
+    import('@/Components/Landing/RegistrationForm.vue')
+);
+const LoginForm = defineAsyncComponent(() =>
+    import('@/Components/Landing/LoginForm.vue')
+);
 
 const activeModal = ref(null);
 

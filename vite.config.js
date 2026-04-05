@@ -17,4 +17,15 @@ export default defineConfig({
             },
         }),
     ],
+    build: {
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    'vendor-vue': ['vue', '@inertiajs/vue3'],
+                    'vendor-bootstrap': ['bootstrap'],
+                    'vendor-calendar': ['v-calendar'],
+                },
+            },
+        },
+    },
 });

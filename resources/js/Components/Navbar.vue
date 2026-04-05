@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, computed } from 'vue';
 import { Link, usePage, router } from '@inertiajs/vue3';
 
 const page = usePage();
@@ -16,6 +16,7 @@ onMounted(() => document.addEventListener('click', handleClickOutside));
 onUnmounted(() => document.removeEventListener('click', handleClickOutside));
 
 const user = page.props.auth?.user;
+const registroHabilitado = computed(() => page.props.settings?.registro_habilitado ?? false);
 
 const emit = defineEmits(['open-login']);
 
@@ -64,7 +65,7 @@ const logout = () => {
                             INGRESAR CÓDIGO
                         </Link>
 
-                        <a v-else href="#" @click.prevent="$emit('open-login')">
+                        <a v-else-if="registroHabilitado" href="#" @click.prevent="$emit('open-login')">
                             INGRESAR CÓDIGO
                         </a>
                     </li>

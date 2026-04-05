@@ -6,6 +6,7 @@ import PromoBannerRow from '@/Components/Landing/PromoBannerRow.vue';
 import LazyImage from '@/Components/Common/LazyImage.vue';
 import SeoHead from '@/Components/Common/SeoHead.vue';
 import { usePage, router } from '@inertiajs/vue3';
+import { computed } from 'vue';
 
 
 defineProps({
@@ -14,6 +15,7 @@ defineProps({
 
 const page = usePage();
 const user = page.props.auth?.user;
+const registroHabilitado = computed(() => page.props.settings?.registro_habilitado ?? false);
 
 const logout = () => {
     router.post(route('logout'), {}, {
@@ -51,7 +53,7 @@ const irDashboard = (openLogin) => {
         <HeroPromotion>
             <div class="login">
                 <div class="login-buttons">
-                    <template v-if="!user">
+                    <template v-if="!user && registroHabilitado">
                         <button @click="openRegister" class="text-uppercase btn-registro">
                             Regístrate
                         </button>
@@ -60,7 +62,7 @@ const irDashboard = (openLogin) => {
                         </button>
                     </template>
 
-                    <template v-else>
+                    <template v-else-if="user">
                         <button @click="$inertia.visit(route('dashboard'))" class="text-uppercase btn-registro">
                             Ingresa un código
                         </button>
@@ -82,13 +84,13 @@ const irDashboard = (openLogin) => {
             <div class="ranking">
                 <div class="ranking-section">
                     <Ranking :ranking="ranking" />
-                     <button @click="irDashboard(openLogin)" class="text-uppercase btn btn-ingresar d-block d-lg-none">
+                     <button v-if="registroHabilitado || user" @click="irDashboard(openLogin)" class="text-uppercase btn btn-ingresar d-block d-lg-none">
                         Ingresa tu código aquí
                     </button>
                 </div>
                 <div class="promo-section d-none d-lg-block">
                     <PromoBannerRow />
-                    <button @click="irDashboard(openLogin)" class="text-uppercase btn btn-ingresar d-none d-lg-block">
+                    <button v-if="registroHabilitado || user" @click="irDashboard(openLogin)" class="text-uppercase btn btn-ingresar d-none d-lg-block">
                         Ingresa tu código aquí
                     </button>
                 </div>

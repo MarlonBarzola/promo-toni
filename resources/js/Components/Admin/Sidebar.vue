@@ -30,13 +30,17 @@ import { Link } from '@inertiajs/vue3';
             <Link :href="route('admin.productos')" class="nav-link">
                 🛒 Productos Participantes
             </Link>
+
+            <Link :href="route('admin.settings')" class="nav-link">
+                ⚙️ Configuración
+            </Link>
         </nav>
     </aside>
 </template>
 
 <style scoped>
 .sidebar {
-    width: 240px;
+    width: 310px;
     height: 100vh;
     background: #111827;
     color: white;

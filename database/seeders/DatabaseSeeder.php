@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             ProductosParticipantesSeeder::class,
             TerminosCondicionesSeeder::class,
             FaqSeeder::class,
+            SettingsSeeder::class,
         ]);
     }
 }

@@ -24,6 +24,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             DefaultUsersSeeder::class,
             ProductosParticipantesSeeder::class,
+            TerminosCondicionesSeeder::class,
+            FaqSeeder::class,
         ]);
     }
 }

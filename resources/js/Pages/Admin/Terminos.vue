@@ -148,6 +148,9 @@ const setColor = (color) => {
     border-radius: 8px 8px 0 0;
     padding: 8px 12px;
     align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
 .toolbar-group {

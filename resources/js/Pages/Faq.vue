@@ -19,10 +19,11 @@ const toggleFaq = (index) => {
     <LandingLayout>
         <div class="container py-5">
             <div class="row justify-content-center">
+                <div class="col-12">
+                     <h2 class="text-center text-white fw-bold mb-5 text-uppercase">Preguntas Frecuentes - Promoción "Tu Pasión de Hincha con Toni"</h2>
+                </div>
                 <div class="col-md-8">
                     <div class="faqs-container p-4">
-                        <h2 class="text-center text-white fw-bold mb-5 text-uppercase">Preguntas Frecuentes</h2>
-
                         <div class="accordion">
                             <div v-for="(faq, index) in faqs" :key="index" class="faq-item mb-3">
                                 <button @click="toggleFaq(index)"

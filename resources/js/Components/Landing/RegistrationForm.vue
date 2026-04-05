@@ -19,6 +19,7 @@ const form = useForm({
     password: '',
     password_confirmation: '',
     acepto_terminos: false,
+    acepto_privacidad: false,
 });
 
 const masks = {
@@ -158,12 +159,22 @@ const submit = () => {
                 <PasswordInput v-model="form.password_confirmation" placeholder="Confirmar Contraseña:" autocomplete="new-password" />
             </div>
 
-            <div class="form-check mb-4">
+            <div class="form-check mb-2">
                 <input class="form-check-input" type="checkbox" v-model="form.acepto_terminos" id="checkTerminos"
                     required>
                 <label class="form-check-label text-white small" for="checkTerminos">
                     Acepto los términos y condiciones y reconozco que, en caso de resultador ganador del paquete futbolero, la documentación para viajar a Estados Unidos (incluida visa vigente) es mi responsabilidad, y que el organizador no se hace responsable por su gestión, obtención o rechazo.
                 </label>
+                <div v-if="form.errors.acepto_terminos" class="error-message">{{ form.errors.acepto_terminos }}</div>
+            </div>
+
+            <div class="form-check mb-4">
+                <input class="form-check-input" type="checkbox" v-model="form.acepto_privacidad" id="checkPrivacidad"
+                    required>
+                <label class="form-check-label text-white small" for="checkPrivacidad">
+                    Acepto el tratamiento de mis datos personales de acuerdo con la política de privacidad.
+                </label>
+                <div v-if="form.errors.acepto_privacidad" class="error-message">{{ form.errors.acepto_privacidad }}</div>
             </div>
 
             <div class="text-center">

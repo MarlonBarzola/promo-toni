@@ -42,6 +42,8 @@ class RegisteredUserController extends Controller
             'email'            => 'required|string|lowercase|email:rfc,strict|max:255|unique:users,email',
             'usuario'          => ValidationRules::username(['unique:users,usuario']),
             'password'         => ['required', 'confirmed', Rules\Password::defaults()],
+            'acepto_terminos'   => 'accepted',
+            'acepto_privacidad' => 'accepted',
         ]);
 
         $user = User::create([

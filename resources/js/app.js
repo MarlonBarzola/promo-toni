@@ -10,6 +10,13 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
+const dismissLoader = () => {
+    const loader = document.getElementById('page-loader');
+    if (!loader) return;
+    loader.classList.add('fade-out');
+    loader.addEventListener('transitionend', () => loader.remove(), { once: true });
+};
+
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) =>
@@ -18,14 +25,19 @@ createInertiaApp({
             import.meta.glob('./Pages/**/*.vue'),
         ),
     setup({ el, App, props, plugin }) {
-        return createApp({ render: () => h(App, props) })
+        const app = createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue)
             .mount(el);
+
+        // Quitar splash una vez que Vue ha montado y el DOM está pintado
+        requestAnimationFrame(() => requestAnimationFrame(dismissLoader));
+
+        return app;
     },
     progress: {
-        color: '#FFD700', // Amarillo vibrante para que resalte
-        showSpinner: true, // Muestra el circulito de carga a la derecha
-        includeCSS: true,  // Asegura que se incluya el CSS base
+        color: '#FFD700',
+        showSpinner: true,
+        includeCSS: true,
     },
 });

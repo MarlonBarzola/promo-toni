@@ -13,10 +13,6 @@ const props = defineProps({
         <div class="container py-5">
             <div class="row justify-content-center">
                 <div class="col-lg-10">
-                    <h2 class="text-center text-white fw-bold mb-5 text-uppercase">
-                        Términos y Condiciones Generales de la Promoción "MEGA PROMO CON GELATONI"
-                    </h2>
-
                     <div class="terminos-content text-white">
                         <div v-if="contenido" v-html="contenido" class="tiptap-output" />
                         <p v-else class="text-center text-white">
@@ -36,10 +32,11 @@ const props = defineProps({
     padding-right: 15px;
 }
 
-:deep(.tiptap-output h1) { font-size: 1.8rem; font-weight: bold; margin-bottom: 0.5rem; }
-:deep(.tiptap-output h2) { font-size: 1.4rem; font-weight: bold; margin-bottom: 0.5rem; }
-:deep(.tiptap-output h3) { font-size: 1.2rem; font-weight: bold; margin-bottom: 0.4rem; }
+:deep(.tiptap-output h1) { font-weight: bold; margin-bottom: 0.5rem; }
+:deep(.tiptap-output h2) { font-weight: bold; margin-bottom: 0.5rem; }
+:deep(.tiptap-output h3) { font-weight: bold; margin-bottom: 0.4rem; }
 :deep(.tiptap-output p)  { margin-bottom: 0.8rem; }
-:deep(.tiptap-output ul) { padding-left: 1.5rem; margin-bottom: 0.8rem; }
-:deep(.tiptap-output ol) { padding-left: 1.5rem; margin-bottom: 0.8rem; }
+:deep(.tiptap-output ul) { padding-left: 1.5rem; margin-bottom: 0.8rem; list-style: disc; }
+:deep(.tiptap-output ol) { padding-left: 1.5rem; margin-bottom: 0.8rem; list-style: decimal; }
+:deep(.tiptap-output li) { display: list-item; }
 </style>

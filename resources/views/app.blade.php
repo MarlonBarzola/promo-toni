@@ -6,16 +6,42 @@
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
         <!-- Scripts -->
         @routes
         @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
         @inertiaHead
+
+        <style>
+            #page-loader {
+                position: fixed;
+                inset: 0;
+                z-index: 99999;
+                background-color: #000c93;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: opacity 0.4s ease;
+            }
+            #page-loader.fade-out {
+                opacity: 0;
+                pointer-events: none;
+            }
+            .loader-logo {
+                width: min(260px, 60vw);
+                animation: loader-pulse 1.4s ease-in-out infinite;
+            }
+            @keyframes loader-pulse {
+                0%, 100% { opacity: 1; }
+                50%       { opacity: 0.5; }
+            }
+        </style>
     </head>
     <body class="antialiased">
+        <!-- Splash screen: visible antes de que Vue monte -->
+        <div id="page-loader">
+            <img src="/images/logo-pasion.png" alt="Cargando..." class="loader-logo">
+        </div>
+
         @inertia
     </body>
 </html>

@@ -10,7 +10,7 @@
 </td>
 <td align="right" style="padding: 0 10px;">
 <a href="{{ $url }}" style="display: inline-block;">
-<img src="{{ config('app.url') }}/images/logo-toni.png" class="logo-mail" alt="{{ config('app.name') }}">
+<img src="{{ config('app.url') }}/images/logo-toni.jpg" class="logo-mail" alt="{{ config('app.name') }}">
 </a>
 </td>
 </tr>

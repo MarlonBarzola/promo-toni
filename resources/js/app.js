@@ -17,6 +17,23 @@ const dismissLoader = () => {
     loader.addEventListener('transitionend', () => loader.remove(), { once: true });
 };
 
+// Espera a que todo el contenido (imágenes, fuentes) esté cargado.
+// Si tarda más de 5 segundos igual lo quita para no bloquear al usuario.
+const dismissWhenReady = () => {
+    const MAX_WAIT = 5000;
+    const timer = setTimeout(dismissLoader, MAX_WAIT);
+
+    if (document.readyState === 'complete') {
+        clearTimeout(timer);
+        requestAnimationFrame(dismissLoader);
+    } else {
+        window.addEventListener('load', () => {
+            clearTimeout(timer);
+            requestAnimationFrame(dismissLoader);
+        }, { once: true });
+    }
+};
+
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) =>
@@ -30,8 +47,8 @@ createInertiaApp({
             .use(ZiggyVue)
             .mount(el);
 
-        // Quitar splash una vez que Vue ha montado y el DOM está pintado
-        requestAnimationFrame(() => requestAnimationFrame(dismissLoader));
+        // Quitar splash cuando todas las imágenes y recursos estén cargados
+        dismissWhenReady();
 
         return app;
     },

@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useForm } from '@inertiajs/vue3';
+import PasswordInput from '@/Components/Landing/PasswordInput.vue';
 
 const emit = defineEmits(['success', 'go-register']);
 
@@ -48,8 +49,8 @@ const enviarRecuperacion = () => {
 
 <template>
     <div class="form-card">
-        <h2 class="text-center text-dark-blue">
-            {{ modo === 'login' ? 'INGRESA TUS EMPAQUES' : 'RECUPERAR CONTRASEÑA' }}
+        <h2 class="text-center text-dark-blue text-uppercase">
+            {{ modo === 'login' ? 'Iniciar sesión' : 'RECUPERAR CONTRASEÑA' }}
         </h2>
 
         <!-- ir a registro -->
@@ -75,8 +76,7 @@ const enviarRecuperacion = () => {
             </div>
 
             <div class="mb-2">
-                <input type="password" v-model="form.password" placeholder="Contraseña:" class="form-input"
-                    :class="{ 'input-error': form.errors.password }" autocomplete="current-password">
+                <PasswordInput v-model="form.password" placeholder="Contraseña:" autocomplete="current-password" :has-error="!!form.errors.password" />
                 <div v-if="form.errors.password" class="error-message">
                     {{ form.errors.password }}
                 </div>
@@ -128,21 +128,6 @@ const enviarRecuperacion = () => {
     margin: 0 auto;
     position: relative;
     z-index: 10;
-}
-
-.form-input {
-    width: 100%;
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.8);
-    border-radius: 10px;
-    color: white;
-    padding: 10px 12px;
-    font-weight: bold;
-    outline: none;
-}
-
-.form-input::placeholder {
-    color: rgba(255, 255, 255, 0.8);
 }
 
 .error-message {

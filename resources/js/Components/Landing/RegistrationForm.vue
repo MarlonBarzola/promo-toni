@@ -1,8 +1,9 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import { DatePicker } from 'v-calendar';
 import 'v-calendar/style.css';
+import PasswordInput from '@/Components/Landing/PasswordInput.vue';
 
 const emit = defineEmits(['success', 'go-login']);
 
@@ -25,6 +26,17 @@ const masks = {
 };
 
 const fechaDisplay = ref('');
+
+const maxFechaNacimiento = computed(() => {
+    const d = new Date();
+    d.setFullYear(d.getFullYear() - 18);
+    return d;
+});
+
+const initialPage = computed(() => ({
+    month: maxFechaNacimiento.value.getMonth() + 1,
+    year: maxFechaNacimiento.value.getFullYear(),
+}));
 
 // Sync display when calendar picker selects a date
 watch(() => form.fecha_nacimiento, (val) => {
@@ -77,7 +89,7 @@ const submit = () => {
         <span class="d-block text-center text-primary fw-bold cursor-pointer" @click="emit('go-login')">
             ¿Ya tienes una cuenta? <span class="text-white">Ingresa aquí</span>
         </span>
-        <form v-if="!enviado" @submit.prevent="submit" class="mt-4">
+        <form v-if="!enviado" @submit.prevent="submit" class="mt-4" autocomplete="off">
             <div class="mb-2">
                 <input type="text" v-model="form.nombre" placeholder="Nombre:" class="form-input"
                     :class="{ 'input-error': form.errors.nombre }">
@@ -110,7 +122,9 @@ const submit = () => {
 
             <div class="mb-2">
                 <DatePicker v-model.string="form.fecha_nacimiento" :masks="{ modelValue: 'YYYY-MM-DD' }" mode="date"
-                    :popover="{ visibility: 'click' }" locale="es">
+                    :popover="{ visibility: 'click' }" locale="es"
+                    :max-date="maxFechaNacimiento"
+                    :initial-page="initialPage">
                     <template #default="{ inputEvents }">
                         <input class="form-input" :class="{ 'input-error': form.errors.fecha_nacimiento }"
                             placeholder="Fecha de nacimiento: (dd/mm/aaaa)" :value="fechaDisplay"
@@ -124,7 +138,7 @@ const submit = () => {
             </div>
 
             <div class="mb-2">
-                <input type="email" v-model="form.email" placeholder="Correo electrónico:" class="form-input"
+                <input type="text" inputmode="email" v-model="form.email" placeholder="Correo electrónico:" class="form-input"
                     :class="{ 'input-error': form.errors.email }">
                 <div v-if="form.errors.email" class="error-message">{{ form.errors.email }}</div>
             </div>
@@ -136,21 +150,19 @@ const submit = () => {
             </div>
 
             <div class="mb-2">
-                <input type="password" v-model="form.password" placeholder="Contraseña:" class="form-input"
-                    :class="{ 'input-error': form.errors.password }">
+                <PasswordInput v-model="form.password" placeholder="Contraseña:" autocomplete="new-password" :has-error="!!form.errors.password" />
                 <div v-if="form.errors.password" class="error-message">{{ form.errors.password }}</div>
             </div>
 
             <div class="mb-4">
-                <input type="password" v-model="form.password_confirmation" placeholder="Confirmar Contraseña:"
-                    class="form-input">
+                <PasswordInput v-model="form.password_confirmation" placeholder="Confirmar Contraseña:" autocomplete="new-password" />
             </div>
 
             <div class="form-check mb-4">
                 <input class="form-check-input" type="checkbox" v-model="form.acepto_terminos" id="checkTerminos"
                     required>
                 <label class="form-check-label text-white small" for="checkTerminos">
-                    Acepto los términos y condiciones y reconozco que, en caso de resultar ganador del premio final, la documentación para viajar a Estados Unidos (incluida visa vigente) es mi responsabilidad, y que el organizador no se hace responsable por su gestión, obtención o rechazo.
+                    Acepto los términos y condiciones y reconozco que, en caso de resultador ganador del paquete futbolero, la documentación para viajar a Estados Unidos (incluida visa vigente) es mi responsabilidad, y que el organizador no se hace responsable por su gestión, obtención o rechazo.
                 </label>
             </div>
 
@@ -161,9 +173,9 @@ const submit = () => {
             </div>
         </form>
         <div v-else class="success-box">
-            Te enviamos un enlace de verificación a tu correo.
+            Enviamos un enlace de verificación a tu correo. Confírmalo para ingresar.
             <br>
-            Debes confirmarlo para ingresar.
+            Revisa también en Correos no deseados.
         </div>
     </div>
 </template>
@@ -185,21 +197,6 @@ const submit = () => {
     color: var(--toni-azul-marino);
     font-size: 2.2rem;
     margin: 0;
-}
-
-.form-input {
-    width: 100%;
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.8);
-    border-radius: 10px;
-    color: white;
-    padding: 10px 12px;
-    font-weight: bold;
-    outline: none;
-}
-
-.form-input::placeholder {
-    color: rgba(255, 255, 255, 0.8);
 }
 
 .btn-enviar-toni {

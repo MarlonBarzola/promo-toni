@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Faq;
+use App\Models\ProductoParticipante;
 use App\Models\TerminosCondiciones;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -38,6 +39,16 @@ class HomeController extends Controller
     {
         return Inertia::render('Faq', [
             'faqs' => Faq::orderBy('orden')->orderBy('id')->get(),
+        ]);
+    }
+
+    public function productos()
+    {
+        return Inertia::render('Productos', [
+            'productos' => ProductoParticipante::where('activo', true)
+                ->orderBy('orden')
+                ->orderBy('id')
+                ->get(),
         ]);
     }
 }

@@ -74,6 +74,17 @@ const limpiarFormulario = () => {
     fileInputKey.value++;
 };
 
+const limpiarCampos = () => {
+    form.codigo_lote = '';
+    form.codigo_conteo = '';
+};
+
+const eliminarImagen = () => {
+    form.foto_codigo = null;
+    previewCodigo.value = null;
+    fileInputKey.value++;
+};
+
 const mostrarModalRechazo = ref(false);
 const motivoRechazo = ref(null);
 
@@ -137,7 +148,7 @@ const formatFecha = (fecha) =>
 
                                     <label class="mb-3 d-flex align-items-center bg-white rounded p-1"
                                         style="cursor:pointer">
-                                        <span class="flex-grow-1 ps-2 small load-image">Foto del código</span>
+                                        <span class="flex-grow-1 ps-2 small load-image">Foto del código con el envase abierto</span>
                                         <span class="btn btn-amarillo-toni btn-sm btn-sm-xs m-0 px-2 text-uppercase">
                                             CARGAR UNA IMAGEN
                                         </span>
@@ -151,14 +162,20 @@ const formatFecha = (fecha) =>
 
                                     <div class="row g-2 mb-4">
                                         <div class="col-6">
-                                            <button type="button" @click="limpiarFormulario"
+                                            <button type="button" @click="limpiarCampos"
                                                 class="btn btn-dark-blue btn-sm-xs w-100 text-uppercase">
-                                                ELIMINAR
+                                                BORRAR CAMPOS
                                             </button>
                                         </div>
                                         <div class="col-6">
+                                            <button type="button" @click="eliminarImagen"
+                                                class="btn btn-dark-blue btn-sm-xs w-100 text-uppercase">
+                                                ELIMINAR IMAGEN
+                                            </button>
+                                        </div>
+                                        <div class="col-12 text-center">
                                             <button type="button" @click="mostrarModal = true"
-                                                class="btn btn-amarillo-toni btn-sm-xs w-100 text-uppercase">
+                                                class="btn btn-amarillo-toni btn-sm-xs w-50 text-uppercase">
                                                 IMAGEN DE REFERENCIA
                                             </button>
                                         </div>
@@ -166,7 +183,7 @@ const formatFecha = (fecha) =>
 
                                     <div class="important-box mb-4">
                                         <p class="mb-0 fw-bold">IMPORTANTE:</p>
-                                        <p class="mb-0">Carga una foto clara del código en el envase.</p>
+                                        <p class="mb-0">Carga una foto clara del código con el envase abierto.</p>
                                         <p class="mb-0">Necesitamos una foto para verificar la veracidad del código</p>
                                     </div>
 
@@ -260,7 +277,7 @@ const formatFecha = (fecha) =>
                             </button>
                             <button v-else-if="vistaActiva === 'mis-codigos'" type="button"
                                 class="btn btn-primary text-uppercase btn-code" @click="irAIngresar">
-                                INGRESAR MÁS EMPAQUES
+                                INGRESAR MÁS CÓDIGOS
                             </button>
                         </div>
                     </div>

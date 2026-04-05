@@ -224,6 +224,7 @@ select.custom-input {
     align-items: center;
     justify-content: center;
     padding-block: 5rem;
+    gap: 10px;
 }
 
 .img-malla {
@@ -231,7 +232,31 @@ select.custom-input {
 }
 
 .malla-content {
-    width: 45%;
+    width: 48%;
+}
+
+.form-input:-webkit-autofill,
+.form-input:-webkit-autofill:hover,
+.form-input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+    box-shadow: 0 0 0px 1000px transparent inset;
+    -webkit-text-fill-color: white;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+.form-input {
+    width: 100%;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    color: var(--toni-blanco);
+    padding: 10px 12px;
+    font-weight: bold;
+    outline: none;
+}
+
+.form-input::placeholder {
+    color: rgba(255, 255, 255, 0.8);
 }
 
 @media (max-width: 992px) {

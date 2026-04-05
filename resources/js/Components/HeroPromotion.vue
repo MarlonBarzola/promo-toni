@@ -29,6 +29,7 @@ defineProps({
     height: 100vh;
     overflow: hidden;
     position: relative;
+    margin-bottom: -8rem;
 }
 
 .z-10 {
@@ -47,6 +48,7 @@ defineProps({
         background-image: none;
         height: auto;
         padding: 0;
+        margin-bottom: 0;
     }
 }
 </style>

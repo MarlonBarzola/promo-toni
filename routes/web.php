@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\ProductoParticipanteController;
 use App\Http\Controllers\Admin\TerminosController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\GanadoresSemanalesController;
@@ -16,6 +17,8 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/terminos-y-condiciones', [HomeController::class, 'terminos'])->name('terminos');
 
 Route::get('/preguntas-frecuentes', [HomeController::class, 'faq'])->name('faq');
+
+Route::get('/productos-participantes', [HomeController::class, 'productos'])->name('productos');
 
 Route::get('/ganadores-semanales', [GanadoresSemanalesController::class, 'public'])->name('ganadores');
 
@@ -42,6 +45,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/faq', [FaqController::class, 'store'])->name('admin.faq.store');
         Route::put('/faq/{faq}', [FaqController::class, 'update'])->name('admin.faq.update');
         Route::delete('/faq/{faq}', [FaqController::class, 'destroy'])->name('admin.faq.destroy');
+        Route::get('/productos', [ProductoParticipanteController::class, 'index'])->name('admin.productos');
+        Route::post('/productos', [ProductoParticipanteController::class, 'store'])->name('admin.productos.store');
+        Route::put('/productos/{producto}', [ProductoParticipanteController::class, 'update'])->name('admin.productos.update');
+        Route::delete('/productos/{producto}', [ProductoParticipanteController::class, 'destroy'])->name('admin.productos.destroy');
     });
 });
 

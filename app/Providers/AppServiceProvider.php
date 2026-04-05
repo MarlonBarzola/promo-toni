@@ -29,10 +29,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Password::defaults(function () {
-            return Password::min(8)
-                ->letters()
-                ->mixedCase()
-                ->numbers();
+            return Password::min(8);
         });
 
         Gate::define('access-admin', function (User $user) {

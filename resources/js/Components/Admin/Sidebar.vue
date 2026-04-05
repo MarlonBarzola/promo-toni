@@ -26,6 +26,10 @@ import { Link } from '@inertiajs/vue3';
             <Link :href="route('admin.faq')" class="nav-link">
                 ❓ Preguntas Frecuentes
             </Link>
+
+            <Link :href="route('admin.productos')" class="nav-link">
+                🛒 Productos Participantes
+            </Link>
         </nav>
     </aside>
 </template>

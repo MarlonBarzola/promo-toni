@@ -11,7 +11,7 @@ defineEmits(['close']);
             </div>
             <div class="col-6 p-3">
                 <h3 class="text-white text-uppercase mb-3 lh-1">
-                    Carga una foto clara del código en el envase
+                    Carga una foto clara del código con el envase abierto
                 </h3>
                 <p class="text-white mb-0 lh-1 fw-bold">
                     Necesitamos una foto para verificar la veracidad del código

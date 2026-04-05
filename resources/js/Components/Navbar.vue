@@ -53,7 +53,7 @@ const logout = () => {
                     </Link>
                 </div>
 
-                <ul class="nav-links" :class="{ 'show': menuAbierto }">
+                <ul class="nav-links text-uppercase" :class="{ 'show': menuAbierto }">
                     <li @click="menuAbierto = false">
                         <Link href="/" :class="{ 'active-link': isUrlActive('/') }">INICIO</Link>
                     </li>
@@ -67,6 +67,12 @@ const logout = () => {
                         <a v-else href="#" @click.prevent="$emit('open-login')">
                             INGRESAR CÓDIGO
                         </a>
+                    </li>
+
+                    <li @click="menuAbierto = false">
+                        <Link :href="route('productos')" :class="{ 'active-link': isRouteActive('productos') }">
+                            Productos Participantes
+                        </Link>
                     </li>
 
                     <li @click="menuAbierto = false">
@@ -95,7 +101,7 @@ const logout = () => {
                 </ul>
 
                 <div class="logo-wrapper-right">
-                    <img src="/images/logo-toni.svg" alt="Toni Camino al Mundial" class="logo-toni-mundial">
+                    <img src="/images/logo-toni.jpg" alt="Toni Camino al Mundial" class="logo-toni-mundial">
                 </div>
             </div>
         </nav>
@@ -165,7 +171,7 @@ const logout = () => {
 }
 
 .logo-toni-mundial {
-    height: 120px;
+    height: 100px;
     width: auto;
     background: white;
     position: absolute;
@@ -178,7 +184,7 @@ const logout = () => {
 .nav-links {
     display: flex;
     list-style: none;
-    gap: 30px;
+    gap: 20px;
     margin: 0 auto;
     padding: 0;
     align-items: center;
@@ -256,7 +262,7 @@ const logout = () => {
     }
 
     .logo-toni-mundial {
-        height: 110px;
+        height: 90px;
     }
 
     .logo-wrapper-left,

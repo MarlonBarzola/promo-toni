@@ -106,6 +106,7 @@ const irDashboard = (openLogin) => {
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
+    position: relative;
 }
 
 .ranking-section {

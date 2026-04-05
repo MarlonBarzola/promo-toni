@@ -1,3 +1,6 @@
+<script setup>
+import { Link} from '@inertiajs/vue3';
+</script>
 <template>
     <footer class="footer-toni py-4">
         <div class="container d-flex align-items-center justify-content-center flex-wrap">
@@ -8,25 +11,25 @@
                     </span>
                     <div class="text-uppercase icons-social">
                         <div class="icons-row">
-                            <a href="#" class="flex align-items-center">
-                                <img src="/images/instagram.svg" alt="instagram" class="icon-social">
-                                @tonimundial
-                            </a>
-                            <a href="#" class="flex align-items-center">
+                            <a href="https://www.instagram.com/pasiondelhinchatoni/" target="_blank" class="flex align-items-center">
                                 <img src="/images/instagram.svg" alt="instagram" class="icon-social">
                                 @pasiondelhinchatoni
                             </a>
+                            <a href="https://www.instagram.com/tonilacteos/" target="_blank" class="flex align-items-center">
+                                <img src="/images/instagram.svg" alt="instagram" class="icon-social">
+                                @tonilacteos
+                            </a>
                         </div>
                         <div class="icons-row">
-                            <a href="#" class="flex align-items-center">
+                            <a href="https://www.facebook.com/Tonilacteos " target="_blank" class="flex align-items-center">
                                 <img src="/images/facebook.svg" alt="facebook" class="icon-social">
-                                Toni Mundial
+                                tonilacteos
                             </a>
                         </div>
                     </div>
                 </div>
                 <div class="leyenda">
-                    Promoción válida desde el 6 de abril hasta 28 junio de 2026 o hasta agotar stock. Anuncio de ganadores paquetes mundialistas: 31 mayo 2026. Aplican términos y condiciones.
+                    Promoción válida desde el 6 de abril hasta 28 junio de 2026 o hasta agotar stock. Anuncio de ganadores paquetes mundialistas: 31 mayo 2026. <Link class="underline" :href="route('terminos')">Aplican términos y condiciones.</Link>
                 </div>
             </div>
             <div>

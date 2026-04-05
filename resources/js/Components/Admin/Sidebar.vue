@@ -30,6 +30,10 @@ import { Link } from '@inertiajs/vue3';
             <Link :href="route('admin.productos')" class="nav-link">
                 🛒 Productos Participantes
             </Link>
+
+            <Link :href="route('admin.lotes')" class="nav-link">
+                📋 Lotes de Códigos
+            </Link>
         </nav>
     </aside>
 </template>

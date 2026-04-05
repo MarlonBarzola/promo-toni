@@ -13,13 +13,10 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $ranking = User::withCount(['codigos' => function ($query) {
-            $query->where('estado', 'aprobado');
-        }])
-            ->having('codigos_count', '>', 0)
-            ->orderBy('codigos_count', 'desc')
+        $ranking = User::where('puntos_acumulados', '>', 0)
+            ->orderByDesc('puntos_acumulados')
             ->take(5)
-            ->get();
+            ->get(['id', 'usuario', 'nombre', 'apellido', 'puntos_acumulados']);
 
         return Inertia::render('Home', [
             'ranking' => $ranking

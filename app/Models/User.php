@@ -30,7 +30,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'usuario',
         'password',
-        'rol', // Añadimos el rol aquí también
+        'rol',
+        'puntos_acumulados',
     ];
 
     /**
@@ -51,14 +52,20 @@ class User extends Authenticatable implements MustVerifyEmail
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'email_verified_at'  => 'datetime',
+            'password'           => 'hashed',
+            'puntos_acumulados'  => 'integer',
         ];
     }
 
     public function codigos()
     {
         return $this->hasMany(Codigo::class);
+    }
+
+    public function userLotes()
+    {
+        return $this->hasMany(UserLote::class, 'user_id');
     }
 
     public function sendEmailVerificationNotification()

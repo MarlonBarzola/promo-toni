@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Codigo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class AdminController extends Controller
@@ -55,9 +56,12 @@ class AdminController extends Controller
             'motivo_descarte'  => 'nullable|in:codigo_empaque,foto|required_if:estado,rechazado',
         ]);
 
-        $data = ['estado' => $request->estado];
+        $estadoAnterior = $codigo->estado;
+        $nuevoEstado    = $request->estado;
 
-        if ($request->estado === 'rechazado') {
+        $data = ['estado' => $nuevoEstado];
+
+        if ($nuevoEstado === 'rechazado') {
             $data['motivo_descarte'] = $request->motivo_descarte;
         } else {
             $data['motivo_descarte'] = null;
@@ -65,16 +69,30 @@ class AdminController extends Controller
 
         $codigo->update($data);
 
-        return back()->with('mensaje', 'El código ha sido ' . $request->estado);
+        // Recalcular puntos_acumulados si cambia el estado de/a aprobado
+        if ($nuevoEstado !== $estadoAnterior
+            && ($nuevoEstado === 'aprobado' || $estadoAnterior === 'aprobado')
+            && $codigo->user_id
+        ) {
+            $total = DB::table('codigos')
+                ->join('lotes', 'lotes.lote', '=', 'codigos.codigo_unico')
+                ->where('codigos.user_id', $codigo->user_id)
+                ->where('codigos.estado', 'aprobado')
+                ->sum('lotes.puntos');
+
+            $codigo->usuario()->update(['puntos_acumulados' => (int) $total]);
+        }
+
+        return back()->with('mensaje', 'El código ha sido ' . $nuevoEstado);
     }
 
     public function reportes(Request $request)
     {
-        $desde = $request->desde;
-        $hasta = $request->hasta;
+        $desde  = $request->desde;
+        $hasta  = $request->hasta;
         $search = $request->search;
 
-        $query = Codigo::with('usuario');
+        $query = Codigo::with(['usuario', 'lote']);
 
         if ($desde && $hasta) {
             $query->whereBetween('created_at', [$desde, $hasta]);
@@ -111,7 +129,7 @@ class AdminController extends Controller
         $hasta = $request->hasta;
         $search = $request->search;
 
-        $query = Codigo::with('usuario');
+        $query = Codigo::with(['usuario', 'lote']);
 
         if ($desde && $hasta) {
             $query->whereBetween('created_at', [$desde, $hasta]);
@@ -147,6 +165,7 @@ class AdminController extends Controller
                 'Apellido',
                 'Cédula',
                 'Código',
+                'Puntos',
                 'Estado',
                 'Fecha',
                 'Foto Código'
@@ -158,6 +177,7 @@ class AdminController extends Controller
                     $c->usuario->apellido,
                     $c->usuario->cedula,
                     $c->codigo_unico,
+                    $c->lote?->puntos ?? '-',
                     $c->estado,
                     $c->created_at->format('Y-m-d H:i'),
                     url('/storage/' . $c->foto_codigo),

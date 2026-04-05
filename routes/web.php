@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\LoteController;
 use App\Http\Controllers\Admin\ProductoParticipanteController;
 use App\Http\Controllers\Admin\TerminosController;
 use App\Http\Controllers\Admin\AdminController;
@@ -49,6 +50,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/productos', [ProductoParticipanteController::class, 'store'])->name('admin.productos.store');
         Route::put('/productos/{producto}', [ProductoParticipanteController::class, 'update'])->name('admin.productos.update');
         Route::delete('/productos/{producto}', [ProductoParticipanteController::class, 'destroy'])->name('admin.productos.destroy');
+        Route::get('/lotes', [LoteController::class, 'index'])->name('admin.lotes');
+        Route::post('/lotes/import', [LoteController::class, 'import'])->name('admin.lotes.import');
     });
 });
 

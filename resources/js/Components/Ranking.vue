@@ -33,7 +33,7 @@ defineProps({
                     </div>
 
                     <div class="ranking-points fw-bold">
-                        {{ String(usuario.codigos_count).padStart(3, '0') }}
+                        {{ String(usuario.puntos_acumulados ?? 0).padStart(3, '0') }}
                     </div>
                 </div>
             </template>

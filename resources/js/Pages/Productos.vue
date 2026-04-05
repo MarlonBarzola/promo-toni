@@ -1,7 +1,6 @@
 <script setup>
 import { Head } from '@inertiajs/vue3';
 import LandingLayout from '@/Layouts/LandingLayout.vue';
-import SeoHead from '@/Components/Common/SeoHead.vue';
 
 const props = defineProps({
     productos: {
@@ -13,10 +12,6 @@ const props = defineProps({
 
 <template>
     <Head title="Productos Participantes" />
-    <SeoHead
-        title="Productos Participantes - Alimentando la pasión del hincha con Toni"
-        description="Descubre los productos Toni que participan en la promoción Alimentando la pasión del hincha con Toni. ¡Compra, acumula puntos y gana!"
-    />
     <LandingLayout>
         <div class="bg-malla">
             <div class="container">

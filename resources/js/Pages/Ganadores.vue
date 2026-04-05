@@ -2,7 +2,6 @@
 import { Head } from '@inertiajs/vue3';
 import LandingLayout from '@/Layouts/LandingLayout.vue';
 import LazyImage from '@/Components/Common/LazyImage.vue';
-import SeoHead from '@/Components/Common/SeoHead.vue';
 
 const props = defineProps({
     ganadores: {
@@ -13,12 +12,7 @@ const props = defineProps({
 </script>
 
 <template>
-
-    <SeoHead
-        title="Ganadores Semanales - Alimentando la pasión del hincha con Toni"
-        description="Conoce a los ganadores semanales de la promoción Alimentando la pasión del hincha con Toni. ¡Participa y sé el próximo!"
-    />
-    <Head title="Ganadores" />
+    <Head title="Ganadores semanales" />
     <LandingLayout>
         <div class="bg-malla">
             <div class="container">

@@ -1,7 +1,7 @@
 <script setup>
+import { Head } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import LandingLayout from '@/Layouts/LandingLayout.vue';
-import SeoHead from '@/Components/Common/SeoHead.vue';
 
 const props = defineProps({
     faqs: Array,
@@ -15,10 +15,7 @@ const toggleFaq = (index) => {
 </script>
 
 <template>
-    <SeoHead
-        title="Preguntas Frecuentes - Alimentando la pasión del hincha con Toni"
-        description="Resuelve tus dudas sobre la promoción Alimentando la pasión del hincha con Toni: cómo participar, productos, premios, ganadores y más."
-    />
+    <Head title="Preguntras Frecuentes" />
     <LandingLayout>
         <div class="container py-5">
             <div class="row justify-content-center">

@@ -6,8 +6,12 @@
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
+        <!-- Favicon -->
+        <link rel="icon" type="image/jpeg" href="/images/logo-toni.jpg">
+        <link rel="shortcut icon" type="image/jpeg" href="/images/logo-toni.jpg">
+
         <!-- SEO base (sobreescrito por cada página vía @inertiaHead) -->
-        <meta name="description" content="Participa en Tu Pasión de Hincha con Toni. Compra productos Toni, acumula puntos y gana paquetes para ir al Mundial 2026. ¡Regístrate ahora!">
+        <meta name="description" content="Alimentando la pasión del hincha con Toni. Registra tus empaques. ¡Participa por paquetes futboleros y gana premios semanales!">
         <meta name="robots" content="index, follow">
         <link rel="canonical" href="{{ config('app.url') }}">
 
@@ -16,7 +20,7 @@
         <meta property="og:site_name" content="{{ config('app.name') }}">
         <meta property="og:url" content="{{ config('app.url') }}">
         <meta property="og:title" content="Tu Pasión de Hincha con Toni">
-        <meta property="og:description" content="Participa en Tu Pasión de Hincha con Toni. Compra productos Toni, acumula puntos y gana paquetes para ir al Mundial 2026. ¡Regístrate ahora!">
+        <meta property="og:description" content="Alimentando la pasión del hincha con Toni. Registra tus empaques. ¡Participa por paquetes futboleros y gana premios semanales!">
         <meta property="og:image" content="{{ config('app.url') }}/images/og-image.jpg">
         <meta property="og:image:width" content="1200">
         <meta property="og:image:height" content="630">
@@ -25,7 +29,7 @@
         <!-- Twitter / X -->
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:title" content="Tu Pasión de Hincha con Toni">
-        <meta name="twitter:description" content="Participa en Tu Pasión de Hincha con Toni. Compra productos Toni, acumula puntos y gana paquetes para ir al Mundial 2026. ¡Regístrate ahora!">
+        <meta name="twitter:description" content="Alimentando la pasión del hincha con Toni. Registra tus empaques. ¡Participa por paquetes futboleros y gana premios semanales!">
         <meta name="twitter:image" content="{{ config('app.url') }}/images/og-image.jpg">
 
         <!-- Scripts -->

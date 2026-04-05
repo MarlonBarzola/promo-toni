@@ -55,7 +55,7 @@ class CodigoController extends Controller
         $request->validate([
             'codigo_lote'   => ['required', 'string', 'regex:/^L\d{5}$/'],
             'codigo_conteo' => ['required', 'digits_between:1,50'],
-            'foto_codigo'   => ['required', 'image', 'max:2048'],
+            'foto_codigo'   => ['required', 'image', 'max:5120'],
         ], [
             'codigo_lote.required'   => 'El código de lote es obligatorio.',
             'codigo_lote.regex'      => 'El código de lote debe iniciar con "L" seguido de 5 números (ej. L12345).',

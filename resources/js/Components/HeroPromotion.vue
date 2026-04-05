@@ -1,4 +1,5 @@
 <script setup>
+import LazyImage from '@/Components/Common/LazyImage.vue';
 defineProps({
     imageSrc: {
         type: String,
@@ -9,8 +10,14 @@ defineProps({
 
 <template>
     <div class="hero-main">
-        <img src="/images/logo-lonchera.png" alt="Tu Pasión de Hincha Toni" class="img-fluid img-promo-main d-none d-md-block" fetchpriority="high">
-        <img src="/images/logo-lonchera-mobile.png" alt="Tu Pasión de Hincha Toni" class="img-fluid img-promo-main d-block d-md-none" fetchpriority="high">
+        <div class="hero-img-wrapper d-none d-md-block">
+            <LazyImage src="/images/logo-lonchera.png" alt="Tu Pasión de Hincha Toni"
+                img-class="img-promo-main" fetchpriority="high" />
+        </div>
+        <div class="hero-img-wrapper d-block d-md-none">
+            <LazyImage src="/images/logo-lonchera-mobile.png" alt="Tu Pasión de Hincha Toni"
+                img-class="img-promo-main" fetchpriority="high" />
+        </div>
         <slot />
     </div>
 </template>
@@ -24,7 +31,6 @@ defineProps({
     background-repeat: no-repeat;
     background-size: 110%;
     display: flex;
-    display: flex;
     flex-direction: column;
     height: 100vh;
     overflow: hidden;
@@ -33,14 +39,18 @@ defineProps({
 }
 
 .z-10 {
-    z-index: 10;
+    z-index: 1;
 }
 
-.img-promo-main {
+.hero-img-wrapper {
     width: 100%;
     max-width: 1024px;
     position: relative;
     z-index: 1;
+}
+
+.img-promo-main {
+    width: 100%;
 }
 
 @media (max-width: 991px) {

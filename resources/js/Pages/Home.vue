@@ -3,6 +3,7 @@ import LandingLayout from '@/Layouts/LandingLayout.vue';
 import Ranking from '@/Components/Ranking.vue';
 import HeroPromotion from '@/Components/HeroPromotion.vue';
 import PromoBannerRow from '@/Components/Landing/PromoBannerRow.vue';
+import LazyImage from '@/Components/Common/LazyImage.vue';
 import { usePage, router, Head } from '@inertiajs/vue3';
 
 
@@ -70,7 +71,7 @@ const irDashboard = (openLogin) => {
         </HeroPromotion>
 
         <div class="d-block d-lg-none pl-3">
-            <img src="/images/banner-promo-mobile.png" alt="" loading="lazy">
+            <LazyImage src="/images/banner-promo-mobile.png" alt="Promoción Toni" />
         </div>
 
         <div class="container">
@@ -91,11 +92,12 @@ const irDashboard = (openLogin) => {
         </div>
         <div class="container d-none d-lg-block">
             <div class="banner-semanal">
-                <img src="/images/banner-semanal.png" alt="Gana premios semanales">
+                <LazyImage src="/images/banner-semanal.png" alt="Gana premios semanales" />
             </div>
         </div>
        
-        <img src="/images/premios-mobile.png" alt="Gana premios semanales" class="d-block d-lg-none">
+        <LazyImage src="/images/premios-mobile.png" alt="Gana premios semanales"
+            img-class="d-block d-lg-none" />
     </LandingLayout>
 </template>
 

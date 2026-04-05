@@ -4,7 +4,7 @@
             <button class="btn-close-modal" @click="$emit('close')">×</button>
 
             <div class="modal-header-img">
-                <img src="/images/login.png" alt="Participa" class="img-fluid">
+                <LazyImage src="/images/login.png" alt="Participa" img-class="img-fluid" />
             </div>
 
             <div class="modal-content-body">
@@ -16,6 +16,7 @@
 </template>
 
 <script setup>
+import LazyImage from '@/Components/Common/LazyImage.vue';
 defineProps({ show: Boolean });
 defineEmits(['close']);
 </script>

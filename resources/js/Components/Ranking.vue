@@ -1,5 +1,6 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
+import LazyImage from '@/Components/Common/LazyImage.vue';
 defineProps({
     ranking: Array
 });
@@ -8,8 +9,8 @@ defineProps({
 <template>
     <div class="ranking-container p-4">
         <div class="ranking-header text-center">
-            <img src="/images/titulo-ranking.png" alt="Tu Pasión de Hincha Toni"
-                class="img-fluid img-promo-ranking mb-3">
+            <LazyImage src="/images/titulo-ranking.png" alt="Tu Pasión de Hincha Toni"
+                img-class="img-promo-ranking mb-3" />
         </div>
 
         <div class="ranking-list">

@@ -5,6 +5,7 @@ import LandingLayout from '@/Layouts/LandingLayout.vue';
 import ModalRechazo from '@/Components/Cliente/ModalRechazo.vue';
 import ModalReferencia from '@/Components/Cliente/ModalReferencia.vue';
 import Paginacion from '@/Components/Common/Paginacion.vue';
+import LazyImage from '@/Components/Common/LazyImage.vue';
 
 const props = defineProps({
     codigos: Object,
@@ -51,10 +52,42 @@ const previewCodigo = ref(null);
 const mostrarModal = ref(false);
 const fileInputKey = ref(0);
 
-const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    form.foto_codigo = file;
-    previewCodigo.value = URL.createObjectURL(file);
+// Comprime la imagen al vuelo para evitar que fotos de iPhone (10-15 MB) congelen iOS Safari
+const comprimirImagen = (file, maxWidth = 1280, quality = 0.82) => {
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            const img = new Image();
+            img.onload = () => {
+                const scale = Math.min(1, maxWidth / img.width);
+                const canvas = document.createElement('canvas');
+                canvas.width  = Math.round(img.width  * scale);
+                canvas.height = Math.round(img.height * scale);
+                canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+                canvas.toBlob(
+                    (blob) => resolve(new File([blob], file.name, { type: 'image/jpeg' })),
+                    'image/jpeg',
+                    quality
+                );
+            };
+            img.src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
+};
+
+const handleFileChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Revocar URL anterior para liberar memoria
+    if (previewCodigo.value) {
+        URL.revokeObjectURL(previewCodigo.value);
+    }
+
+    const compressed = await comprimirImagen(file);
+    form.foto_codigo = compressed;
+    previewCodigo.value = URL.createObjectURL(compressed);
 };
 
 const enviarFormulario = () => {
@@ -69,6 +102,7 @@ const enviarFormulario = () => {
 };
 
 const limpiarFormulario = () => {
+    if (previewCodigo.value) URL.revokeObjectURL(previewCodigo.value);
     form.reset();
     previewCodigo.value = null;
     fileInputKey.value++;
@@ -80,6 +114,7 @@ const limpiarCampos = () => {
 };
 
 const eliminarImagen = () => {
+    if (previewCodigo.value) URL.revokeObjectURL(previewCodigo.value);
     form.foto_codigo = null;
     previewCodigo.value = null;
     fileInputKey.value++;
@@ -105,7 +140,7 @@ const formatFecha = (fecha) =>
             <div class="container">
                 <div class="malla-container">
                     <div class="img-malla">
-                        <img src="/images/registra-codigo.png" alt="Promoción Toni Camino al Mundial" />
+                        <LazyImage src="/images/registra-codigo.png" alt="Promoción Toni Camino al Mundial" />
                     </div>
                     <div class="malla-content">
                         <!-- TABS DESKTOP -->
@@ -251,7 +286,7 @@ const formatFecha = (fecha) =>
                                 <p>REVISAREMOS LA INFORMACIÓN</p>
                                 <p>PARA ACEPTAR SU VERACIDAD</p>
                                 <div class="d-flex mt-3 justify-content-center gap-3 flex-wrap">
-                                    <img src="/images/codigo-ingresado.png" class="img-fluid">
+                                <LazyImage src="/images/codigo-ingresado.png" img-class="img-fluid" alt="Código ingresado" />
                                 </div>
 
                                 <div class="text-center mt-4 mb-3 d-flex flex-column align-items-center gap-2">

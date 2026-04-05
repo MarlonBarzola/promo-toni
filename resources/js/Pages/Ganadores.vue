@@ -1,6 +1,7 @@
 ﻿<script setup>
 import { Head } from '@inertiajs/vue3';
 import LandingLayout from '@/Layouts/LandingLayout.vue';
+import LazyImage from '@/Components/Common/LazyImage.vue';
 
 const props = defineProps({
     ganadores: {
@@ -18,15 +19,15 @@ const props = defineProps({
             <div class="container">
                 <div class="malla-container">
                     <div class="img-malla">
-                        <img class="d-none d-lg-block" src="/images/ganadores-semanales.png"
-                            alt="Gana premios semanales" loading="lazy" />
-                        <img class="d-block d-lg-none" src="/images/ganadores-semanales-mobile.png"
-                            alt="Gana premios semanales" loading="lazy" />
+                        <LazyImage src="/images/ganadores-semanales.png" alt="Gana premios semanales"
+                            img-class="d-none d-lg-block" />
+                        <LazyImage src="/images/ganadores-semanales-mobile.png" alt="Gana premios semanales"
+                            img-class="d-block d-lg-none" />
                     </div>
                     <div class="malla-content">
                         <div class="content-container">
-                            <img src="/images/titulo-ganadores.png" alt="Ganadores semanales"
-                                class="mb-2 titulo-ganadores" loading="lazy">
+                            <LazyImage src="/images/titulo-ganadores.png" alt="Ganadores semanales"
+                                img-class="mb-2 titulo-ganadores" />
 
                             <div v-if="ganadores.length === 0" class="sin-ganadores">
                                 <p>Aún no hay ganadores publicados esta semana.</p>
@@ -59,7 +60,7 @@ const props = defineProps({
     padding: 0 20px 30px;
 }
 
-.titulo-ganadores {
+.malla-content .lazy-image-wrapper {
     width: 100%;
     max-width: 300px;
     margin: 0 auto;

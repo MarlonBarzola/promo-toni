@@ -6,6 +6,28 @@
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
+        <!-- SEO base (sobreescrito por cada página vía @inertiaHead) -->
+        <meta name="description" content="Participa en Tu Pasión de Hincha con Toni. Compra productos Toni, acumula puntos y gana paquetes para ir al Mundial 2026. ¡Regístrate ahora!">
+        <meta name="robots" content="index, follow">
+        <link rel="canonical" href="{{ config('app.url') }}">
+
+        <!-- Open Graph / WhatsApp / Facebook -->
+        <meta property="og:type" content="website">
+        <meta property="og:site_name" content="{{ config('app.name') }}">
+        <meta property="og:url" content="{{ config('app.url') }}">
+        <meta property="og:title" content="Tu Pasión de Hincha con Toni">
+        <meta property="og:description" content="Participa en Tu Pasión de Hincha con Toni. Compra productos Toni, acumula puntos y gana paquetes para ir al Mundial 2026. ¡Regístrate ahora!">
+        <meta property="og:image" content="{{ config('app.url') }}/images/og-image.jpg">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+        <meta property="og:locale" content="es_EC">
+
+        <!-- Twitter / X -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="Tu Pasión de Hincha con Toni">
+        <meta name="twitter:description" content="Participa en Tu Pasión de Hincha con Toni. Compra productos Toni, acumula puntos y gana paquetes para ir al Mundial 2026. ¡Regístrate ahora!">
+        <meta name="twitter:image" content="{{ config('app.url') }}/images/og-image.jpg">
+
         <!-- Scripts -->
         @routes
         @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])

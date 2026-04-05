@@ -1,6 +1,7 @@
 <script setup>
 import { Head } from '@inertiajs/vue3';
 import LandingLayout from '@/Layouts/LandingLayout.vue';
+import SeoHead from '@/Components/Common/SeoHead.vue';
 
 const props = defineProps({
     productos: {
@@ -12,16 +13,19 @@ const props = defineProps({
 
 <template>
     <Head title="Productos Participantes" />
+    <SeoHead
+        title="Productos Participantes - Alimentando la pasión del hincha con Toni"
+        description="Descubre los productos Toni que participan en la promoción Alimentando la pasión del hincha con Toni. ¡Compra, acumula puntos y gana!"
+    />
     <LandingLayout>
         <div class="bg-malla">
             <div class="container">
+                 <h2 class="text-center text-white fw-bold mb-4 text-uppercase mt-5">
+                    Productos Participantes
+                </h2>
                 <div class="malla-container">
                     <div class="malla-content w-100">
                         <div class="content-container">
-                            <h2 class="text-center text-white fw-bold mb-4 text-uppercase titulo">
-                                Productos Participantes
-                            </h2>
-
                             <ul class="lista-productos">
                                 <li v-for="(producto, i) in productos" :key="producto.id" class="producto-item">
                                     <span class="numero">{{ String(i + 1).padStart(2, '0') }}</span>
@@ -37,6 +41,10 @@ const props = defineProps({
 </template>
 
 <style scoped>
+.malla-container {
+    padding-block: 0;
+}
+
 .content-container {
     background-color: var(--toni-celeste);
     border-radius: 20px;
@@ -44,12 +52,7 @@ const props = defineProps({
     padding: 30px 30px;
     max-width: 600px;
     margin: 0 auto;
-}
-
-.titulo {
-    font-family: var(--fuente-principal);
-    font-size: 2rem;
-    color: var(--toni-azul-oscuro) !important;
+    margin-bottom: 6rem;
 }
 
 .lista-productos {

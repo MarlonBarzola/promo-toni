@@ -1,6 +1,6 @@
 <script setup>
-import { Head } from '@inertiajs/vue3';
 import LandingLayout from '@/Layouts/LandingLayout.vue';
+import SeoHead from '@/Components/Common/SeoHead.vue';
 
 const props = defineProps({
     contenido: String,
@@ -8,7 +8,10 @@ const props = defineProps({
 </script>
 
 <template>
-    <Head title="Términos y Condiciones" />
+    <SeoHead
+        title="Términos y Condiciones - Alimentando la pasión del hincha con Toni"
+        description="Lee los términos y condiciones de la promoción Alimentando la pasión del hincha con Toni."
+    />
     <LandingLayout>
         <div class="container py-5">
             <div class="row justify-content-center">

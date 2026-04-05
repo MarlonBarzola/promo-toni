@@ -4,7 +4,8 @@ import Ranking from '@/Components/Ranking.vue';
 import HeroPromotion from '@/Components/HeroPromotion.vue';
 import PromoBannerRow from '@/Components/Landing/PromoBannerRow.vue';
 import LazyImage from '@/Components/Common/LazyImage.vue';
-import { usePage, router, Head } from '@inertiajs/vue3';
+import SeoHead from '@/Components/Common/SeoHead.vue';
+import { usePage, router } from '@inertiajs/vue3';
 
 
 defineProps({
@@ -40,7 +41,10 @@ const irDashboard = (openLogin) => {
 
 <template>
 
-    <Head title="Inicio" />
+    <SeoHead
+        title="Alimentando la pasión del hincha con Toni"
+        description="Registra tus empaques. ¡Participa por paquetes futboleros y gana premios semanales!"
+    />
 
     <LandingLayout v-slot="{ openLogin, openRegister }">
 

@@ -46,7 +46,7 @@ class DefaultUsersSeeder extends Seeder
             'ciudad' => 'Ciudad2',
             'fecha_nacimiento' => '1990-01-01',
             'email' => 'user2@correo.com',
-            'usuario' => 'user',
+            'usuario' => 'user_2',
             'rol' => 'cliente',
             'email_verified_at' => now(),
             'password' => Hash::make('47@t8h"8~GJm'),

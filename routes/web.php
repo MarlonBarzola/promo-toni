@@ -51,6 +51,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/productos', [ProductoParticipanteController::class, 'store'])->name('admin.productos.store');
         Route::put('/productos/{producto}', [ProductoParticipanteController::class, 'update'])->name('admin.productos.update');
         Route::delete('/productos/{producto}', [ProductoParticipanteController::class, 'destroy'])->name('admin.productos.destroy');
+        Route::get('/lotes', [LoteController::class, 'index'])->name('admin.lotes');
+        Route::post('/lotes/import', [LoteController::class, 'import'])->name('admin.lotes.import');
         Route::get('/configuracion', [SettingsController::class, 'index'])->name('admin.settings');
         Route::post('/configuracion', [SettingsController::class, 'update'])->name('admin.settings.update');
     });

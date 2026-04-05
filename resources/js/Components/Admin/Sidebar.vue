@@ -31,6 +31,10 @@ import { Link } from '@inertiajs/vue3';
                 🛒 Productos Participantes
             </Link>
 
+            <Link :href="route('admin.lotes')" class="nav-link">
+                📋 Lotes de Códigos
+            </Link>
+
             <Link :href="route('admin.settings')" class="nav-link">
                 ⚙️ Configuración
             </Link>

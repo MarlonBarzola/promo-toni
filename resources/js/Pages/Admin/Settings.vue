@@ -1,15 +1,11 @@
 <script setup>
 import AdminLayout from '@/Layouts/AdminLayout.vue';
-/* import FlashToast from '@/Components/Admin/FlashToast.vue'; */
-import { useForm, usePage } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import FlashToast from '@/Components/Admin/FlashToast.vue';
+import { useForm } from '@inertiajs/vue3';
 
 const props = defineProps({
     settings: Object,
 });
-
-const page    = usePage();
-const mensaje = computed(() => page.props.flash?.mensaje);
 
 const form = useForm({
     key:   'registro_habilitado',
@@ -27,7 +23,7 @@ const toggle = (nuevoValor) => {
         <div class="container py-4">
             <h2 class="mb-4">Configuración General</h2>
 
-           <!--  <FlashToast :mensaje="mensaje" /> -->
+            <FlashToast />
 
             <div class="setting-card">
                 <div class="d-flex justify-content-between align-items-center gap-4 flex-wrap">

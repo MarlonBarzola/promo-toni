@@ -478,7 +478,7 @@ const formatFecha = (fecha) =>
 
 /* ─── Botones navegación ──────────────────────────────────────── */
 .btn-code {
-    width: 50%;
+    width: 60%;
 }
 
 /* ─── Transiciones ────────────────────────────────────────────── */

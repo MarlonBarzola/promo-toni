@@ -29,4 +29,10 @@ class Codigo extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    // lotes.lote = codigos.codigo_unico (foreign key on lotes side is 'lote')
+    public function lote()
+    {
+        return $this->hasOne(Lote::class, 'lote', 'codigo_unico');
+    }
 }

@@ -1,7 +1,8 @@
 <script setup>
 import AdminLayout from '@/Layouts/AdminLayout.vue';
-import { useForm, usePage } from '@inertiajs/vue3';
-import { ref, computed } from 'vue';
+import FlashToast from '@/Components/Admin/FlashToast.vue';
+import { useForm } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
 const props = defineProps({
     ganadores: Array,
@@ -9,9 +10,6 @@ const props = defineProps({
     anioActual: Number,
     totalActivos: Number,
 });
-
-const page = usePage();
-const mensaje = computed(() => page.props.flash?.mensaje);
 
 const form = useForm({
     archivo: null,
@@ -46,10 +44,7 @@ const submit = () => {
                 <span class="semana-badge">Semana {{ semanaActual }} · {{ anioActual }}</span>
             </div>
 
-            <!-- Flash -->
-            <div v-if="mensaje" class="alert-success">
-                {{ mensaje }}
-            </div>
+            <FlashToast />
 
             <!-- Upload Card -->
             <div class="card mb-4">
@@ -133,16 +128,6 @@ const submit = () => {
     font-weight: 600;
     padding: 4px 10px;
     border-radius: 999px;
-}
-
-.alert-success {
-    background: #d1fae5;
-    color: #065f46;
-    border: 1px solid #6ee7b7;
-    border-radius: 8px;
-    padding: 12px 16px;
-    margin-bottom: 20px;
-    font-weight: 600;
 }
 
 .card {

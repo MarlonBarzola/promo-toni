@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Codigo;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -69,8 +70,9 @@ class AdminController extends Controller
 
         $codigo->update($data);
 
-        // Recalcular puntos_acumulados si cambia el estado de/a aprobado
-        if ($nuevoEstado !== $estadoAnterior
+        // En modo estricto, recalcular puntos_acumulados cuando cambia el estado de/a aprobado
+        if (Setting::get('modo_lotes', 'estricto') === 'estricto'
+            && $nuevoEstado !== $estadoAnterior
             && ($nuevoEstado === 'aprobado' || $estadoAnterior === 'aprobado')
             && $codigo->user_id
         ) {

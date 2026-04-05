@@ -11,7 +11,7 @@ class SettingsSeeder extends Seeder
     {
         $defaults = [
             'registro_habilitado' => 'false',
-            'modo_lotes'          => 'estricto',
+            'modo_lotes'          => 'libre',
         ];
 
         foreach ($defaults as $key => $value) {

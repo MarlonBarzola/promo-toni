@@ -139,7 +139,9 @@ const submit = () => {
             </div>
 
             <div class="mb-2">
-                <input type="text" inputmode="email" v-model="form.email" placeholder="Correo electrónico:" class="form-input"
+                <input type="text" inputmode="email" autocapitalize="none" autocorrect="off"
+                    :value="form.email" @input="form.email = $event.target.value.toLowerCase()"
+                    placeholder="Correo electrónico:" class="form-input"
                     :class="{ 'input-error': form.errors.email }">
                 <div v-if="form.errors.email" class="error-message">{{ form.errors.email }}</div>
             </div>
@@ -163,7 +165,7 @@ const submit = () => {
                 <input class="form-check-input" type="checkbox" v-model="form.acepto_terminos" id="checkTerminos"
                     required>
                 <label class="form-check-label text-white small" for="checkTerminos">
-                    Acepto los términos y condiciones y reconozco que, en caso de resultador ganador del paquete futbolero, la documentación para viajar a Estados Unidos (incluida visa vigente) es mi responsabilidad, y que el organizador no se hace responsable por su gestión, obtención o rechazo.
+                    <a :href="route('terminos')" target="_blank" class="text-white underline">Acepto los términos y condiciones</a> y reconozco que, en caso de resultador ganador del paquete futbolero, la documentación para viajar a Estados Unidos (incluida visa vigente) es mi responsabilidad, y que el organizador no se hace responsable por su gestión, obtención o rechazo.
                 </label>
                 <div v-if="form.errors.acepto_terminos" class="error-message">{{ form.errors.acepto_terminos }}</div>
             </div>
@@ -172,7 +174,7 @@ const submit = () => {
                 <input class="form-check-input" type="checkbox" v-model="form.acepto_privacidad" id="checkPrivacidad"
                     required>
                 <label class="form-check-label text-white small" for="checkPrivacidad">
-                    Acepto el tratamiento de mis datos personales de acuerdo con la política de privacidad.
+                    Acepto el tratamiento de mis datos personales de acuerdo con la <a :href="route('privacidad')" target="_blank" class="text-white underline">política de privacidad</a>.
                 </label>
                 <div v-if="form.errors.acepto_privacidad" class="error-message">{{ form.errors.acepto_privacidad }}</div>
             </div>

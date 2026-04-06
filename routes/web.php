@@ -18,6 +18,8 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/terminos-y-condiciones', [HomeController::class, 'terminos'])->name('terminos');
 
+Route::get('/politica-de-privacidad', fn () => Inertia::render('Politicas'))->name('privacidad');
+
 Route::get('/preguntas-frecuentes', [HomeController::class, 'faq'])->name('faq');
 
 Route::get('/productos-participantes', [HomeController::class, 'productos'])->name('productos');

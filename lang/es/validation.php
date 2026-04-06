@@ -28,6 +28,7 @@ return [
     'date'            => 'El campo :attribute no es una fecha válida.',
     'digits'          => 'El campo :attribute debe tener :digits dígitos.',
     'email'           => 'El campo :attribute debe ser una dirección de correo válida.',
+    'lowercase'       => 'El campo :attribute debe estar en minúsculas.',
     'image'           => 'El campo :attribute debe ser una imagen.',
     'max'             => [
         'numeric' => 'El campo :attribute no debe ser mayor a :max.',

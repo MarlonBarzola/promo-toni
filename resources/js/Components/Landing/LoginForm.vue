@@ -27,9 +27,6 @@ const submit = () => {
     form.post(route('login'), {
         preserveState: true,
         preserveScroll: true,
-        onSuccess: () => {
-            window.location.href = '/';
-        },
         onFinish: () => form.reset('password'),
     });
 };

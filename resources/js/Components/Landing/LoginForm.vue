@@ -25,12 +25,10 @@ const enviado = ref(false);
 // login
 const submit = () => {
     form.post(route('login'), {
-        preserveScroll: false,
+        preserveState: true,
+        preserveScroll: true,
         onSuccess: () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'auto'
-            });
+            window.location.href = '/';
         },
         onFinish: () => form.reset('password'),
     });
@@ -59,6 +57,11 @@ const enviarRecuperacion = () => {
             ¿Aún no tienes una cuenta?
             <span class="text-white">Regístrate aquí</span>
         </span>
+
+        <!-- alerta verificación correo -->
+        <div v-if="form.errors.verification_required" class="verification-box">
+            {{ form.errors.verification_required }}
+        </div>
 
         <!-- mensaje éxito -->
         <div v-if="enviado" class="success-box">
@@ -152,6 +155,18 @@ const enviarRecuperacion = () => {
     cursor: pointer;
     text-align: center;
     text-decoration: underline;
+}
+
+.verification-box {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #6ee7b7;
+    padding: 12px;
+    border-radius: 10px;
+    margin-top: 10px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.85rem;
 }
 
 .success-box {

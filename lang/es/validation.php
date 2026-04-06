@@ -35,6 +35,12 @@ return [
         'file'    => 'El campo :attribute no debe pesar más de :max kilobytes (2MB).',
         'string'  => 'El campo :attribute no debe tener más de :max caracteres.',
     ],
+    'min'             => [
+        'numeric' => 'El campo :attribute debe ser al menos :min.',
+        'file'    => 'El campo :attribute debe pesar al menos :min kilobytes.',
+        'string'  => 'El campo :attribute debe tener al menos :min caracteres.',
+        'array'   => 'El campo :attribute debe tener al menos :min elementos.',
+    ],
     'mimes'           => 'El campo :attribute debe ser un archivo de tipo: :values.',
     'numeric'         => 'El campo :attribute debe ser un número.',
     'regex'           => 'El formato del campo :attribute no es válido.',

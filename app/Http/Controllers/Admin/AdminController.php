@@ -77,7 +77,7 @@ class AdminController extends Controller
             && $codigo->user_id
         ) {
             $total = DB::table('codigos')
-                ->join('lotes', 'lotes.lote', '=', 'codigos.codigo_unico')
+                ->join('lotes', DB::raw('LEFT(codigos.codigo_unico, 6)'), '=', 'lotes.lote')
                 ->where('codigos.user_id', $codigo->user_id)
                 ->where('codigos.estado', 'aprobado')
                 ->sum('lotes.puntos');

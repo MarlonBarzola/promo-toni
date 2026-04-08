@@ -84,7 +84,6 @@ class LoteController extends Controller
             $batch[] = [
                 'lote'       => $lote,
                 'puntos'     => $puntos,
-                'usado'      => false,
                 'created_at' => $now,
                 'updated_at' => $now,
             ];
@@ -104,27 +103,6 @@ class LoteController extends Controller
             $insertados += $affected;
             $duplicados += count($batch) - $affected;
         }
-
-        // Match automático: vincular códigos ya registrados con los lotes recién importados.
-        // Sólo actualiza lotes donde usado = false.
-        // Si un mismo codigo_unico aparece en varios registros de codigos, se toma
-        // el user_id del registro con menor id (el primero en registrarse).
-        DB::statement("
-            UPDATE lotes l
-            INNER JOIN (
-                SELECT c1.codigo_unico, c1.user_id
-                FROM codigos c1
-                INNER JOIN (
-                    SELECT codigo_unico, MIN(id) as min_id
-                    FROM codigos
-                    GROUP BY codigo_unico
-                ) c2 ON c1.id = c2.min_id
-            ) primeros ON primeros.codigo_unico = l.lote
-            SET l.usado = 1,
-                l.user_id = primeros.user_id
-            WHERE l.usado = 0
-            AND l.user_id IS NULL
-        ");
 
         $msg = "Importación completada: {$insertados} códigos nuevos";
         if ($duplicados > 0) {

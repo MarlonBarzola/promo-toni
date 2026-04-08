@@ -50,9 +50,21 @@ class LoteController extends Controller
             return back()->withErrors(['csv' => 'No se pudo leer el archivo.']);
         }
 
-        // Detect and skip header row if present
-        $firstLine = fgetcsv($handle);
-        $isHeader  = $firstLine
+        $firstRawLine = fgets($handle);
+
+        if ($firstRawLine === false) {
+            fclose($handle);
+            return back()->withErrors(['csv' => 'El archivo está vacío.']);
+        }
+
+        $delimiter = substr_count($firstRawLine, ';') > substr_count($firstRawLine, ',') ? ';' : ',';
+
+        rewind($handle);
+
+        // Detectar y saltar encabezado
+        $firstLine = fgetcsv($handle, 0, $delimiter);
+
+        $isHeader = $firstLine
             && count($firstLine) >= 2
             && !is_numeric(trim($firstLine[1]))
             && !preg_match('/^\d+$/', trim($firstLine[1]));
@@ -67,13 +79,13 @@ class LoteController extends Controller
         $errores    = 0;
         $now        = now();
 
-        while (($row = fgetcsv($handle)) !== false) {
+        while (($row = fgetcsv($handle, 0, $delimiter)) !== false) {
             if (count($row) < 2) {
                 $errores++;
                 continue;
             }
 
-            $lote = strtoupper(trim($row[0]));
+            $lote   = strtoupper(trim($row[0]));
             $puntos = intval(trim($row[1]));
 
             if ($lote === '' || $puntos <= 0) {

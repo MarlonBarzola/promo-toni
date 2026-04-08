@@ -52,40 +52,53 @@ class AdminController extends Controller
 
     public function update(Request $request, Codigo $codigo)
     {
-        $request->validate([
-            'estado'           => 'required|in:aprobado,rechazado',
-            'motivo_descarte'  => 'nullable|in:codigo_empaque,foto|required_if:estado,rechazado',
-        ]);
+        try {
 
-        $estadoAnterior = $codigo->estado;
-        $nuevoEstado    = $request->estado;
+            $request->validate([
+                'estado'           => 'required|in:aprobado,rechazado',
+                'motivo_descarte'  => 'nullable|in:codigo_empaque,foto|required_if:estado,rechazado',
+            ]);
 
-        $data = ['estado' => $nuevoEstado];
+            $estadoAnterior = $codigo->estado;
+            $nuevoEstado    = $request->estado;
 
-        if ($nuevoEstado === 'rechazado') {
-            $data['motivo_descarte'] = $request->motivo_descarte;
-        } else {
-            $data['motivo_descarte'] = null;
+            $data = ['estado' => $nuevoEstado];
+
+            if ($nuevoEstado === 'rechazado') {
+                $data['motivo_descarte'] = $request->motivo_descarte;
+            } else {
+                $data['motivo_descarte'] = null;
+            }
+
+            $codigo->update($data);
+
+            if (
+                Setting::get('modo_lotes', 'estricto') === 'estricto'
+                && $nuevoEstado !== $estadoAnterior
+                && ($nuevoEstado === 'aprobado' || $estadoAnterior === 'aprobado')
+                && $codigo->user_id
+            ) {
+                $total = DB::table('codigos')
+                    ->join('lotes', DB::raw('LEFT(codigos.codigo_unico, 6)'), '=', 'lotes.lote')
+                    ->where('codigos.user_id', $codigo->user_id)
+                    ->where('codigos.estado', 'aprobado')
+                    ->sum('lotes.puntos');
+
+                $codigo->usuario()->update([
+                    'puntos_acumulados' => (int) $total
+                ]);
+            }
+
+            return back()->with('mensaje', 'El codigo ha sido ' . $nuevoEstado);
+        } catch (\Throwable $e) {
+
+            \Log::error('Error al aprobar codigo', [
+                'error' => $e->getMessage()
+            ]);
+
+            // 👇 mensaje amigable
+            return back()->with('mensaje', 'El codigo fue procesado, pero hubo un detalle menor.');
         }
-
-        $codigo->update($data);
-
-        // En modo estricto, recalcular puntos_acumulados cuando cambia el estado de/a aprobado
-        if (Setting::get('modo_lotes', 'estricto') === 'estricto'
-            && $nuevoEstado !== $estadoAnterior
-            && ($nuevoEstado === 'aprobado' || $estadoAnterior === 'aprobado')
-            && $codigo->user_id
-        ) {
-            $total = DB::table('codigos')
-                ->join('lotes', DB::raw('LEFT(codigos.codigo_unico, 6)'), '=', 'lotes.lote')
-                ->where('codigos.user_id', $codigo->user_id)
-                ->where('codigos.estado', 'aprobado')
-                ->sum('lotes.puntos');
-
-            $codigo->usuario()->update(['puntos_acumulados' => (int) $total]);
-        }
-
-        return back()->with('mensaje', 'El código ha sido ' . $nuevoEstado);
     }
 
     public function reportes(Request $request)

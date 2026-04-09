@@ -10,6 +10,8 @@ defineEmits(['close']);
 const mensajes = {
     codigo_empaque: 'CÓDIGO EMPAQUE NO COINCIDE CON CÓDIGO REGISTRADO',
     foto: 'FOTO NO CUMPLE CON PARÁMETROS DE EMPAQUE ABIERTO',
+    mejor_foto: 'ENVIAR UNA MEJOR FOTO MOSTRANDO EMPAQUE ABIERTO Y EL CÓDIGO LEGIBLE',
+    caducado: 'EMPAQUE CON CÓDIGO DE PRODUCTO CADUCADO',
 };
 
 const mensaje = props.motivo ? (mensajes[props.motivo] ?? mensajes.foto) : mensajes.foto;

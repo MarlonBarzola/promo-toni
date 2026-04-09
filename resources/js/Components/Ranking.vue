@@ -25,7 +25,6 @@ defineProps({
                         <span v-if="index === 0"><img src="/images/rank-1.svg" alt="Primer Lugar"></span>
                         <span v-else-if="index === 1"><img src="/images/rank-2.svg" alt="Segundo Lugar"></span>
                         <span v-else-if="index === 2"><img src="/images/rank-3.svg" alt="Tercer Lugar"></span>
-                        <span v-else class="text-white fw-bold">{{ index + 1 }}</span>
                     </div>
 
                     <div class="ranking-name flex-grow-1 fw-bold">

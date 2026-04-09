@@ -199,6 +199,8 @@ watch(
                         <option value="" disabled>Seleccione el motivo de rechazo</option>
                         <option value="foto">Foto no cumple con parámetros de empaque abierto</option>
                         <option value="codigo_empaque">Código de empaque no coincide con código registrado</option>
+                        <option value="mejor_foto">Enviar una mejor foto mostrando empaque abierto y el código legible</option>
+                        <option value="caducado">Empaque con codigo de producto caducado</option>
                     </select>
                     <div class="rechazo-actions">
                         <button class="btn-cancelar" @click="modalRechazo = false">Cancelar</button>

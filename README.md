@@ -221,6 +221,14 @@ routes/
 
 ---
 
+## 👤 Autor
+
+**Tu Nombre**
+- GitHub: [@MarlonBarzola](https://github.com/MarlonBarzola)
+- LinkedIn: [Marlon Barzola](https://www.linkedin.com/in/marlon-barzola-756a8b154/)
+
+---
+
 ## 📄 Licencia
 
 Este proyecto es software propietario. Todos los derechos reservados.

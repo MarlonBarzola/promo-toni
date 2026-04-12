@@ -223,7 +223,7 @@ routes/
 
 ## 👤 Autor
 
-**Tu Nombre**
+**Marlon Barzola**
 - GitHub: [@MarlonBarzola](https://github.com/MarlonBarzola)
 - LinkedIn: [Marlon Barzola](https://www.linkedin.com/in/marlon-barzola-756a8b154/)
 

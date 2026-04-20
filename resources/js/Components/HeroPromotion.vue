@@ -35,7 +35,7 @@ defineProps({
     height: 100vh;
     overflow: hidden;
     position: relative;
-    margin-bottom: -8rem;
+    margin-bottom: 0;
 }
 
 .z-10 {

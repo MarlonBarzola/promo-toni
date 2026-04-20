@@ -219,7 +219,8 @@ const formatFecha = (fecha) =>
                                     <div class="important-box mb-4">
                                         <p class="mb-0 fw-bold">IMPORTANTE:</p>
                                         <p class="mb-0">Carga una foto clara del código con el envase abierto.</p>
-                                        <p class="mb-0">Necesitamos una foto para verificar la veracidad del código</p>
+                                        <p class="mb-0">Necesitamos una foto para verificar la veracidad del código.</p>
+                                        <p class="mb-0">Guardar el empaque para el momento de la entrega del premio.</p>
                                     </div>
 
                                     <div class="text-center">

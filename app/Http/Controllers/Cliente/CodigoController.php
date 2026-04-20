@@ -78,14 +78,33 @@ class CodigoController extends Controller
 
         $codigoUnico = $request->codigo_lote . $request->codigo_conteo;
 
-        // Evitar doble envío del mismo código completo
-        if (Codigo::where('codigo_unico', $codigoUnico)->exists()) {
+        $userId = auth()->id();
+
+        // Bloquear si el código ya está pendiente o aprobado (por cualquier usuario)
+        if (Codigo::where('codigo_unico', $codigoUnico)->whereIn('estado', ['pendiente', 'aprobado'])->exists()) {
+            return back()->withErrors([
+                'codigo_lote' => 'Este código ya ha sido registrado anteriormente.',
+            ])->withInput();
+        }
+
+        // Bloquear si el código fue rechazado pero pertenece a otro usuario
+        if (Codigo::where('codigo_unico', $codigoUnico)->where('estado', 'rechazado')->where('user_id', '!=', $userId)->exists()) {
             return back()->withErrors([
                 'codigo_lote' => 'Este código ya ha sido registrado anteriormente.',
             ])->withInput();
         }
 
         $pathCodigo = $request->file('foto_codigo')->store('promocion/codigos', 'public');
+
+        // Si existe un registro rechazado del mismo usuario, actualizarlo en lugar de crear uno nuevo
+        $codigoExistente = Codigo::where('codigo_unico', $codigoUnico)->where('estado', 'rechazado')->where('user_id', $userId)->first();
+        if ($codigoExistente) {
+            $codigoExistente->update([
+                'foto_codigo' => $pathCodigo,
+                'estado'      => 'pendiente',
+            ]);
+            return back()->with('mensaje', '¡Tu código ha sido reenviado con éxito y está en revisión!');
+        }
 
         Codigo::create([
             'user_id'      => auth()->id(),

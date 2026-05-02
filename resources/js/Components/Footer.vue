@@ -29,7 +29,7 @@ import { Link} from '@inertiajs/vue3';
                     </div>
                 </div>
                 <div class="leyenda">
-                    Promoción válida desde el 6 de abril hasta 28 junio de 2026 o hasta agotar stock. Anuncio de ganadores paquetes mundialistas: 31 mayo 2026. <Link class="underline" :href="route('terminos')">Aplican términos y condiciones.</Link>
+                    Promoción válida desde el 6 de abril hasta 28 junio de 2026 o hasta agotar stock. Anuncio de ganadores paquetes futboleros: 31 mayo 2026. <Link class="underline" :href="route('terminos')">Aplican términos y condiciones.</Link>
                 </div>
             </div>
             <div>

@@ -31,9 +31,9 @@ defineProps({
                         {{ usuario.usuario }}
                     </div>
 
-                    <div class="ranking-points fw-bold">
+                    <!-- <div class="ranking-points fw-bold">
                         {{ String(usuario.puntos_acumulados ?? 0).padStart(3, '0') }}
-                    </div>
+                    </div> -->
                 </div>
             </template>
         </div>

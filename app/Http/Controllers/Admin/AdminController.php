@@ -107,6 +107,7 @@ class AdminController extends Controller
         $hasta  = $request->hasta;
         $search = $request->search;
         $ciudad = $request->ciudad;
+        $estado = $request->estado;
 
         if ($desde && !$hasta) {
             return back()->with('mensaje', 'Debes ingresar la fecha final.');
@@ -141,6 +142,10 @@ class AdminController extends Controller
             $query->whereHas('usuario', function ($u) use ($ciudad) {
                 $u->where('ciudad', 'like', "%{$ciudad}%");
             });
+        }
+
+        if ($estado) {
+            $query->where('estado', $estado);
         }
 
         $codigos = $query->orderBy('created_at', 'desc')
@@ -154,6 +159,7 @@ class AdminController extends Controller
                 'hasta'  => $hasta,
                 'search' => $search,
                 'ciudad' => $ciudad,
+                'estado' => $estado,
             ]
         ]);
     }
@@ -164,6 +170,7 @@ class AdminController extends Controller
         $hasta  = $request->hasta;
         $search = $request->search;
         $ciudad = $request->ciudad;
+        $estado = $request->estado;
 
         if ($desde && !$hasta) {
             return back()->with('mensaje', 'Debes ingresar la fecha final.');
@@ -198,6 +205,10 @@ class AdminController extends Controller
             $query->whereHas('usuario', function ($u) use ($ciudad) {
                 $u->where('ciudad', 'like', "%{$ciudad}%");
             });
+        }
+
+        if ($estado) {
+            $query->where('estado', $estado);
         }
 
         $codigos = $query->get();

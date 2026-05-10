@@ -14,6 +14,7 @@ const desde  = ref(props.filters?.desde || '');
 const hasta  = ref(props.filters?.hasta || '');
 const search = ref(props.filters?.search || '');
 const ciudad = ref(props.filters?.ciudad || '');
+const estado = ref(props.filters?.estado || '');
 
 let timeout = null;
 
@@ -52,6 +53,7 @@ const buscar = () => {
         hasta:  hasta.value,
         search: search.value,
         ciudad: ciudad.value,
+        estado: estado.value,
     }, {
         preserveState: true,
         replace: true
@@ -88,6 +90,7 @@ const exportar = () => {
         hasta:  hasta.value,
         search: search.value,
         ciudad: ciudad.value,
+        estado: estado.value,
     }), '_blank');
 };
 
@@ -96,10 +99,11 @@ const limpiar = () => {
     hasta.value  = '';
     search.value = '';
     ciudad.value = '';
+    estado.value = '';
     buscar();
 };
 
-const hayFiltros = computed(() => !!desde.value || !!hasta.value || !!search.value || !!ciudad.value);
+const hayFiltros = computed(() => !!desde.value || !!hasta.value || !!search.value || !!ciudad.value || !!estado.value);
 </script>
 
 <template>
@@ -117,6 +121,12 @@ const hayFiltros = computed(() => !!desde.value || !!hasta.value || !!search.val
 
             <input type="text" v-model="search" placeholder="Buscar usuario o código..." />
             <input type="text" v-model="ciudad" placeholder="Ciudad..." />
+            <select v-model="estado" class="form-select">
+                <option value="">Seleccione un estado</option>
+                <option value="pendiente">Pendiente</option>
+                <option value="aprobado">Aprobado</option>
+                <option value="rechazado">Rechazado</option>
+            </select>
 
             <button @click="buscar">Filtrar</button>
             <button class="excel" @click="exportar">Excel</button>
@@ -178,7 +188,7 @@ const hayFiltros = computed(() => !!desde.value || !!hasta.value || !!search.val
     margin-bottom: 20px;
 }
 
-.filters input {
+.filters input, .filters select {
     padding: 8px;
     border: 1px solid #ddd;
     border-radius: 6px;

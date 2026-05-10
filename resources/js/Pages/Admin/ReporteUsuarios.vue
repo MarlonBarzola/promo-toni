@@ -5,25 +5,21 @@ import { router } from '@inertiajs/vue3';
 import { ref, watch, computed } from 'vue';
 
 const props = defineProps({
-    codigos: Object,
-    filters: Object
+    usuarios: Object,
+    filters:  Object,
 });
 
 const toast  = ref(null);
-const desde  = ref(props.filters?.desde || '');
-const hasta  = ref(props.filters?.hasta || '');
+const desde  = ref(props.filters?.desde  || '');
+const hasta  = ref(props.filters?.hasta  || '');
 const search = ref(props.filters?.search || '');
 const ciudad = ref(props.filters?.ciudad || '');
 
 let timeout = null;
 
-// 🔎 buscador debounce
-watch(search, (value) => {
+watch(search, () => {
     clearTimeout(timeout);
-
-    timeout = setTimeout(() => {
-        buscar();
-    }, 400);
+    timeout = setTimeout(() => buscar(), 400);
 });
 
 watch(ciudad, () => {
@@ -31,59 +27,45 @@ watch(ciudad, () => {
     timeout = setTimeout(() => buscar(), 400);
 });
 
-const buscar = () => {
+const validarFechas = () => {
     if (desde.value && !hasta.value) {
         toast.value?.mostrar('Debes ingresar la fecha final.', 'error');
-        return;
+        return false;
     }
-
     if (!desde.value && hasta.value) {
         toast.value?.mostrar('Debes ingresar la fecha inicial.', 'error');
-        return;
+        return false;
     }
-
     if (desde.value && hasta.value && hasta.value < desde.value) {
         toast.value?.mostrar('La fecha final debe ser mayor o igual a la fecha inicial.', 'error');
-        return;
+        return false;
     }
+    return true;
+};
 
-    router.get(route('admin.reportes'), {
+const buscar = () => {
+    if (!validarFechas()) return;
+
+    router.get(route('admin.reporte-usuarios'), {
         desde:  desde.value,
         hasta:  hasta.value,
         search: search.value,
         ciudad: ciudad.value,
     }, {
         preserveState: true,
-        replace: true
+        replace: true,
     });
 };
 
 const irPagina = (url) => {
     if (!url) return;
-
-    router.visit(url, {
-        preserveState: true,
-        preserveScroll: true
-    });
+    router.visit(url, { preserveState: true, preserveScroll: true });
 };
 
 const exportar = () => {
-    if (desde.value && !hasta.value) {
-        toast.value?.mostrar('Debes ingresar la fecha final.', 'error');
-        return;
-    }
+    if (!validarFechas()) return;
 
-    if (!desde.value && hasta.value) {
-        toast.value?.mostrar('Debes ingresar la fecha inicial.', 'error');
-        return;
-    }
-
-    if (desde.value && hasta.value && hasta.value < desde.value) {
-        toast.value?.mostrar('La fecha final debe ser mayor o igual a la fecha inicial.', 'error');
-        return;
-    }
-
-    window.open(route('admin.export', {
+    window.open(route('admin.export-usuarios', {
         desde:  desde.value,
         hasta:  hasta.value,
         search: search.value,
@@ -99,7 +81,9 @@ const limpiar = () => {
     buscar();
 };
 
-const hayFiltros = computed(() => !!desde.value || !!hasta.value || !!search.value || !!ciudad.value);
+const hayFiltros = computed(() =>
+    !!desde.value || !!hasta.value || !!search.value || !!ciudad.value
+);
 </script>
 
 <template>
@@ -107,65 +91,66 @@ const hayFiltros = computed(() => !!desde.value || !!hasta.value || !!search.val
 
         <FlashToast ref="toast" />
 
-        <h2 class="mb-4">Reportes de Códigos</h2>
+        <h2 class="mb-4">Reporte de Usuarios Registrados</h2>
 
-        <!-- 🔎 FILTROS -->
+        <!-- FILTROS -->
         <div class="filters">
-
             <input type="date" v-model="desde" />
             <input type="date" v-model="hasta" />
-
-            <input type="text" v-model="search" placeholder="Buscar usuario o código..." />
+            <input type="text" v-model="search" placeholder="Nombre, cédula o email..." />
             <input type="text" v-model="ciudad" placeholder="Ciudad..." />
-
             <button @click="buscar">Filtrar</button>
             <button class="excel" @click="exportar">Excel</button>
             <button class="limpiar" @click="limpiar" :disabled="!hayFiltros">Limpiar</button>
-
         </div>
 
-        <!-- 📊 TABLA -->
+        <!-- TABLA USUARIOS -->
         <table class="table">
             <thead>
                 <tr>
                     <th>Nombre</th>
                     <th>Cédula</th>
+                    <th>Email</th>
+                    <th>Teléfono</th>
                     <th>Ciudad</th>
-                    <th>Código</th>
-                    <th>Estado</th>
-                    <th>Fecha</th>
-                    <th>Foto Código</th>
+                    <th>Puntos</th>
+                    <th>Verificado</th>
+                    <th>Fecha Registro</th>
                 </tr>
             </thead>
-
             <tbody>
-                <tr v-for="item in codigos.data" :key="item.id">
-                    <td>{{ item.usuario.nombre }} {{ item.usuario.apellido }}</td>
-                    <td>{{ item.usuario.cedula }}</td>
-                    <td>{{ item.usuario.ciudad }}</td>
-                    <td>{{ item.codigo_unico }}</td>
+                <tr v-for="u in usuarios.data" :key="u.id">
+                    <td>{{ u.nombre }} {{ u.apellido }}</td>
+                    <td>{{ u.cedula }}</td>
+                    <td>{{ u.email }}</td>
+                    <td>{{ u.telefono }}</td>
+                    <td>{{ u.ciudad }}</td>
+                    <td>{{ u.puntos_acumulados }}</td>
                     <td>
-                        <span :class="'badge ' + item.estado">
-                            {{ item.estado }}
+                        <span :class="u.email_verified_at ? 'verificado-si' : 'verificado-no'">
+                            {{ u.email_verified_at ? 'Sí' : 'No' }}
                         </span>
                     </td>
-                    <td>{{ item.fecha_formateada }}</td>
-                    <td>
-                        <a :href="'/storage/' + item.foto_codigo" target="_blank">Ver foto</a>
-                    </td>
+                    <td>{{ u.fecha_formateada }}</td>
                 </tr>
             </tbody>
         </table>
 
         <!-- EMPTY -->
-        <div v-if="codigos.data.length === 0" class="empty">
+        <div v-if="usuarios.data.length === 0" class="empty">
             No hay resultados
         </div>
 
         <!-- PAGINACIÓN -->
         <div class="pagination">
-            <button v-for="(link, i) in codigos.links" :key="i" v-html="link.label" :disabled="!link.url"
-                @click="irPagina(link.url)" :class="{ active: link.active }" />
+            <button
+                v-for="(link, i) in usuarios.links"
+                :key="i"
+                v-html="link.label"
+                :disabled="!link.url"
+                @click="irPagina(link.url)"
+                :class="{ active: link.active }"
+            />
         </div>
 
     </AdminLayout>
@@ -176,6 +161,7 @@ const hayFiltros = computed(() => !!desde.value || !!hasta.value || !!search.val
     display: flex;
     gap: 10px;
     margin-bottom: 20px;
+    flex-wrap: wrap;
 }
 
 .filters input {
@@ -219,27 +205,50 @@ const hayFiltros = computed(() => !!desde.value || !!hasta.value || !!search.val
     text-align: left;
 }
 
-.badge {
-    padding: 4px 8px;
-    border-radius: 6px;
-    color: white;
-}
-
-.badge.aprobado {
-    background: #10b981;
-}
-
-.badge.rechazado {
-    background: #ef4444;
-}
-
-.badge.pendiente {
-    background: #f59e0b;
-}
-
 .empty {
     text-align: center;
     padding: 40px;
     color: #777;
+}
+
+.pagination {
+    display: flex;
+    gap: 4px;
+    margin-top: 16px;
+}
+
+.pagination button {
+    padding: 6px 10px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.pagination button.active {
+    background: #111827;
+    color: white;
+    border-color: #111827;
+}
+
+.pagination button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.verificado-si {
+    background: #10b981;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.verificado-no {
+    background: #ef4444;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
 }
 </style>

@@ -34,6 +34,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'puntos_acumulados',
     ];
 
+    protected $appends = ['fecha_formateada'];
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -43,6 +45,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'remember_token',
     ];
+
+    public function getFechaFormateadaAttribute()
+    {
+        return $this->created_at?->format('Y-m-d H:i');
+    }
 
     /**
      * Get the attributes that should be cast.

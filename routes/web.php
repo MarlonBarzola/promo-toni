@@ -41,6 +41,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::patch('/validar-codigo/{codigo}', [AdminController::class, 'update'])->name('admin.validar');
         Route::get('/reportes', [AdminController::class, 'reportes'])->name('admin.reportes');
         Route::get('/export', [AdminController::class, 'export'])->name('admin.export');
+        Route::get('/reporte-usuarios', [AdminController::class, 'reporteUsuarios'])->name('admin.reporte-usuarios');
+        Route::get('/export-usuarios', [AdminController::class, 'exportUsuarios'])->name('admin.export-usuarios');
         Route::get('/ganadores-semanales', [GanadoresSemanalesController::class, 'index'])->name('admin.ganadores');
         Route::post('/ganadores-semanales', [GanadoresSemanalesController::class, 'store'])->name('admin.ganadores.store');
         Route::get('/terminos-y-condiciones', [TerminosController::class, 'edit'])->name('admin.terminos');

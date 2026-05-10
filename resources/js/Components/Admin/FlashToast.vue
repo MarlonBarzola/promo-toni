@@ -13,25 +13,29 @@ const props = defineProps({
     },
 });
 
-const visible = ref(false);
-const mensaje = ref('');
-let   timer   = null;
+const visible    = ref(false);
+const mensaje    = ref('');
+const tipoActual = ref(props.tipo);
+let   timer      = null;
 
 const cerrar = () => {
     visible.value = false;
     clearTimeout(timer);
 };
 
-const mostrar = (msg) => {
+const mostrar = (msg, tipo = null) => {
     if (!msg) return;
     clearTimeout(timer);
-    visible.value = false;
-    mensaje.value = msg;
+    visible.value    = false;
+    mensaje.value    = msg;
+    tipoActual.value = tipo ?? props.tipo;
     requestAnimationFrame(() => {
         visible.value = true;
         timer = setTimeout(cerrar, props.duracion);
     });
 };
+
+defineExpose({ mostrar });
 
 const unsubscribe = router.on('success', (event) => {
     const flash = event.detail.page.props.flash?.mensaje;
@@ -47,10 +51,10 @@ onUnmounted(() => unsubscribe());
             <div
                 v-if="visible && mensaje"
                 class="flash-toast"
-                :class="tipo === 'error' ? 'flash-toast--error' : 'flash-toast--exito'"
+                :class="tipoActual === 'error' ? 'flash-toast--error' : 'flash-toast--exito'"
                 role="alert"
             >
-                <span class="flash-toast__icono">{{ tipo === 'error' ? '❌' : '✅' }}</span>
+                <span class="flash-toast__icono">{{ tipoActual === 'error' ? '❌' : '✅' }}</span>
                 <span class="flash-toast__texto">{{ mensaje }}</span>
                 <button class="flash-toast__cerrar" @click="cerrar" aria-label="Cerrar">✕</button>
             </div>

@@ -56,7 +56,7 @@ class AdminController extends Controller
 
             $request->validate([
                 'estado'           => 'required|in:aprobado,rechazado',
-                'motivo_descarte'  => 'nullable|in:codigo_empaque,foto,mejor_foto,caducado|required_if:estado,rechazado',
+                'motivo_descarte'  => 'nullable|in:codigo_empaque,foto,mejor_foto,caducado,deterioro|required_if:estado,rechazado',
             ]);
 
             $estadoAnterior = $codigo->estado;

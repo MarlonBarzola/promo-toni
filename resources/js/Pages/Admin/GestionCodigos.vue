@@ -201,6 +201,7 @@ watch(
                         <option value="codigo_empaque">Código de empaque no coincide con código registrado</option>
                         <option value="mejor_foto">Enviar una mejor foto mostrando empaque abierto y el código legible</option>
                         <option value="caducado">Empaque con codigo de producto caducado</option>
+                        <option value="deterioro">Empaque en mal estado o deterioro evidente</option>
                     </select>
                     <div class="rechazo-actions">
                         <button class="btn-cancelar" @click="modalRechazo = false">Cancelar</button>

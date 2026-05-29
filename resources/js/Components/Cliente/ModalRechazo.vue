@@ -12,6 +12,7 @@ const mensajes = {
     foto: 'FOTO NO CUMPLE CON PARÁMETROS DE EMPAQUE ABIERTO',
     mejor_foto: 'ENVIAR UNA MEJOR FOTO MOSTRANDO EMPAQUE ABIERTO Y EL CÓDIGO LEGIBLE',
     caducado: 'EMPAQUE CON CÓDIGO DE PRODUCTO CADUCADO',
+    deterioro: 'EMPAQUE EN MAL ESTADO O DETERIORO EVIDENTE',
 };
 
 const mensaje = props.motivo ? (mensajes[props.motivo] ?? mensajes.foto) : mensajes.foto;

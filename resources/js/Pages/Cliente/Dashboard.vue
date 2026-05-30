@@ -6,6 +6,7 @@ import ModalRechazo from '@/Components/Cliente/ModalRechazo.vue';
 import ModalReferencia from '@/Components/Cliente/ModalReferencia.vue';
 import Paginacion from '@/Components/Common/Paginacion.vue';
 import LazyImage from '@/Components/Common/LazyImage.vue';
+import CountdownTimer from '@/Components/CountdownTimer.vue';
 
 const props = defineProps({
     codigos: Object,
@@ -159,6 +160,9 @@ const formatFecha = (fecha) =>
                         <div class="tab-content-container mis-codigos-content">
                             <!-- INGRESAR -->
                             <div v-if="vistaActiva === 'ingresar'" class="p-4">
+                                <div class="contador-dashboard">
+                                    <CountdownTimer />
+                                </div>
                                 <h4 class="text-center text-dark-blue mb-4">INGRESA TUS CÓDIGOS</h4>
 
                                 <form @submit.prevent="enviarFormulario">
@@ -491,6 +495,18 @@ const formatFecha = (fecha) =>
 .fade-enter-from,
 .fade-leave-to {
     opacity: 0;
+}
+
+.contador-dashboard {
+    margin-bottom: 10px;
+}
+
+.contador-dashboard :deep(.countdown-text) {
+    font-size: 1.5rem;
+}
+
+.contador-dashboard :deep(.countdown-text strong) {
+    font-size: 2.3rem;
 }
 
 /* ─── Responsive ──────────────────────────────────────────────── */

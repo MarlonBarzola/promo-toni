@@ -35,6 +35,10 @@ import { Link } from '@inertiajs/vue3';
                 📋 Lotes de Códigos
             </Link>
 
+            <Link :href="route('admin.ganadores-ranking')" class="nav-link">
+                🥇 Ganadores Concurso
+            </Link>
+
             <Link :href="route('admin.settings')" class="nav-link">
                 ⚙️ Configuración
             </Link>

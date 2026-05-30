@@ -1,6 +1,9 @@
 <script setup>
 import LandingLayout from '@/Layouts/LandingLayout.vue';
 import Ranking from '@/Components/Ranking.vue';
+import RankingFinalizado from '@/Components/RankingFinalizado.vue';
+import RankingGanadores from '@/Components/RankingGanadores.vue';
+import CountdownTimer from '@/Components/CountdownTimer.vue';
 import HeroPromotion from '@/Components/HeroPromotion.vue';
 import PromoBannerRow from '@/Components/Landing/PromoBannerRow.vue';
 import LazyImage from '@/Components/Common/LazyImage.vue';
@@ -9,8 +12,16 @@ import { usePage, router } from '@inertiajs/vue3';
 import { computed } from 'vue';
 
 
-defineProps({
-    ranking: Array
+const props = defineProps({
+    ranking: Array,
+    ranking_template: {
+        type: String,
+        default: '1',
+    },
+    ganadores: {
+        type: Array,
+        default: () => [],
+    },
 });
 
 const page = usePage();
@@ -75,10 +86,16 @@ const irDashboard = (openLogin) => {
             <LazyImage src="/images/banner-promo-mobile.png" alt="Promoción Toni" />
         </div>
 
+        <div class="container contador-home">
+            <CountdownTimer />
+        </div>
+
         <div class="container">
             <div class="ranking">
                 <div class="ranking-section">
-                    <Ranking :ranking="ranking" />
+                    <Ranking v-if="ranking_template === '1'" :ranking="ranking" />
+                    <RankingFinalizado v-else-if="ranking_template === '2'" :ranking="ranking" />
+                    <RankingGanadores v-else :ganadores="ganadores" />
                      <button v-if="registroHabilitado || user" @click="irDashboard(openLogin)" class="text-uppercase btn btn-ingresar d-block d-lg-none">
                         Ingresa tu código aquí
                     </button>
@@ -191,6 +208,12 @@ const irDashboard = (openLogin) => {
     display: block;
 }
 
+.contador-home {
+    margin-top: 1rem;
+    margin-bottom: 4rem;
+    position: relative;
+}
+
 /* ── Responsive ──────────────────────────────────────────── */
 @media (max-width: 991px) {
     .login {
@@ -222,6 +245,10 @@ const irDashboard = (openLogin) => {
     .btn-ingresar {
         margin-top: 1rem;
         transform: none;
+    }
+
+    .contador-home {
+        margin-top: 0;
     }
 }
 </style>

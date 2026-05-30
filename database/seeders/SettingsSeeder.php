@@ -12,6 +12,8 @@ class SettingsSeeder extends Seeder
         $defaults = [
             'registro_habilitado' => 'false',
             'modo_lotes'          => 'libre',
+            'ranking_acumula_puntos' => '1',
+            'ranking_template'       => '1',
         ];
 
         foreach ($defaults as $key => $value) {

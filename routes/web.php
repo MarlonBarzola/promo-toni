@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\GanadorController;
 use App\Http\Controllers\Admin\LoteController;
 use App\Http\Controllers\Admin\ProductoParticipanteController;
 use App\Http\Controllers\Admin\SettingsController;
@@ -11,7 +12,6 @@ use App\Http\Controllers\Cliente\CodigoController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\Artisan;
 
 // --- RUTA PÚblica (LANDING) ---
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -55,6 +55,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('/productos/{producto}', [ProductoParticipanteController::class, 'destroy'])->name('admin.productos.destroy');
         Route::get('/lotes', [LoteController::class, 'index'])->name('admin.lotes');
         Route::post('/lotes/import', [LoteController::class, 'import'])->name('admin.lotes.import');
+        Route::get('/ganadores-ranking', [GanadorController::class, 'index'])->name('admin.ganadores-ranking');
+        Route::get('/usuarios/buscar', [GanadorController::class, 'buscarUsuarios'])->name('admin.usuarios.buscar');
+        Route::post('/ganadores-ranking', [GanadorController::class, 'store'])->name('admin.ganadores-ranking.store');
         Route::get('/configuracion', [SettingsController::class, 'index'])->name('admin.settings');
         Route::post('/configuracion', [SettingsController::class, 'update'])->name('admin.settings.update');
     });

@@ -1,0 +1,120 @@
+<script setup>
+import LazyImage from '@/Components/Common/LazyImage.vue';
+
+const props = defineProps({
+    ganadores: {
+        type: Array,
+        default: () => [],
+    },
+});
+
+import { computed } from 'vue';
+// Ordenar por posición ascendente (1,2,3...)
+const ganadoresSorted = computed(() => {
+    return [...props.ganadores].sort((a, b) => (a.posicion ?? 99) - (b.posicion ?? 99));
+});
+</script>
+
+<template>
+    <div class="ranking-container p-4">
+        <div class="ranking-header text-center">
+            <LazyImage src="/images/titulo-ranking.png" alt="Tu Pasión de Hincha Toni"
+                img-class="img-promo-ranking mb-3" />
+        </div>
+
+        <div class="ranking-list">
+            <div v-if="ganadores.length === 0" class="text-center text-white py-4">
+                <p class="small">Aún no hay ganadores definidos.</p>
+            </div>
+            <template v-else>
+                <div v-for="(usuario, index) in ganadoresSorted" :key="usuario.id"
+                    class="ranking-item d-flex align-items-center mb-2 px-3 py-2" :class="'pos-' + (index + 1)">
+
+                    <div class="ranking-position me-3">
+                        <span v-if="index === 0"><img src="/images/rank-1.svg" alt="Primer Lugar"></span>
+                        <span v-else-if="index === 1"><img src="/images/rank-2.svg" alt="Segundo Lugar"></span>
+                        <span v-else-if="index === 2"><img src="/images/rank-3.svg" alt="Tercer Lugar"></span>
+                    </div>
+
+                    <div class="ranking-name flex-grow-1 fw-bold">
+                        {{ usuario.usuario }}
+                    </div>
+                </div>
+            </template>
+        </div>
+    </div>
+</template>
+
+<style scoped>
+.ranking-container {
+    background-color: var(--toni-celeste);
+    border-radius: 25px;
+    border-bottom: 12px solid var(--toni-amarillo);
+    min-height: 40vh;
+}
+
+.ranking-header {
+    position: relative;
+    max-width: 270px;
+    margin: 0 auto;
+    margin-top: -90px;
+    z-index: 1;
+}
+
+/* Estilos heredados de Ranking.vue para unificación visual */
+.ranking-container {
+    background-color: var(--toni-celeste);
+    border-radius: 25px;
+    border-bottom: 12px solid var(--toni-amarillo);
+    min-height: 40vh;
+}
+
+.ranking-list {
+    padding-left: 15px;
+}
+
+.ranking-header {
+    position: relative;
+    max-width: 270px;
+    margin: 0 auto;
+    margin-top: -90px;
+    z-index: 1;
+}
+
+.img-ranking {
+    width: 500px;
+    margin: 0 auto;
+    margin-top: 0px;
+    margin-top: -4rem;
+}
+
+.ranking-name {
+    color: var(--toni-azul-marino);
+}
+
+.ranking-item {
+    background-color: var(--toni-blanco);
+    border-radius: 15px;
+    position: relative;
+    transition: transform 0.2s;
+    padding-left: 50px !important;
+}
+
+.ranking-position {
+    font-size: 1.5rem;
+    width: 50px;
+    text-align: center;
+    position: absolute;
+    top: -3px;
+    left: -20px;
+}
+
+@media (max-width: 765px) {
+    .ranking-container {
+        max-width: 100%;
+    }
+    .img-ranking {
+        width: 75%;
+    }
+}
+</style>

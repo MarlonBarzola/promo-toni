@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Faq;
+use App\Models\Ganador;
 use App\Models\ProductoParticipante;
 use App\Models\Setting;
 use App\Models\TerminosCondiciones;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -16,6 +16,7 @@ class HomeController extends Controller
     public function index()
     {
         $modo = Setting::get('modo_lotes', 'estricto');
+        $rankingTemplate = (string) Setting::get('ranking_template', '1');
 
         if ($modo === 'estricto') {
             $ranking = User::where('puntos_acumulados', '>', 0)
@@ -39,8 +40,20 @@ class HomeController extends Controller
                 ->get();
         }
 
+        $ganadores = Ganador::with('usuario:id,usuario,nombre,apellido')
+            ->orderBy('posicion')
+            ->get()
+            ->map(fn ($ganador) => [
+                'posicion' => (int) $ganador->posicion,
+                'usuario' => $ganador->usuario?->usuario,
+                'nombre' => $ganador->usuario?->nombre,
+                'apellido' => $ganador->usuario?->apellido,
+            ]);
+
         return Inertia::render('Home', [
             'ranking' => $ranking,
+            'ranking_template' => $rankingTemplate,
+            'ganadores' => $ganadores,
         ]);
     }
 

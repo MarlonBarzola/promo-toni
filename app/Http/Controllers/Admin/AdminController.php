@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Codigo;
-use App\Models\Setting;
+use App\Services\RankingPuntosService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class AdminController extends Controller
@@ -50,7 +50,7 @@ class AdminController extends Controller
         ]);
     }
 
-    public function update(Request $request, Codigo $codigo)
+    public function update(Request $request, Codigo $codigo, RankingPuntosService $rankingPuntosService)
     {
         try {
 
@@ -72,27 +72,12 @@ class AdminController extends Controller
 
             $codigo->update($data);
 
-            if (
-                Setting::get('modo_lotes', 'estricto') === 'estricto'
-                && $nuevoEstado !== $estadoAnterior
-                && ($nuevoEstado === 'aprobado' || $estadoAnterior === 'aprobado')
-                && $codigo->user_id
-            ) {
-                $total = DB::table('codigos')
-                    ->join('lotes', DB::raw('LEFT(codigos.codigo_unico, 6)'), '=', 'lotes.lote')
-                    ->where('codigos.user_id', $codigo->user_id)
-                    ->where('codigos.estado', 'aprobado')
-                    ->sum('lotes.puntos');
-
-                $codigo->usuario()->update([
-                    'puntos_acumulados' => (int) $total
-                ]);
-            }
+            $rankingPuntosService->procesarCambioEstado($codigo, $estadoAnterior, $nuevoEstado);
 
             return back()->with('mensaje', 'El codigo ha sido ' . $nuevoEstado);
         } catch (\Throwable $e) {
 
-            \Log::error('Error al aprobar codigo', [
+            Log::error('Error al aprobar codigo', [
                 'error' => $e->getMessage()
             ]);
 

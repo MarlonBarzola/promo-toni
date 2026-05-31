@@ -40,7 +40,7 @@ class HomeController extends Controller
                 ->get();
         }
 
-        $ganadores = Ganador::with('usuario:id,usuario,nombre,apellido')
+        $ganadores = Ganador::with('usuario:id,usuario,nombre,apellido,puntos_acumulados')
             ->orderBy('posicion')
             ->get()
             ->map(fn ($ganador) => [
@@ -48,6 +48,7 @@ class HomeController extends Controller
                 'usuario' => $ganador->usuario?->usuario,
                 'nombre' => $ganador->usuario?->nombre,
                 'apellido' => $ganador->usuario?->apellido,
+                'puntos_acumulados' => (int) ($ganador->usuario?->puntos_acumulados ?? 0),
             ]);
 
         return Inertia::render('Home', [

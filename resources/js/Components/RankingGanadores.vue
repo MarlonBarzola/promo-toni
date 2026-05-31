@@ -39,6 +39,10 @@ const ganadoresSorted = computed(() => {
                     <div class="ranking-name flex-grow-1 fw-bold">
                         {{ usuario.usuario }}
                     </div>
+
+                     <div class="ranking-points fw-bold">
+                        {{ String(usuario.puntos_acumulados ?? 0).padStart(3, '0') }}
+                    </div>
                 </div>
             </template>
         </div>
@@ -107,6 +111,13 @@ const ganadoresSorted = computed(() => {
     position: absolute;
     top: -3px;
     left: -20px;
+}
+
+.ranking-points {
+    font-size: 1.2rem;
+    font-family: 'Courier New', monospace;
+    color: var(--toni-azul-marino);
+    /* Para estilo digital/contador */
 }
 
 @media (max-width: 765px) {
